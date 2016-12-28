@@ -4,12 +4,12 @@ This recipe entails configuration technics to develop efficiently on Eclipse wit
 
 这个配方需要配置技术，在Eclipse上使用Java，Maven和Tomcat高效开发。
 
-**Getting ready                        
+**Getting ready                          
 **
 
 Once the different products are installed, there are a couple of steps that we need to follow, mainly to make Eclipse work properly with Java SE 8, Maven 3, and Tomcat 8. In this recipe, we will also look at how to customize the Eclipse configuration file \(Eclipse.ini\) in order to make the most of the platform that runs Java and to make sure that it will cope with any significant growth of the application.
 
-**准备                        
+**准备                          
 **
 
 一旦安装了不同的产品，我们需要遵循几个步骤，主要是让Eclipse使用Java SE 8，Maven 3和Tomcat 8正常工作。在这个配方中，我们还将讨论如何自定义 Eclipse配置文件（Eclipse.ini），以便充分利用运行Java的平台，并确保它将处理应用程序的任何显着增长。
@@ -394,7 +394,7 @@ http//help.eclipse.org/luna/topic/org.eclipse.platform.doc.isv/reference / misc 
 
 * 在命令行中使用-vmargs将替换.ini文件中的所有-vmargs设置，除非--launcher.appendVmargs在.ini文件中或在命令行中指定
 
-**Setting the –vm option      
+**Setting the –vm option        
 **
 
 Setting the -vm option allows us to be sure of the JVM implementation on which Eclipse runs as a program. You might have noticed that we've targeted the JVM as a library \(\*.dll /\*.so\). It has better performance on startup and also identifies the program process as the Eclipse executable and not just as the Java executable.
@@ -403,7 +403,7 @@ If you wonder which JVM Eclipse uses when a –vm option is not set, be aware th
 
 Instead, Eclipse executes the Java command that parses your path environment variable.
 
-**设置-vm选项      
+**设置-vm选项        
 **
 
 设置-vm选项允许我们确定Eclipse作为程序运行的JVM实现。 您可能已经注意到，我们已将JVM作为库（\* .dll /\*.so）。 它在启动时具有更好的性能，还将程序进程标识为Eclipse可执行文件，而不仅仅是Java可执行文件。
@@ -412,7 +412,7 @@ Instead, Eclipse executes the Java command that parses your path environment var
 
 相反，Eclipse会执行解析路径环境变量的Java命令。
 
-**Customizing JVM arguments      
+**Customizing JVM arguments        
 **
 
 The suggested JVM argument list comes from Piotr Gabryanczyk's work on the Java memory management model. Initially, for JetBRAINS IntelliJ settings, this configuration is also useful for an Eclipse environment. It helps in the following tasks:
@@ -425,7 +425,7 @@ The suggested JVM argument list comes from Piotr Gabryanczyk's work on the Java 
 
 * Choosing the incremental pacing mode for the garbage collector, which generates breaks in the GC job so that the application can definitely stop freezing \(–XX:+CMSIncrementalPacing\)
 
-**自定义JVM参数      
+**自定义JVM参数        
 **
 
 建议的JVM参数列表来自Piotr Gabryanczyk关于Java内存管理模型的工作。 最初，对于JetBRAINS IntelliJ设置，此配置对于Eclipse环境也很有用。 它有助于以下任务：
@@ -490,31 +490,21 @@ For this purpose, the **Permanent Generation \(PermGen\)** space has been replac
 
 为此，**永久代（PermGen）**空间已被元数据空间替换，该元数据空间不是堆的一部分，而是本机内存的一部分。 此空间的默认最大大小不受限制。 但是，我们仍然可以使用-XX：MetaspaceSize或-XX：MaxMetaspaceSize限制它。
 
-
-
 **Changing the JDK compliance level**
 
 Downgrading a compliance level allows us to run a lower version of a Java compiler than the one the JDK is natively identified to. It impacts the Eclipse builds, errors, and warnings and also the JavaDocs. It is obviously not possible to set a higher compilation version than the native version of a compiler.
-
-
 
 **更改JDK合规性级别**
 
 降低合规性级别允许我们运行比本地标识的JDK更低版本的Java编译器。 它影响Eclipse构建，错误和警告以及JavaDocs。 显然不可能设置比编译器的本机版本更高的编译版本。
 
-
-
 **Configuring Maven**
 
 Inside Eclipse, most of the Maven configuration comes from the m2eclipse plugin \(also called Maven integration for Eclipse\). This plugin is included, by default, in Eclipse Luna. It is then not necessary to download it manually. After the Maven configuration that we went through, m2eclipse is also very helpful to trigger Maven operations from the IDE context and to provide assistance to create Java Maven projects. You will learn more about m2eclipse in the next section.
 
-
-
 **配置Maven**
 
 在Eclipse中，大多数Maven配置来自m2eclipse插件（也称为Eclipse的Maven集成）。 默认情况下，此插件包含在Eclipse Luna中。 然后无需手动下载。 在我们经历的Maven配置之后，m2eclipse也非常有助于从IDE上下文触发Maven操作，并提供帮助来创建Java Maven项目。 您将在下一节中了解有关m2eclipse的更多信息。
-
-
 
 We then installed a basic settings.xml file. This file is used to configure Maven without being bound directly to any projects. The most common uses of settings.xml are probably profile definition and credential storage to access the repository manager\(s\).
 
@@ -524,15 +514,11 @@ With Maven profiles, you have the possibility to run a build for a specific envi
 
 使用Maven概要文件，您可以运行针对特定环境的构建，并匹配特定的配置（变量值，依赖关系集等）。  Maven配置文件可以相互累积。 它们可以通过命令行，在Maven设置中声明性地或从环境配置（例如文件系统中存在或缺少的文件，所使用的JDK等）来激活。
 
-
-
 > In our settings.xml file, we have defined a compiler profile with its own JAVA\_HOME property. The compiler profile is activated by default to be declaratively defined in the &lt;activeProfiles&gt; section.  
 >  Maven will consult the settings.xml file before looking up the system variables.
 >
 > 在我们的settings.xml文件中，我们定义了一个具有自己的JAVA\_HOME属性的编译器配置文件。 缺省情况下，激活编译器配置文件以在&lt;activeProfiles&gt;部分中声明性地定义。  
 > Maven将在查找系统变量之前查询settings.xml文件。
-
-
 
 **A repository manager**
 
@@ -545,8 +531,6 @@ Famous solutions include Apache Archiva, Artifactory, Sonatype Nexus. In the con
 存储库管理器是管理开发的应用程序可能需要的所有所需的二进制文件和依赖关系的第三方应用程序。 作为开发环境和公共存储库之间的缓冲代理，存储库管理器提供控制的关键参数，如构建时间，依赖性的可用性，可见性和访问限制，等等。
 
 著名的解决方案包括Apache Archiva，Artifactory，Sonatype Nexus。 在我们应用程序的情况下，我们不会使用存储库管理器。
-
-
 
 **Tomcat 8 inside Eclipse**
 
@@ -562,51 +546,34 @@ By default, WTP abstracts this configuration and doesn't impact the genuine serv
 
 在服务器选项卡（早期可见）中，双击创建的Tomcat v8.0服务器，打开配置窗口并启用设置参数的可能性通常在server.xml中定义Tomcat文件，它位于tomcat8 \ conf目录。
 
-默认情况下，WTP抽象此配置，并不影响正版server.xml文件。可以通过在**Server configuration窗口**激活**发布上下文模块来分隔XML文件**来更改。
-
-
+默认情况下，WTP抽象此配置，并不影响正版server.xml文件。可以通过在**Server configuration**窗口激活**Publish module contexts to separate XML files**来更改。
 
 **There's more...**
 
-* Find out more about the Eclipse installation at [http://wiki.eclipse.org/](http://wiki.eclipse.org/)
-  Eclipse/Installation
-* Learn more about the Eclipse.ini file at [http://wiki.eclipse.org/](http://wiki.eclipse.org/)  
-  Eclipse.ini
+* Find out more about the Eclipse installation at [http://wiki.eclipse.org/](http://wiki.eclipse.org/)Eclipse/Installation
+* Learn more about the Eclipse.ini file at [http://wiki.eclipse.org/](http://wiki.eclipse.org/)Eclipse.ini
 
-* Learn more about the m2eclipse plugin at [https://maven.apache.org/](https://maven.apache.org/)  
-  plugins/maven-eclipse-plugin/
+* Learn more about the m2eclipse plugin at [https://maven.apache.org/](https://maven.apache.org/)plugins/maven-eclipse-plugin/
 
-* To understand how to use a repository manager, refer to [http://maven.apache](http://maven.apache).  
-  org/repository-management.html
+* To understand how to use a repository manager, refer to [http://maven.apache](http://maven.apache).org/repository-management.html
 
-* The Piotr Gabryanczyk article about the garbage collection optimization for IDEs can  
-   be found at [http://piotrga.wordpress.com/2006/12/12/intellij-andgarbage-collection](http://piotrga.wordpress.com/2006/12/12/intellij-andgarbage-collection)
+* The Piotr Gabryanczyk article about the garbage collection optimization for IDEs can be found at [http://piotrga.wordpress.com/2006/12/12/intellij-andgarbage-collection](http://piotrga.wordpress.com/2006/12/12/intellij-andgarbage-collection)
 
-* You can know more about memory optimization in general at [http://pubs](http://pubs).  
-  vmware.com/vfabric52/topic/com.vmware.vfabric.em4j.1.2/em4j/  
-  conf-heap-management.html and [https://blog.codecentric.de/](https://blog.codecentric.de/)  
-  en/2012/08/useful-jvm-flags-part-5-young-generation-garbagecollection
-
-
+* You can know more about memory optimization in general at [http://pubs](http://pubs).vmware.com/vfabric52/topic/com.vmware.vfabric.em4j.1.2/em4j/conf-heap-management.html and [https://blog.codecentric.de/](https://blog.codecentric.de/)en/2012/08/useful-jvm-flags-part-5-young-generation-garbagecollection
 
 **还有更多...**
 
-* 有关Eclipse安装的更多信息，请访问http//wiki.eclipse.org/
-  Eclipse /安装
-* 有关Eclipse.ini文件的详细信息，请访问http//wiki.eclipse.org/  
-  Eclipse.ini
+* 有关Eclipse安装的更多信息，请访问http//wiki.eclipse.org/Eclipse /安装
+* 有关Eclipse.ini文件的详细信息，请访问http//wiki.eclipse.org/Eclipse.ini
 
-* 有关m2eclipse插件的更多信息，请访问https//maven.apache.org/  
-  plugins / maven-eclipse-plugin /
+* 有关m2eclipse插件的更多信息，请访问https//maven.apache.org/plugins / maven-eclipse-plugin /
 
 * 要了解如何使用存储库管理器，请参阅http：//maven.apache.org / repository-management.html
 
 * 关于IDE的垃圾收集优化的Piotr Gabryanczyk文章可以在http//piotrga.wordpress.com/2006/12/12/intellij-andgarbage-collection找到
 
-* 您可以在http：// pubs上了解更多关于内存优化的息。  
-  vmware.com/vfabric52/topic/com.vmware.vfabric.em4j.1.2/em4j/  
-  conf-heap-management.html和https//blog.codecentric.de/  
-  en / 2012/08 / useful-jvm-flags-part-5-young-generation-garbagecollection
+* 您可以在http：// pubs.vmware.com/vfabric52/topic/com.vmware.vfabric.em4j.1.2/em4j/  
+  conf-heap-management.html和https//blog.codecentric.de/en / 2012/08 / useful-jvm-flags-part-5-young-generation-garbagecollection上了解更多关于内存优化的息。
 
 
 
