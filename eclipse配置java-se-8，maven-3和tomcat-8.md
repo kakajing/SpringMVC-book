@@ -4,12 +4,12 @@ This recipe entails configuration technics to develop efficiently on Eclipse wit
 
 这个配方需要配置技术，在Eclipse上使用Java，Maven和Tomcat高效开发。
 
-**Getting ready                          
+**Getting ready                            
 **
 
 Once the different products are installed, there are a couple of steps that we need to follow, mainly to make Eclipse work properly with Java SE 8, Maven 3, and Tomcat 8. In this recipe, we will also look at how to customize the Eclipse configuration file \(Eclipse.ini\) in order to make the most of the platform that runs Java and to make sure that it will cope with any significant growth of the application.
 
-**准备                          
+**准备                            
 **
 
 一旦安装了不同的产品，我们需要遵循几个步骤，主要是让Eclipse使用Java SE 8，Maven 3和Tomcat 8正常工作。在这个配方中，我们还将讨论如何自定义 Eclipse配置文件（Eclipse.ini），以便充分利用运行Java的平台，并确保它将处理应用程序的任何显着增长。
@@ -225,7 +225,7 @@ xmlns:xsi="[http://www.w3.org/2001/XMLSchema-instance](http://www.w3.org/2001/XM
 
 xsi:schemaLocation="[http://maven.apache.org/SETTINGS/1.1.0](http://maven.apache.org/SETTINGS/1.1.0)
 
-[http://maven.apache.org/xsd/settings-1.1.0.xsd"&gt;](http://maven.apache.org/xsd/settings-1.1.0.xsd"&gt);
+[http://maven.apache.org/xsd/settings-1.1.0.xsd"&gt;](http://maven.apache.org/xsd/settings-1.1.0.xsd"&gt)
 
 &lt;profiles&gt;
 
@@ -394,7 +394,7 @@ http//help.eclipse.org/luna/topic/org.eclipse.platform.doc.isv/reference / misc 
 
 * 在命令行中使用-vmargs将替换.ini文件中的所有-vmargs设置，除非--launcher.appendVmargs在.ini文件中或在命令行中指定
 
-**Setting the –vm option        
+**Setting the –vm option          
 **
 
 Setting the -vm option allows us to be sure of the JVM implementation on which Eclipse runs as a program. You might have noticed that we've targeted the JVM as a library \(\*.dll /\*.so\). It has better performance on startup and also identifies the program process as the Eclipse executable and not just as the Java executable.
@@ -403,7 +403,7 @@ If you wonder which JVM Eclipse uses when a –vm option is not set, be aware th
 
 Instead, Eclipse executes the Java command that parses your path environment variable.
 
-**设置-vm选项        
+**设置-vm选项          
 **
 
 设置-vm选项允许我们确定Eclipse作为程序运行的JVM实现。 您可能已经注意到，我们已将JVM作为库（\* .dll /\*.so）。 它在启动时具有更好的性能，还将程序进程标识为Eclipse可执行文件，而不仅仅是Java可执行文件。
@@ -412,7 +412,7 @@ Instead, Eclipse executes the Java command that parses your path environment var
 
 相反，Eclipse会执行解析路径环境变量的Java命令。
 
-**Customizing JVM arguments        
+**Customizing JVM arguments          
 **
 
 The suggested JVM argument list comes from Piotr Gabryanczyk's work on the Java memory management model. Initially, for JetBRAINS IntelliJ settings, this configuration is also useful for an Eclipse environment. It helps in the following tasks:
@@ -425,7 +425,7 @@ The suggested JVM argument list comes from Piotr Gabryanczyk's work on the Java 
 
 * Choosing the incremental pacing mode for the garbage collector, which generates breaks in the GC job so that the application can definitely stop freezing \(–XX:+CMSIncrementalPacing\)
 
-**自定义JVM参数        
+**自定义JVM参数          
 **
 
 建议的JVM参数列表来自Piotr Gabryanczyk关于Java内存管理模型的工作。 最初，对于JetBRAINS IntelliJ设置，此配置对于Eclipse环境也很有用。 它有助于以下任务：
