@@ -1,13 +1,13 @@
-In this recipe, we will focus on defining, with Maven, the project structure we need for our application.
+### In this recipe, we will focus on defining, with Maven, the project structure we need for our application.
 
 在本文中，我们将重点介绍使用Maven定义我们的应用程序所需的项目结构。
 
-**Getting ready  
+**Getting ready    
 **
 
 We will initially create two Eclipse projects: one for the application and one for the components that ZipCloud as a company could share later on with other projects. Take a look at the following image which presents the project components that we are going to build:
 
-**准备  
+**准备    
 **
 
 我们将首先创建两个`Eclipse`项目：一个用于应用程序，一个用于`ZipCloud`作为公司可以与其他项目共享的组件。 看看下面的图像，其中介绍了我们将要构建的项目组件：
@@ -22,7 +22,7 @@ The company-specific project **zipcloud-parent** will have only one submodule—
 
 公司特定的项目**zipcloud-parent**将只有一个子模块-**zipcloud-core**，它将打包为**jar**。
 
-**How to do it...  
+**How to do it...    
 **
 
 The following steps will help us create a Maven parent project:
@@ -32,7 +32,7 @@ The following steps will help us create a Maven parent project:
 
    The New Maven Project wizard opens as shown in the following screenshot:
 
-**怎么做...  
+**怎么做...    
 **
 
 以下步骤将帮助我们创建一个Maven父项目：
@@ -49,19 +49,19 @@ The following steps will help us create a Maven parent project:
 
 1. Fill up the next wizard as follows:
 
-2. [ ] edu.zipcloud.cloudstreetmarket as **Group Id  
+2. [ ] edu.zipcloud.cloudstreetmarket as **Group Id    
    **
 
-3. [ ] cloudstreetmarket-parent as **Artifact Id  
+3. [ ] cloudstreetmarket-parent as **Artifact Id    
    **
 
-4. [ ] 0.0.1-SNAPSHOT as **Version  
+4. [ ] 0.0.1-SNAPSHOT as **Version    
    **
 
-5. [ ] pom as **Packaging  
+5. [ ] pom as **Packaging    
    **
 
-6. [ ] CloudStreetMarket Parent as **Name  
+6. [ ] CloudStreetMarket Parent as **Name    
    **
 
 7. [ ] Then, click on the **Finish** button
@@ -75,15 +75,15 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 4.按照以下步骤填写下一个向导：
 
 * [ ] edu.zipcloud.cloudstreetmarket作为组**Group Id**
-* [ ] cloudstreetmarket-parent作为**Artifact Id  
+* [ ] cloudstreetmarket-parent作为**Artifact Id    
   **
 
 * [ ] 0.0.1-SNAPSHOT作为**Version**
 
-* [ ] pom作为**Packaging  
+* [ ] pom作为**Packaging    
   **
 
-* [ ] CloudStreetMarket Parent作为**Name  
+* [ ] CloudStreetMarket Parent作为**Name    
   **
 
 * [ ] 然后，单击完成**Finish**
@@ -135,7 +135,7 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 &lt;plugin&gt;
 
 ```
-   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
 
    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
 
@@ -151,7 +151,7 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 &lt;/configuration&gt;
 
 ```
- &lt;/plugin&gt;
+&lt;/plugin&gt;
 ```
 
 &lt;/plugins&gt;
@@ -202,7 +202,7 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 &lt;plugin&gt;
 
 ```
-   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
 
    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
 
@@ -218,7 +218,7 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 &lt;/configuration&gt;
 
 ```
- &lt;/plugin&gt;
+&lt;/plugin&gt;
 ```
 
 &lt;/plugins&gt;
@@ -233,8 +233,9 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 
    As submodules of the Parent project, we have seen that we needed one web module to handle and render the site's screens, one web module for the REST API, and one other module that will be used to package all the business logic \(services, data access, and so on.\) specific to the first product cloudstreetmarket.com:
 
-1. From the main Webapp module:in Eclipse, navigate to **File \| New \| Other**. A **New** wizard opens up through which you can select the type of project within a hierarchy. Open the Maven category, select Maven Module, and click on Next.
-2. The New Maven Module wizard opens up after this; fill it up as follows:
+2. From the main Webapp module:in Eclipse, navigate to **File \| New \| Other**. A **New** wizard opens up through which you can select the type of project within a hierarchy. Open the Maven category, select Maven Module, and click on Next.
+
+3. The New Maven Module wizard opens up after this; fill it up as follows:
 
    Check Create a simple project.
 
@@ -244,9 +245,9 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 
    ![](/assets/7.png)
 
-3. Click on the **Next **button after which the next step shows up.Enter the following entries in that new window:
+4. Click on the **Next **button after which the next step shows up.Enter the following entries in that new window:
 
-   Enter edu.zipcloud.cloudstreetmarket as **Group Id.  
+   Enter edu.zipcloud.cloudstreetmarket as **Group Id.    
    **
 
    Enter 0.0.1-SNAPSHOT as **Version**.
@@ -268,7 +269,7 @@ We now have to tell m2eclipse which Java compiler version you plan to use in thi
 2. .此后将打开New Maven模块向导; 填写如下：
 
    ```
-       检查创建一个简单的项目。
+   检查创建一个简单的项目。
 
        输入cloudstreetmarket-webapp作为模块名称。
 
@@ -297,7 +298,7 @@ We are going to repeat the previous operation with different parameters.
 2. In the **New Maven Module** wizard, enter the following entries:
 
    ```
-      Check the **Create a simple project** option.
+   Check the **Create a simple project** option.
 
       Enter cloudstreetmarket-api as **Module Name**.
 
@@ -307,7 +308,7 @@ We are going to repeat the previous operation with different parameters.
 3. Click on the **Next **button to proceed to the next step. Enter the following entries in that window:
 
    ```
-      Enter edu.zipcloud.cloudstreetmarket as **Group Id**.
+   Enter edu.zipcloud.cloudstreetmarket as **Group Id**.
 
       Enter 0.0.1-SNAPSHOT as **Version**.
 
@@ -326,7 +327,7 @@ We are going to repeat the previous operation with different parameters.
 2. 在**New Maven Module**向导中，输入以下条目：
 
    ```
-       选中**Create a simple project**选项。
+   选中**Create a simple project**选项。
 
        输入cloudstreetmarket-api作为**Module Name**。
 
@@ -336,7 +337,7 @@ We are going to repeat the previous operation with different parameters.
 3. 单击**Next **按钮继续下一步。 在该窗口中输入以下条目：
 
    ```
-       输入edu.zipcloud.cloudstreetmarket作为**Group Id**。
+   输入edu.zipcloud.cloudstreetmarket作为**Group Id**。
 
        输入0.0.1-SNAPSHOT作为**Version**。
 
@@ -347,14 +348,14 @@ We are going to repeat the previous operation with different parameters.
        然后单击**Finish **按钮。
    ```
 
-1. Now, we will create the core module:
+4. Now, we will create the core module:
 
    For this, navigate to** File \| New \| Other**. The selection wizard pops up when you do so. Open the **Maven **category, select **Maven Module**, and click on **Next**.
 
-2. In the **New Maven Module** wizard, enter the following entries:
+5. In the **New Maven Module** wizard, enter the following entries:
 
    ```
-     Check the **Create a simple project** option.
+   Check the **Create a simple project** option.
 
      Enter cloudstreetmarket-core as **Module Name**.
 
@@ -380,7 +381,7 @@ We are going to repeat the previous operation with different parameters.
 1.在**New Maven Module**向导中，输入以下条目：
 
 ```
- 选中**Create a simple project**选项。
+选中**Create a simple project**选项。
 
  输入cloudstreetmarket-core作为**Module Name**。
 
@@ -390,7 +391,7 @@ We are going to repeat the previous operation with different parameters.
 2.单击**Next**按钮转到下一步。 在字段中填写以下内容：
 
 ```
- 输入edu.zipcloud.cloudstreetmarket作为**Group Id**。
+输入edu.zipcloud.cloudstreetmarket作为**Group Id**。
 
  输入0.0.1-SNAPSHOT作为**Version**。
 
@@ -418,7 +419,7 @@ Let's assume that many different categories of dependencies \(core, messaging, r
 3. Click on the **Next** button and fill in the next wizard as follows:
 
    ```
-    Enter edu.zipcloud as **Group Id**.
+   Enter edu.zipcloud as **Group Id**.
 
     Enter zipcloud-parent as **Artifact Id**.
 
@@ -441,7 +442,7 @@ Let's assume that many different categories of dependencies \(core, messaging, r
 3.单击**Next**按钮并填写下一个向导，如下所示：
 
 ```
-  输入edu.zipcloud作为**Group Id**。
+输入edu.zipcloud作为**Group Id**。
 
    输入zipcloud-parent作为**Artifact Id**。
 
@@ -491,7 +492,7 @@ Again, in the created `pom.xml` file, add the following block inside the`<projec
 &lt;plugin&gt;
 
 ```
-   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
 
    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
 
@@ -507,7 +508,7 @@ Again, in the created `pom.xml` file, add the following block inside the`<projec
 &lt;/configuration&gt;
 
 ```
- &lt;/plugin&gt;
+&lt;/plugin&gt;
 ```
 
 &lt;/plugins&gt;
@@ -569,8 +570,7 @@ Maven**类别，选择**Maven Module**，然后单击**Next**。
 
    If the structure is correct, the following Maven command could be successfully run: mvn clean install
 
-10.  
-现在，构建这两个项目：
+2. 现在，构建这两个项目：
 
 如果结构正确，可以成功运行以下Maven命令：`mvn clean install`
 
@@ -659,17 +659,17 @@ Scrolling up a bit should display the following trace:
 >
 > 在检测到的测试类中，Maven还将运行使用JUnit @Test注释的方法。 项目中需要JUnit依赖项。
 
-**How it works...  
+**How it works...    
 **
 
 In this section, we are going through quite a few concepts about Maven so that you can better understand its standards.
 
-**怎么运行的...  
+**怎么运行的...    
 **
 
 在本节中，我们将讨论Maven的一些概念，以便您能够更好地理解它的标准。
 
-**New Maven project, new Maven module  
+**New Maven project, new Maven module    
 **
 
 The project creation screens we just went through also come from the m2eclipse plugin.
@@ -681,7 +681,7 @@ The m2eclipse plugin also provides a set of shortcuts to run Maven build phases 
  handy tabs \(already seen\) to manage project dependencies and visualize the pom.xml  
  configuration.
 
-**新的Maven项目，新的Maven模块  
+**新的Maven项目，新的Maven模块    
 **
 
 我们刚刚通过的项目`creation screens`也来自m2eclipse插件。
@@ -692,7 +692,7 @@ The m2eclipse plugin also provides a set of shortcuts to run Maven build phases 
 m2eclipse插件还提供了一组快捷方式来运行Maven构建阶段和一些  
 方便的选项卡（已经看到）来管理项目依赖项并可视化`pom.xml`组态。
 
-**The standard project hierarchy  
+**The standard project hierarchy    
 **
 
 Navigating through the created projects, you should be able to notice a recurring hierarchy  
@@ -701,7 +701,7 @@ java, and src/test/resource. This structure is the default structure that Maven 
  us through. This model has become a standard nowadays. But, we can still override it \(in the  
  pom.xml files\) and create our own hierarchy.
 
-**标准项目层次结构  
+**标准项目层次结构    
 **
 
 浏览已创建的项目，您应该能够注意到一个循环层次结构  
@@ -755,12 +755,12 @@ Actually, m2eclipse specifically expects these two lines in order to add JRE Sys
 >
 > 如果此依赖项仍显示为不同版本的Java，您可能需要右键单击模块，然后导航到**Maven \|** **Update Project**。
 
-**The project's structure in the IDE  
+**The project's structure in the IDE    
 **
 
 About the parent projects in the Eclipse project hierarchy; did you notice that the created submodules seem duplicated as standalone projects and as direct children of the parent? This is due to the fact that Eclipse doesn't handle hierarchies of projects yet in Luna. For this reason, the modules appear as separated projects. It might be slightly confusing because the source code appears to be located beside the parent projects. This is not the case in reality, it is only the way they are rendered, so we can have all the tools normally bound to the project level.
 
-**IDE中的项目结构  
+**IDE中的项目结构    
 **
 
 关于Eclipse项目层次结构中的父项目; 你注意到创建的子模块似乎重复为独立的项目和父的直接子？ 这是因为Eclipse在Luna中没有处理项目的层次结构。 因此，模块显示为单独的项目。 它可能有点混乱，因为源代码似乎位于父项目旁边。 在现实中不是这样，它只是它们被渲染的方式，所以我们可以拥有通常绑定到项目级的所有工具。
@@ -773,14 +773,14 @@ Finally, if you open a parent project's`pom.xml` file, you should see the `<modu
 
 最后，如果打开父项目的`pom.xml`文件，您应该看到用创建的子模块填充的`<modules>`节点。 这已经由m2eclipse自动完成。 我们建议您关注此功能，因为m2eclipse不会总是更新这些`<modules>`节点，具体取决于您更改项目层次结构的方式。
 
-**Maven's build life cycles  
+**Maven's build life cycles    
 **
 
 A build life cycle in Maven is a specific sequence \(and a group\) of predefined operations called phases. There are three existing life cycles in Maven: default, clean, and site.
 
 Let's have a look at all the phases that include the default and clean life cycles \(probably the life cycles the most commonly used by developers\).
 
-**Maven的构建生命周期  
+**Maven的构建生命周期    
 **
 
 Maven中的构建生命周期是称为阶段的预定义操作的特定序列（和一组）。  Maven中有三个现有的生命周期：default，clean和site。
@@ -791,7 +791,7 @@ Maven中的构建生命周期是称为阶段的预定义操作的特定序列（
 
 The Maven clean phase plays a central role. It resets a project build from Maven's perspective. It is usually about deleting the target directory that is created by Maven during the build process. Here are some details about the phases included in the clean life cycle.These details come from the Maven documentation:
 
-**clean 的生命周期  
+**clean 的生命周期    
 **
 
 Maven的clean 阶段起着核心作用。 它从Maven的角度重置项目构建。 它通常是删除关于在构建过程中由Maven创建的目标目录。 这里有一些关于clean 生命周期中包括的阶段的细节。这些细节来自Maven文档：
@@ -802,12 +802,12 @@ Maven的clean 阶段起着核心作用。 它从Maven的角度重置项目构建
 | clean | This removes all files generated by the previous buildpost-clean |  |
 |  | post-clean | This executes processes that are needed to finalize the project cleaning |
 
-**The default life cycle  
+**The default life cycle    
 **
 
 In the default life cycle, you can find the most interesting build phases that deal with source generation, compilation, resource handling, tests, integration tests, and artefact deployment.Here are some details about the phases included in the default life cycle:
 
-**默认生命周期  
+**默认生命周期    
 **
 
 在默认生命周期中，您可以找到处理源代码生成，编译，资源处理，测试，集成测试和工件部署的最有趣的构建阶段。有关缺省生命周期中包括的阶段的一些详细信息：
@@ -816,14 +816,14 @@ In the default life cycle, you can find the most interesting build phases that d
 
 ![](/assets/10.png)
 
-**Built-in life cycle bindings  
+**Built-in life cycle bindings    
 **
 
 Now that we have seen the purpose of each phase in the presented two life cycles, we must say that, for the default life cycle, depending upon which module packaging type we are choosing, only some of these phases are potentially activated for goal execution.
 
 Let's see the phases that we skipped in the default life cycle for different packaging types:
 
-**内置生命周期绑定  
+**内置生命周期绑定    
 **
 
 现在我们已经看到了在所给出的两个生命周期中的每个阶段的目的，我们必须说，对于默认生命周期，取决于我们所选择的模块封装类型，只有这些阶段中的一些可能被激活用于目标执行。
@@ -840,7 +840,7 @@ In summary, calling: mvn clean install on a jar packaged-module will result in e
 
 总之，调用：`mvn clean`安装在jar包模块将导致执行以下阶段：clean，process-resources，compile，process-test-resources，test-compile，test，package和install。
 
-**About Maven commands  
+**About Maven commands    
 **
 
 When Maven is told to execute one or more phases targeting a specific project's pom.xml file,it will execute the requested phase\(s\) for each of its modules.
@@ -871,60 +871,60 @@ In summary, calling mvn clean install on a jar packaged module will execute the 
 
 总而言之，在jar包模块上调用`mvn clean install`将执行以下阶段：clean，process-resources，compile，process-test-resources，test-compile，test，package和install。
 
-**There's more...  
+**There's more...    
 **
 
 You may wonder why we have created these projects and modules in regard to our application.
 
-**还有更多...  
+**还有更多...    
 **
 
 你可能想知道为什么我们已经创建了这些项目和模块在我们的应用程序。
 
-**How did we choose the jar module's name?  
+**How did we choose the jar module's name?    
 **
 
 About the Maven structure, the best names for nondeployable modules often emphasize a functional purpose, a specific concept created by the business, or are driven by the product \(cloudstreetmarket-chat, cloudstreetmarket-reporting, cloudstreetmarket-user-management,and so on.\). This strategy makes the dependency management easier because we can infer whether a new module requires another module or not. Thinking about controllers, services,and DAO layers at a macro scale doesn't really make sense at this stage, and it could lead to design interference or circular dependencies. These technical subcomponents \(service, DAO,and so on\) will be present or not, as needed, in each functional module as Java packages but not as JAR-packaged dependencies.
 
-**我们如何选择jar模块的名称？  
+**我们如何选择jar模块的名称？    
 **
 
 关于Maven结构，不可部署模块的最佳名称通常强调功能目的，由业务创建的特定概念或由产品驱动的（cloudstreetmarket-chat, cloudstreetmarket-reporting, cloudstreetmarket-user-management等等。  ）。 这个策略使得依赖关系管理更容易，因为我们可以推断新模块是否需要另一个模块。 在宏观层面思考控制器，service层和DAO层在这个阶段没有真正意义，它可能导致设计干扰或循环依赖。 这些技术子组件（service，DAO等）将根据需要在每个功能模块中作为Java包而不是作为JAR打包依赖存在。
 
-**How did we choose the names for deployable modules?  
+**How did we choose the names for deployable modules?    
 **
 
 Choosing a name for a deployable module \(war\) is a bit different different from choosing a name for a JAR-packaged module. The deployable archive must be thought of as scalable and potentially load balanced. It is fair to assume that the requests that will target the application to retrieve HTML contents can be distinguished from the ones that will return REST contents.
 
 With this assumption, in our case it has been our wish to split the war into two. Doing so may raise the question of how the web sessions are maintained between the two webapps. We will answer this point later on.
 
-**我们如何选择可部署模块的名称？  
+**我们如何选择可部署模块的名称？    
 **
 
 选择可部署模块的名称（war）与为JAR打包的模块选择名称有点不同。 可部署的存档必须被认为是可扩展的，并且可能负载平衡。 可以公平地假定将针对应用程序检索HTML内容的请求与将返回REST内容的请求区分开。
 
 有了这个假设，在我们的情况下，我们一直希望把war分为两个。 这样做可能会提出如何在两个Web应用程序之间维护Web会话的问题。 我们稍后会回答这一点。
 
-**Why did we create core modules?  
+**Why did we create core modules?    
 **
 
 We created the core modules, firstly, because it is certain that, in the cloudstreetmarket application and also in the company-shared project, we will have POJOs, exceptions,constants, enums, and some services that will be used horizontally by almost all the modules or applications. If a concept is specific to a created functional module, it must not be part of core modules.
 
 Then, it is probably better to start big grained to refine later rather than thinking about modules that may be implemented differently or even not implemented at all. In our case, we are a start-up, and it is not silly to say that the 5 to 10 features we are going to implement can constitute the core business of this application.
 
-**为什么要创建核心模块？  
+**为什么要创建核心模块？    
 **
 
 我们创建了核心模块，首先，因为在cloudstreetmarket应用程序和公司共享项目中，我们将有POJOs，exceptions, constants, enums和一些services ，将被几乎所有的模块或应用程平衡使用。 如果一个概念特定于所创建的功能模块，它不能是核心模块的一部分。
 
 然后，可能更好的开始大粒度以后再细化，而不是考虑可能实现不同或甚至没有实现的模块。 在我们的案例中，我们是一个初创公司，不是说，我们将要实现的5到10功能可以构成这个应用程序的核心业务。
 
-**See also...  
+**See also...    
 **
 
 * We also recommend that you install Code Style Formatters. Triggered from the Save Event, we have, with these formatters, the ability to restyle our code automatically with a uniform predefinition. Having such formatters in a team is much appreciated since it guarantees the same rendering while comparing two files with a versioning tool.
 
-**也可以看看...  
+**也可以看看...    
 **
 
 * 我们还建议您安装Code Style Formatters。 从保存事件触发，我们有了这些格式化，能够用统一的预定义自动重新编译我们的代码。 在团队中有这样的格式化程序是非常感谢，因为它保证相同的呈现，同时比较两个文件与版本控制工具。
