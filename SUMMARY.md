@@ -6,4 +6,7 @@
     * [Eclipse配置Java SE 8，Maven 3和Tomcat 8](eclipse配置java-se-8，maven-3和tomcat-8.md)
     * [使用Maven定义项目结构](使用maven定义项目结构.md)
     * [安装Spring，Spring MVC和web 结构](安装spring，spring-mvc和web-结构.md)
+* [使用Spring MVC设计微服务体系结构](使用spring-mvc设计微服务体系结构.md)
+    * [简介](简介.md)
+    * [使用简单的URL映射配置controller](使用简单的url映射配置controller.md)
 
