@@ -9,4 +9,5 @@
 * [使用Spring MVC设计微服务体系结构](使用spring-mvc设计微服务体系结构.md)
     * [简介](简介.md)
     * [使用简单的URL映射配置controller](使用简单的url映射配置controller.md)
+    * [使用ViewResolver配置回退控制器](使用viewresolver配置回退控制器.md)
 

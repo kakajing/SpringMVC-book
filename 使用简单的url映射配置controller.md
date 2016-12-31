@@ -4,7 +4,7 @@ This recipe introduces the Spring MVC controller with its simplest implementatio
 
 这个配方介绍了Spring MVC控制器及其最简单的实现。
 
-**Getting ready                        
+**Getting ready                              
 **
 
 We will discover later on, and especially in Chapter 3, Working with Java Persistence and Entities, that Spring MVC is a great tool to build a REST API. Here, we will focus on how to create a controller that prints some content in the response.
@@ -17,24 +17,24 @@ Starting with this recipe, we will be using GIT to follow each iteration that ha
 
 从这个配方开始，我们将使用GIT跟踪已经开发cloudstreetmarket应用程序的每个迭代。 在初始设置后，你会欣赏你可以轻松地升级。
 
-**How to do it...                        
+**How to do it...                              
 **
 
 This recipe comes with two initial sections for installing and configuring GIT.
 
-**怎么做...                        
+**怎么做...                              
 **
 
 该配方附有两个初始部分，用于安装和配置GIT。
 
-**Downloading and installing GIT                        
+**Downloading and installing GIT                              
 **
 
 1. To download GIT, go to the GIT download page at [https://git-scm.com/download](https://git-scm.com/download). Select the right product corresponding to your environment \(Mac OS X, Windows, Linux, or Solaris\).
 
 2. To install GIT for Linux and Solaris, execute the suggested installation commands using the system's native package manager.
 
-**下载和安装GIT                        
+**下载和安装GIT                              
 **
 
 1. 要下载GIT，请转到GIT下载页面，网址为[https://git-scm.com/download。](https://git-scm.com/download。) 根据您的环境（Mac OS X，Windows，Linux或Solaris）选择正确的产品。
@@ -87,7 +87,7 @@ This command should display the installed version. The presented installation gu
 
 此命令应显示已安装的版本。 所提供的安装指南与GIT 2.6.3相关联。
 
-**Configuring GIT in Eclipse                        
+**Configuring GIT in Eclipse                              
 **
 
 1. We will first initialize the local repository from the terminal. Go to your workspace location: cd &lt;home-directory&gt;/workspace.
@@ -212,7 +212,7 @@ public String infoTagServer(){
 
 1. Now, access the [http://localhost:8080/portal/info/server](http://localhost:8080/portal/info/server) URL with your browser.
 
-**在Eclipse中配置GIT                        
+**在Eclipse中配置GIT                              
 **
 
 1. 我们将首先从终端初始化本地存储库。 转到您的工作空间位置：cd &lt;home-directory&gt; / workspace。
@@ -365,27 +365,27 @@ public String infoTagServer(){
 
 We are going to draft an overview of Spring MVC as a Framework. We will then review how a Controller is configured from the DispatcherServlet, the controller-level annotations, and from the method-handler signatures.
 
-**怎么运行的...          
+**怎么运行的...                
 **
 
 我们将初步概述Spring MVC作为一个框架。 然后我们将回顾如何从DispatcherServlet，controller-level注解和method-handler 签名配置控制器。
 
-**Spring MVC overview          
+**Spring MVC overview                
 **
 
 Spring MVC implements two common design patterns: the front controller design pattern and the MVC design pattern.
 
-**Spring MVC概述          
+**Spring MVC概述                
 **
 
 Spring MVC实现两种常见的设计模式：前端控制器设计模式和MVC设计模式。
 
-**Front controller          
+**Front controller                
 **
 
 A system designed as a **Front controller **exposes a single entry point for all incoming requests. In Java Web environments, this entry point is usually a servlet—a unique servlet that dispatches and delegates to other components.
 
-**前端控制器          
+**前端控制器                
 **
 
 设计为**Front controller **的系统为所有传入请求公开一个入口点。 在Java Web环境中，此入口点通常是一个servlet - 一个唯一的servlet，它分派并委派给其他组件。
@@ -400,13 +400,13 @@ Servlets are standards in the Java web. They are associated to predefined URL pa
 Servlet是Java Web中的标准。 它们与预定义的URL路径相关联，并在部署描述符（web.xml文件）中注册。 解析部署描述符，servlet容器（例如Apache Tomcat）标识已声明的servlet及其URL映射。 在运行时，servlet-container拦截每个HTTP客户端请求，并为其中的每一个创建一个新的Thread。 这些线程将调用匹配的相关servlet  
  Java转换的请求和响应对象。
 
-**MVC design pattern          
+**MVC design pattern                
 **
 
 The MVC design pattern is more of an architectural style. It describes the application as a whole. It encourages a clear separation of concerns between three different layers that the  
  request thread has to pass through: the Model, the View, and the Controller—the Controller, the Model, and then the View to be accurate.
 
-**MVC设计模式          
+**MVC设计模式                
 **
 
 MVC设计模式更多是一种建筑风格。 它描述了整个应用程序。 它鼓励在三个不同层之间清楚地分离关注点  
@@ -429,12 +429,12 @@ Controller编排业务逻辑，模型生成，并最终选择一个用于模型�
 
 但是，这三个组件（模型，视图和控制器）也可以作为独立的静态图层在宏标度下可视化。 这些组件中的每一个都是每个组成部分（类别的一部分）的层和占位符。 **Controller层**包含所有注册的控制器以及Web拦截器和转换器; **Model generation层**（和业务逻辑层）包含业务服务和数据访问组件。** View层**包含模板（例如JSP）和其他Web客户端组件。
 
-**Spring MVC flow          
+**Spring MVC flow                
 **
 
 The Spring MVC flow can be represented with the following diagram:
 
-**Spring MVC流          
+**Spring MVC流                
 **
 
 Spring MVC流程可以用下面的图表示：
@@ -458,7 +458,7 @@ With the request, a View, and a Model, the DispatcherServlet has everything to b
 
 通过请求，视图和模型，DispatcherServlet具有构建客户机响应的一切。 使用所有这些元素处理视图，并且响应最终返回到servlet容器。
 
-**DispatcherServlet – the Spring MVC entrypoint          
+**DispatcherServlet – the Spring MVC entrypoint                
 **
 
 As explained, the DispatcherServlet is quite a central piece in Spring MVC. It intercepts the client requests that target predefined URL paths for the application. It maps them to handlers that belong to business logic operators \(Controllers, Interceptors, Filters, and so  
@@ -466,7 +466,7 @@ As explained, the DispatcherServlet is quite a central piece in Spring MVC. It i
 
 Before everything, the DispatcherServlet is a servlet and is defined as such in the web. xml file with a servlet configuration and its servlet-mapping. The code is as follows:
 
-**DispatcherServlet - Spring MVC entrypoint          
+**DispatcherServlet - Spring MVC entrypoint                
 **
 
 如前所述，DispatcherServlet是Spring MVC中的一个中心部分。 它拦截针对应用程序预定义的URL路径的客户端请求。 它将它们映射到属于业务逻辑运算符（控制器，拦截器，过滤器等）的处理程序。 它还提供了一组工具，可用作解决循环Web开发问题和技术的bean，如提供集中和模块化**View层，处理国际化，主题，处理异常**等等。
@@ -551,7 +551,169 @@ Still in the web.xml, you can see that the root application context \(classpath\
 </listener>
 ```
 
+**Annotation-defined controllers    
+**
+
+Spring MVC controllers are the place where client requests really start to be processed by the business-specific code. Since Spring 2.5, we have been able to use annotations on controllers so we don't have to explicitly declare them as beans in configuration. This makes their implementation much easier to extend and understand.
+
+**@Controller    
+**
+
+A @Controller annotation tags a class as a Web controller. It remains a Spring Stereotype for presentation layers. The main purpose of defining a Spring Stereotype is to make a target type or method discoverable during the Spring classpath scanning which is activated by package with the following command:
+
+`<context:component-scan base-package="edu.zipcloud.cloudstreetmarket.portal"/>`
+
+There is not much custom logic related to this annotation. We could run a Controller with other Stereotype annotations \(@Component or @Service\) if we don't bother making the application a cleaner place.
+
+**注释定义的控制器    
+**
+
+Spring MVC控制器是客户端请求真正开始由特定于业务的代码处理的地方。 自从Spring 2.5以来，我们已经能够在控制器上使用注释，所以我们不必在配置中显式声明它们。 这使得它们的实现更容易扩展和理解。
+
+**@Controller    
+**
+
+@Controller注释将类标记为Web控制器。 它仍然是表示层的Spring构造型。 定义Spring构造型的主要目的是使一个目标类型或方法在Spring类路径扫描期间是可发现的，它由包使用以下命令激活：
+
+`<context:component-scan base-package="edu.zipcloud.cloudstreetmarket.portal"/>`
+
+没有很多与此注释相关的自定义逻辑。 我们可以运行一个控制器与其他Stereotype注释（@Component或@Service），如果我们不制造麻烦使应用程序更一目了然。
+
+**@RequestMapping    
+**
+
+The @RequestMapping annotations define handlers onto Controller classes and/or onto controller methods. These annotations are looked-up among stereotyped classes by the DispatcherServlet. The main idea behind the @RequestMapping annotations is to define a primary path mapping on the class-level and to narrow HTTP request methods, headers, parameters, and media-types on the methods.
+
+To implement this narrowing, the @RequestMapping annotation accepts comma-separated parameters within parentheses.
+
+Consider the following example:
+
+`@RequestMapping(value="/server", method=RequestMethod.GET)`
+
+Available parameters for @RequestMapping are summarized in the following table:
+
+**@RequestMapping    
+**
+
+@RequestMapping注释定义处理程序到Controller类和/或控制器方法。 这些注释由DispatcherServlet在构造型类中查找。  @RequestMapping注释的主要思想是在类级别上定义主路径映射，并缩小HTTP请求方法，头，参数和方法上的媒体类型。
+
+要实现此缩小，@RequestMapping注释在括号中接受逗号分隔的参数。
+
+请考虑以下示例：
+
+`@RequestMapping(value="/server", method=RequestMethod.GET)`
+
+@RequestMapping的可用参数总结在下表中：
+
+![](/assets/26.png)
+
+All these parameters can be used both at the type and method level. When used at the type level, all method-level parameters inherit the parent-level narrowing.
+
+所有这些参数都可以在类型和方法级别使用。 当在类型级别使用时，所有方法级别参数都继承父级级别限制。
+
+**Controller method-handler signatures**
+
+Several constituents make a Controller method-handler. Here's another example of such a handler with Spring MVC:
+
+```
+@RequestMapping(value="/index")
+public ModelAndView getRequestExample(ServletRequest request){
+
+    ModelAndView mav = new ModelAndView();
+
+    mav.setViewName("index");
+    mav.addObject("variable1", new ArrayList<String>());
+    return mav;
+}
+```
+
+We have just talked about how to use the @RequestMapping annotation. With regard to the method signature, this annotation can only be placed before the return-type.
+
+**Controller method-handler signatures**
+
+几个组成部分构成一个Controller方法处理程序。 这里是Spring MVC这样的处理程序的另一个例子：
+
+```
+@RequestMapping(value="/index")
+public ModelAndView getRequestExample(ServletRequest request){
+
+    ModelAndView mav = new ModelAndView();
+
+    mav.setViewName("index");
+    mav.addObject("variable1", new ArrayList<String>());
+    return mav;
+}
+```
+
+我们刚刚谈到了如何使用@RequestMapping注释。 关于方法签名，此注释只能放在返回类型之前。
+
+**Supported method arguments types  
+**
+
+Declaring specific types of arguments for handler methods can get Spring to automatically inject in them references to external objects. Objects related to the request lifecycle, the session, or to the application configuration. With the benefit of being scoped for the method, those argument types are presented in the following table:
+
+**支持的方法参数类型  
+**
+
+为处理程序方法声明特定类型的参数可以使Spring自动注入对外部对象的引用。 与请求生命周期，会话或应用程序配置相关的对象。 有了为方法设置作用域的优点，这些参数类型在下表中显示：
+
+![](/assets/27.png)
+
+![](/assets/28.png)
+
+**Supported annotations for method arguments  
+**
+
+A set of native annotations for method-handler arguments has been designed. They must be seen as handles that configure the web behavior of controller methods in regard to incoming requests or the response yet to be built.
+
+They identify abstractions for handy Spring MVC functions such as request parameter binding, URI path variable binding, injection-to-argument of request payloads, HTML form-parameter binding, and so on.
+
+**支持方法参数的注释  
+**
+
+已设计了一组方法处理程序参数的本机注释。 它们必须被看作是配置控制器方法的web行为的入口请求或响应尚未建立的句柄。
+
+它们识别用于方便的Spring MVC函数的抽象，例如请求参数绑定，URI路径变量绑定，请求有效载荷的注入到参数，HTML表单参数绑定等。
+
+![](/assets/29.png)
+
+These annotations have to be placed just before the method argument to be populated:
+
+这些注释必须放在要填充的方法参数之前：
+
+```
+@RequestMapping(value="/index")
+public ModelAndView getRequestExample(@RequestParam("exP1") String exP1){
+    ModelAndView mav = new ModelAndView();
+    mav.setViewName("index");
+    mav.addObject("exP1", exP1);
+    return mav;
+}
+```
 
 
 
+**Supported return Types**
+
+Spring MVC, with different possible controller method return Types, allows us to specify either the response sent back to the client or the necessary configuration for targeting or populating with variables an intermediate View layer. Depending upon what we want to do or the actual application state, we have the choice among the following:
+
+**支持的返回类型**
+
+Spring MVC，使用不同的可能的控制器方法返回类型，允许我们指定发送回客户端的响应，或者指定或填充变量中间View层的必要配置。 根据我们想要做什么或实际应用程序状态，我们有以下选择：
+
+![](/assets/30.png)
+
+![](/assets/31.png)
+
+**There's more...**
+
+In the InfoTagController.infoTagServer\(\) method-handler, we have used the @ResponseBody annotation before the return Type. This annotation has been borrowed from the REST-specific tools. When you don't need to process a View, the @ResponseBody directive will use the registered Spring converters to marshal the returned object into the expected format \(XML, JSON, and so on\). It will then write the marshalled content to the Response body \(as the Response payload\).
+
+In the case of a String object with no more configurations, it is printed out as such in the Response body. We could have used the ResponseEntity&lt;String&gt; return Type to achieve the same goal.
+
+**还有更多...**
+
+在`InfoTagController.infoTagServer()`方法处理程序中，我们在返回类型之前使用了`@ResponseBody`注释。 此注释已从REST特定工具借用。 当你不需要处理一个视图时，@ResponseBody指令将使用注册的Spring转换器将返回的对象编译成预期的格式（XML，JSON等等）。 然后它将编组的内容写入响应主体（作为响应有效负载）。
+
+在没有更多配置的String对象的情况下，它将在响应主体中打印出来。 我们可以使用`ResponseEntity <String>`返回类型来实现相同的目标。
 
