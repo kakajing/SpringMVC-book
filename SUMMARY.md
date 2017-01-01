@@ -10,4 +10,5 @@
     * [简介](简介.md)
     * [使用简单的URL映射配置controller](使用简单的url映射配置controller.md)
     * [使用ViewResolver配置回退控制器](使用viewresolver配置回退控制器.md)
+    * [使用Bootstrap设置和自定义响应式单页网页设计](使用bootstrap设置和自定义响应式单页网页设计.md)
 
