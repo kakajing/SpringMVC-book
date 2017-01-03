@@ -1012,3 +1012,22 @@ We have implemented a Bootstrap table for the market activity overview. We have 
 
 
 
+
+
+```
+<table class="table table-hover table-condensed table-bordered
+table-striped">
+<thead>
+<tr><th>Index</th>
+<th>Value</th>
+<th>Change</th></tr>
+</thead>
+<tbody>
+<tr><td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+```
+
