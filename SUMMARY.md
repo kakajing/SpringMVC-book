@@ -13,4 +13,5 @@
     * [使用Bootstrap设置和自定义响应式单页网页设计](使用bootstrap设置和自定义响应式单页网页设计.md)
     * [使用JSTL在View中显示模型](使用jstl在view中显示模型.md)
     * [定义WebContentInterceptor工具](定义webcontentinterceptor工具.md)
+    * [使用AngularJS设计客户端MVC模式](使用angularjs设计客户端mvc模式.md)
 
