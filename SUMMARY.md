@@ -14,4 +14,6 @@
     * [使用JSTL在View中显示模型](使用jstl在view中显示模型.md)
     * [定义WebContentInterceptor工具](定义webcontentinterceptor工具.md)
     * [使用AngularJS设计客户端MVC模式](使用angularjs设计客户端mvc模式.md)
+* [第三章 使用Java持久性和实体](第三章-使用java持久性和实体.md)
+    * [在Spring中配置Java持久性API](在spring中配置java持久性api.md)
 
