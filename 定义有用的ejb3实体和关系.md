@@ -30,15 +30,15 @@ The following steps will help you create Entities in the application:
 public class User implements Serializable{
 
     private static final long serialVersionUID = 1990856213905768044L;
-    
+
     @Id
     @Column(nullable = false)
     private String loginName;
-    
+
     private String password;
-    
+
     private String profileImg;
-    
+
     @OneToMany(mappedBy="user", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @OrderBy("id desc")
     private Set<Transaction> transactions = new LinkedHashSet< >();
@@ -54,22 +54,22 @@ public class User implements Serializable{
 public class Transaction implements Serializable{
 
     private static final long serialVersionUID = -6433721069248439324L;
-    
+
     @Id
     @GeneratedValue
     private int id;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_name")
     private User user;
-    
+
     @Enumerated(EnumType.STRING)
     private Action type;
-    
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "stock_quote_id")
     private StockQuote quote;
-    
+
     private int quantity;
     ...
 }
@@ -83,19 +83,19 @@ And the Market entity:
 public class Market implements Serializable {
 
     private static final long serialVersionUID = -6433721069248439324L;
-    
+
     @Id
     private String id;
-    
+
     private String name;
-    
+
     @OneToMany(mappedBy = "market", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     private Set<Index> indices = new LinkedHashSet<>();
     ...
 }
 ```
 
-2. Then, we have created some more complex entity Types such as the abstract Historic entity:
+1. Then, we have created some more complex entity Types such as the abstract Historic entity:
 
 2.然后，我们创建了一些更复杂的实体类型，如抽象的Historic实体：
 
@@ -107,41 +107,40 @@ public class Market implements Serializable {
 public abstract class Historic {
 
     private static final long serialVersionUID = -802306391915956578L;
-    
+
     @Id
     @GeneratedValue
     private int id;
-    
+
     private double open;
-    
+
     private double high;
-    
+
     private double low;
-    
+
     private double close;
-    
+
     private double volume;
-    
+
     @Column(name="adj_close")
     private double adjClose;
-    
+
     @Column(name="change_percent")
     private double changePercent;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="from_date")
     private Date fromDate;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="to_date")
     private Date toDate;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name="interval")
     private QuotesInterval interval;
     ...
 }
-
 ```
 
 We have also created the two Historic subtypes, HistoricalIndex and HistoricalStock:
@@ -154,7 +153,7 @@ We have also created the two Historic subtypes, HistoricalIndex and HistoricalSt
 public class HistoricalIndex extends Historic implementsSerializable {
 
     private static final long serialVersionUID = -802306391915956578L;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "index_code")
     private Index index;
@@ -166,19 +165,19 @@ public class HistoricalIndex extends Historic implementsSerializable {
 public class HistoricalStock extends Historic implements Serializable {
 
     private static final long serialVersionUID = -802306391915956578L;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_code")
     private StockProduct stock;
-    
+
     private double bid;
-    
+
     private double ask;
     ...
 }
 ```
 
-3. Then, we also created the Product entity with its StockProduct subtypes:
+1. Then, we also created the Product entity with its StockProduct subtypes:
 
 然后，我们还创建了带有StockProduct子类型的Product实体：
 
@@ -188,10 +187,10 @@ public class HistoricalStock extends Historic implements Serializable {
 public abstract class Product {
 
     private static final long serialVersionUID = -802306391915956578L;
-    
+
     @Id
     private String code;
-    
+
     private String name;
     ...
 }
@@ -201,9 +200,9 @@ public abstract class Product {
 public class StockProduct extends Product implements Serializable{
 
     private static final long serialVersionUID = 1620238240796817290L;
-    
+
     private String currency;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "market_id")
     private Market market;
@@ -211,7 +210,8 @@ public class StockProduct extends Product implements Serializable{
 }
 ```
 
-4. In reality, in the financial world, an index \(S&P 500 or NASDAQ\) cannot be bought as such; therefore, indices haven’t been considered as products:
+1. In reality, in the financial world, an index \(S&P 500 or NASDAQ\) cannot be bought as
+   such; therefore, indices haven’t been considered as products:
 
 4.实际上，在金融世界中，不能购买指数\(S&P 500 or NASDAQ\)； 因此，指数未被视为产品：
 
@@ -221,16 +221,16 @@ public class StockProduct extends Product implements Serializable{
 public class Index implements Serializable{
 
     private static final long serialVersionUID = -2919348303931939346L;
-    
+
     @Id
     private String code;
-    
+
     private String name;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "market_id", nullable=true)
     private Market market;
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "stock_indices",joinColumns={@JoinColumn(name = "index_code")},inverseJoinColumns={@JoinColumn(name ="stock_code")})
     private Set<StockProduct> stocks = new LinkedHashSet<>();
@@ -238,7 +238,7 @@ public class Index implements Serializable{
 }
 ```
 
-5. Finally, the Quote abstract entity with its two subtypes, StockQuote and IndexQuote, have created \(indices are not products, but we can still get instant snapshots from them, and the Yahoo! financial data provider will later be called to get these instant quotes\):
+1. Finally, the Quote abstract entity with its two subtypes, StockQuote and IndexQuote, have created \(indices are not products, but we can still get instant snapshots from them, and the Yahoo! financial data provider will later be called to get these instant quotes\):
 
 5.最后，Quote抽象实体及其两个子类型StockQuote和IndexQuote已创建（索引不是产品，但我们仍然可以从它们获取即时快照，并且稍后将调用Yahoo!财务数据提供程序来获取这些即时 报价）
 
@@ -250,14 +250,14 @@ public abstract class Quote {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     protected Integer id;
-    
+
     private Date date;
-    
+
     private double open;
-    
+
     @Column(name = "previous_close")
     private double previousClose;
-    
+
     private double last;
     ...
 }
@@ -267,13 +267,13 @@ public abstract class Quote {
 public class StockQuote extends Quote implements Serializable{
 
     private static final long serialVersionUID = -8175317254623555447L;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "stock_code")
     private StockProduct stock;
-    
+
     private double bid;
-    
+
     private double ask;
     ...
 }
@@ -283,7 +283,7 @@ public class StockQuote extends Quote implements Serializable{
 public class IndexQuote extends Quote implements Serializable{
 
     private static final long serialVersionUID = -8175317254623555447L;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "index_code")
     private Index index;
@@ -317,8 +317,6 @@ API将被视为API的实体需要满足以下条件：
 * 它必须定义为public，而不是声明为final。
 * 它需要有一个默认构造函数（implicit 或 not）。
 
-
-
 ### Mapping the schema
 
 Both databases and Java objects have specific concepts. The metadata annotations for Entities, along with the configuration by default, describe the relational mapping.
@@ -327,23 +325,17 @@ Both databases and Java objects have specific concepts. The metadata annotations
 
 数据库和Java对象都有特定的概念。 实体的元数据注释以及默认的配置描述了关系映射。
 
-
-
 ### Mapping tables
 
 An entity class maps a table. Not specifying a @Table\(name="xxx"\) annotation on the Type level will map the entity class to the table named with the entity name \(this is the default naming\).
 
 实体类映射表。 在类型级别上不指定@Table（name =“xxx”）注释会将实体类映射到使用实体名称命名的表（这是默认命名）。
 
-
-
 > The Java's class-naming standard is CamelCased with a capital case for the first letter. This naming scheme doesn't really match the database table-naming standards. For this reason, the @Table annotation is often used.
 >
 > Java的类命名标准是CamelCase，第一个字母大小写。 这种命名方案并不真正匹配数据库表命名标准。 为此，经常使用@Table注释。
 
-
-
-The @Table annotation also has an optional schema attribute, which allows us to bind the table to a schema in the SQL queries \(for example public.user.ID\). This schema attribute will override the default schema JPA property, which can be defined on the persistence unit. 
+The @Table annotation also has an optional schema attribute, which allows us to bind the table to a schema in the SQL queries \(for example public.user.ID\). This schema attribute will override the default schema JPA property, which can be defined on the persistence unit.
 
 @Table注释也有一个可选的schema属性，它允许我们将表绑定到SQL查询中的一个模式（例如public.user.ID）。 此模式属性将覆盖默认模式JPA属性，该属性可以在持久性单元上定义。
 
@@ -358,8 +350,6 @@ The fields of an entity class must not be defined as public. Also keep in mind t
 与表名称一样，将字段映射到的列名称使用@Column（name =“xxx”）注释指定。 再次，此注释是可选的，不指定它将使映射回退到默认命名方案，这是字面的字段名称（在单个字的情况下，它通常是一个很好的选择）。
 
 实体类的字段不能定义为public。 还要记住，你几乎可以坚持所有标准的Java类型（原始类型，包装器，字符串，字节或字符数组和枚举）和大数字类型，如BigDecimals或BigIntegers，还有JDBC时间类型（java.sql  .Date，java.sql.TimeStamp）甚至可序列化对象。
-
-
 
 ### Annotating fields or getters
 
@@ -377,8 +367,6 @@ When using a getter access mode, and when a @Column annotation is not specified,
 
 当使用getter访问模式，并且未指定@Column注释时，列名称的默认命名方案使用JavaBeans属性命名标准（例如，getUser（）getter将对应于用户列）。
 
-
-
 ### Mapping primary keys
 
 As we have seen already, the @Id annotation defines the entity's identifier. A persistence context will always manage no more than one instance of an entity with a single identifier.
@@ -390,8 +378,6 @@ The @Id annotation on an entity class must map the persistent identifier for a t
 正如我们已经看到的，@Id注释定义实体的标识符。 持久化上下文将始终管理具有单个标识符的实体的不超过一个实例。
 
 实体类上的@Id注释必须映射表的持久标识符，这是主键。
-
-
 
 ### Identifier generation
 
@@ -487,25 +473,18 @@ In our application, Users will be able to buy and sell Products \(stock, fund, o
 
 * 用户实体可以有多个事务实体。
 
-
-
-> In the User class, the second part of the @OneToMany relationship annotation \(the Many element\) drives the Type of attribute we are creating. Specifying Many as the second part declares that the origin entity \(User\) can have several target Entities \(Transactions\). These targets will have to be wrapped in a collection type. If the origin entity cannot have several targets, then the second part of the relationship has to be One.
+> In the User class, the second part of the @OneToMany relationship annotation \(the Many element\) drives the Type of attribute we are creating. Specifying Many as the second part declares that the origin entity \(User\) can have several target Entities \(Transactions\). These targets will have to be wrapped  
+>  in a collection type. If the origin entity cannot have several targets, then the second part of the relationship has to be One.
 >
 > 在User类中，@OneToMany关系注释的第二部分（Many元素）驱动我们正在创建的属性的类型。 指定Many作为第二部分声明，源实体（User）可以有多个目标Entities（事务）。 这些目标必须包装在集合类型中。 如果原始实体不能有多个目标，则关系的第二部分必须是一个。
-
-
 
 A Transaction can have only one User entity.
 
 * 事务只能有一个用户实体。
 
-
-
 > Still in the User class, the first part of the @OneToMany relationship \(the @One element\) is the second part of the relationship annotation defined in the target entity \(if defined\). It is necessary to know whether the target entity can have several origins or not, in order to complete the annotation in the origin.
 >
 > 仍然在User类中，@OneToMany关系的第一部分（@One元素）是在目标实体（如果定义）中定义的关系注释的第二部分。 有必要知道目标实体是否可以具有多个源，以便在源中完成注释。
-
-
 
 * We can then deduce the two annotations: @OneToMany in User and @ManyToOne in Transactions.
 * If we are not in the case of a @ManyToMany relationship, we are talking about a unidirectional relationships. From a database's point of view, this means that one of the two tables having a join column that targets the other table. In the JPA, the table that has this join column is the relationship's **owner**.
@@ -514,12 +493,9 @@ A Transaction can have only one User entity.
 
 * 如果我们不是在@ManyToMany关系的情况下，我们谈论一个单向关系。 从数据库的角度来看，这意味着两个表中的一个具有以另一个表为目标的连接列。 在JPA中，具有此连接列的表是关系的所有者。
 
-
 > The entity, which is the relationship's owner has to be specified by a @JoinColumn annotation on the relationship. The entity that is not the owner, has to provide for its relationship annotation a mappedBy attribute that targets the corresponding Java field name in the opposite entity.
 >
 > 作为关系的所有者的实体必须由关系上的@JoinColumn注释指定。 不是所有者的实体必须为其关系注释提供一个mappedBy属性，该属性定位对面实体中的相应Java字段名称。
-
-
 
 This can now explain the relationship in Transaction:
 
@@ -548,8 +524,6 @@ private Set<Transaction> transactions = new LinkedHashSet<>();
 > The `@OrderBy` annotation tells the JPA implementation to add an ORDER BY clause to its SQL query.
 >
 > `@OrderBy`注释告诉JPA实现在其SQL查询中添加一个ORDER BY子句。
-
-
 
 An Index entity has one Market entity. We have decided that a market is the geographical area \(Europe, the US, Asia, and so on\). A market has several concrete indices.
 
@@ -585,8 +559,6 @@ This relationship is specified an extra join table \(expected or generated by th
 
 此关系指定了一个额外的连接表（由JPA预期或生成）。 它基本上是一个表，它有两个指向各个实体的@Ids字段的连接列。
 
-
-
 ## There's more...
 
 We are going to visit two metadata attributes that we didn’t explain yet: the FetchType attribute and the Cascade attribute.
@@ -613,7 +585,7 @@ FetchType.LAZY属性指定JPA实现不填充实体加载SQL查询上的字段值
 
 ### The Cascade attribute
 
-Another attribute to be mentioned in relationship annotations is the Cascade attribute. This attribute can take the values CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, and CascadeType.ALL. 
+Another attribute to be mentioned in relationship annotations is the Cascade attribute. This attribute can take the values CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, and CascadeType.ALL.
 
 This attribute specifies how the JPA implementation should process the related Entities when asked to perform an operation \(such as persist, update, delete, find, and so on.\) on the main Entity. It is an optional attribute which is usually defaulted to **no-cascaded** operations.
 
@@ -630,11 +602,8 @@ There is a third strategy to define Entity inheritance:
 * The joined-table inheritance strategy: We haven't implemented it yet, but this strategy is a bit similar to the table-per-class strategy. It differs from it in the fact that, instead of repeating the parent-entity fields \(columns\) in the concrete tables, the JPA creates or expects an extra table with only the parent-entity columns and manages the joins transparently with this table.
 
 有第三个策略来定义实体继承：
+
 * 连接表继承策略：我们还没有实现它，但这个策略有点类似于table-per-class策略。 它与它的不同之处在于，JPA不是重复具体表中的父实体字段（列），而是仅创建或期望一个只有父实体列的额外表，并使用此表透明地管理连接。
-
-
-
-
 
 
 
