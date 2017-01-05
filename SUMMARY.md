@@ -16,4 +16,5 @@
     * [使用AngularJS设计客户端MVC模式](使用angularjs设计客户端mvc模式.md)
 * [第三章 使用Java持久性和实体](第三章-使用java持久性和实体.md)
     * [在Spring中配置Java持久性API](在spring中配置java持久性api.md)
+    * [定义有用的EJB3实体和关系](定义有用的ejb3实体和关系.md)
 

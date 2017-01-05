@@ -56,16 +56,14 @@ We will see that our JPA configuration in Spring is done by defining two beans: 
 </bean>
 ```
 
-3. Finally, the following dependencies have been added to the parent and core projects:
+1. Finally, the following dependencies have been added to the parent and core projects:
 
 3.最后，以下依赖项已添加到父项目和核心项目中：
 
-*  org.springframework.data:spring-data-jpa \(1.0.2.RELEASE\)
+* org.springframework.data:spring-data-jpa \(1.0.2.RELEASE\)
 * org.hibernate.javax.persistence:hibernate-jpa-2.0-api\(1.0.1.Final\)
 
 * org.hibernate:hibernate-core \(4.1.5.SP1\)
-
-
 
 Adding this dependency causes the Maven enforcer plugin to raise a version conflict with jboss-logging. This is why jboss-logging has been excluded from this thirdparty library and referenced as a dependency on its own:
 
@@ -82,9 +80,7 @@ jboss-logging也被排除在这个第三方库之外，因为它现在被引用�
 
 * org.javassist:javassist \(3.18.2-GA\)
 
-*  org.apache.commons:commons-dbcp2 \(2.0.1\)
-
- 
+* org.apache.commons:commons-dbcp2 \(2.0.1\)
 
 ## How it works...
 
@@ -108,8 +104,6 @@ Spring管理的DataSource bean
 
 同样在我们的例子中，我们使用Apache Common DBCP 2数据源（2014年发布）。
 
-
-
 > In a production environment, it might be a good idea to switch to a JNDI-based datasource, such as the native Tomcat JDBC pool.
 >
 > The Tomcat website clearly suggests a significant gain in performance when using the Tomcat JDBC pool instead of DBCP1.x on highly concurrent systems.
@@ -117,8 +111,6 @@ Spring管理的DataSource bean
 > 在生产环境中，切换到基于JNDI的数据源（例如本机Tomcat JDBC池）可能是个好主意。
 >
 > Tomcat网站清楚地表明，在高并发系统上使用Tomcat JDBC池而不是DBCP1.x时，性能会显着提高。
-
-
 
 ### The EntityManagerFactory bean and its persistence unit
 
@@ -140,8 +132,6 @@ EntityManagerFactory bean的配置反映一个持久性单元的配置。 在Jav
 
 因此，持久化单元的配置以及EntityManagerFactory bean的配置可以单独声明覆盖的实体，也可以扫描包以查找它们。
 
-
-
 > A persistence unit can be seen as a subarea among the horizontal scaling ecosystem. A product can be broken down into wars \(web archives\) for each the functional area. Functional areas can be represented with a selection of Entities that are delimited by a persistence unit.
 >
 > The main point is to avoid creating Entities that overlap different persistence units.
@@ -150,15 +140,13 @@ EntityManagerFactory bean的配置反映一个持久性单元的配置。 在Jav
 >
 > 主要的是避免创建重叠不同持久性单元的实体。
 
-
-
 ### The Spring Data JPA configuration
 
 We are about to use some very useful tools from the Spring Data JPA project. These tools aim to simplify the development \(and maintenance\) of the persistence layers. The most interesting tool is probably the repository abstraction. You will see that providing implementations for some database queries can be optional. An implementation of the repository interface will be generated at runtime from the method signatures if they match a standard in their declarations.
 
 For example, Spring will infer the implementation of the following method signature \(if the User entity has a String userName field\):
 
-`List<User> findByUserName(String username);`
+`List<User> findByUserName(String username);`
 
 A more extended example of our bean configuration on Spring Data JPA could be the following:
 
@@ -168,7 +156,7 @@ Spring Data JPA配置
 
 例如，Spring将推断出以下方法签名的实现（如果User实体有一个String userName字段）：
 
-`List<User> findByUserName(String username);`
+`List<User> findByUserName(String username);`
 
 Spring Data JPA上我们的bean配置的更多扩展示例可以是以下：
 
@@ -192,21 +180,15 @@ As you can see, Spring Data JPA contains a custom namespace that allows us to de
 
 * 如果您在ApplicationContext中只配置了一个PlatformTransactionManager bean，则提供`transaction-manager-ref`属性也是可选的。 它显式地传递PlatformTransactionManager，它将与检测到的存储库一起使用。
 
-
-
 More details can be found about this configuration on the project website at:
 
 有关此配置的更多详细信息，请访问项目网站：
 
-http://docs.spring.io/spring-data/jpa/docs/1.4.3.RELEASE/reference/html/jpa.repositories.html.
+[http://docs.spring.io/spring-data/jpa/docs/1.4.3.RELEASE/reference/](http://docs.spring.io/spring-data/jpa/docs/1.4.3.RELEASE/reference/)html/jpa.repositories.html.
 
 ### See also
 
-f **HikariCP DataSource**: HikariCP \(from its BoneCP ancestor\) is an open source Apache v2 licensed project. It appears to perform better in speed and reliability than any other DataSource. This product should probably be considered considered when choosing a datasource nowadays. Refer to https://brettwooldridge.github.io/HikariCP for more information on this.
+f **HikariCP DataSource**: HikariCP \(from its BoneCP ancestor\) is an open source Apache v2 licensed project. It appears to perform better in speed and reliability than any other DataSource. This product should probably be considered considered when choosing a datasource nowadays. Refer to [https://brettwooldridge.github.io/HikariCP](https://brettwooldridge.github.io/HikariCP) for more information on this.
 
 **HikariCP DataSource**：HikariCP（来自其BoneCP祖先）是一个开源Apache v2许可项目。 它看起来在速度和可靠性上比任何其他DataSource更好。 在现在选择数据源时，应考虑此产品。 有关这方面的更多信息，请参考https//brettwooldridge.github.io/HikariCP。
-
-
-
-
 
