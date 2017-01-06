@@ -18,4 +18,6 @@
     * [在Spring中配置Java持久性API](在spring中配置java持久性api.md)
     * [定义有用的EJB3实体和关系](定义有用的ejb3实体和关系.md)
     * [使用JPA和Spring Data JPA](使用jpa和spring-data-jpa.md)
+* [为无状态体系结构构建REST API](为无状态体系结构构建rest-api.md)
+    * [绑定请求和编组响应](绑定请求和编组响应.md)
 
