@@ -23,4 +23,5 @@
     * [配置content-negotiation（JSON，XML等）](配置content-negotiation（json，xml等）.md)
     * [添加分页，过滤器和排序功能](添加分页，过滤器和排序功能.md)
     * [全局处理异常](全局处理异常.md)
+    * [使用Swagger记录和展示API](使用swagger记录和展示api.md)
 
