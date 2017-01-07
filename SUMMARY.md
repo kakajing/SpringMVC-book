@@ -22,4 +22,5 @@
     * [绑定请求和编组响应](绑定请求和编组响应.md)
     * [配置content-negotiation（JSON，XML等）](配置content-negotiation（json，xml等）.md)
     * [添加分页，过滤器和排序功能](添加分页，过滤器和排序功能.md)
+    * [全局处理异常](全局处理异常.md)
 
