@@ -26,4 +26,5 @@
     * [使用Swagger记录和展示API](使用swagger记录和展示api.md)
 * [第五章 使用Spring MVC进行认证](第五章-使用spring-mvc进行认证.md)
     * [配置Apache HTTP以代理您的Tomcat](配置apache-http以代理您的tomcat.md)
+    * [使users和roles适应Spring Security](使users和roles适应spring-security.md)
 
