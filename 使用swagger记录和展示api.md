@@ -34,7 +34,7 @@ This section details what can be done and also what we have done in the code bas
 </dependency>
 ```
 
-2. The following swagger configuration class has been created:
+1. The following swagger configuration class has been created:
 
 2.创建了以下swagger配置类：
 
@@ -44,12 +44,12 @@ This section details what can be done and also what we have done in the code bas
 public class SwaggerConfig {
 
     private SpringSwaggerConfig springSwaggerConfig;
-    
+
     @Autowired
     public void setSpringSwaggerConfig(SpringSwaggerConfig springSwaggerConfig) {
         this.springSwaggerConfig = springSwaggerConfig;
     }
-    
+
     @Bean
     public SwaggerSpringMvcPlugin customImplementation(){
         return new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
@@ -65,7 +65,7 @@ public class SwaggerConfig {
 }
 ```
 
-3. The following configuration has been added to the dispatch-context.xml:
+1. The following configuration has been added to the dispatch-context.xml:
 
 3.以下配置已添加到dispatch-context.xml中：
 
@@ -75,7 +75,7 @@ public class SwaggerConfig {
 <context:property-placeholder location="classpath*:/METAINF/properties/swagger.properties" />
 ```
 
-4. As per the previous configuration, a swagger.properties file has been added at the path src/main/resources/META-INF/properties with the content:
+1. As per the previous configuration, a swagger.properties file has been added at the path src/main/resources/META-INF/properties with the content:
 
 4.根据先前的配置，在路径src / main / resources / META-INF / properties中添加了一个swagger.properties文件，其内容如下：
 
@@ -84,7 +84,7 @@ documentation.services.version=1.0
 documentation.services.basePath=http://localhost:8080/api
 ```
 
-5. Our three controllers have been added a basic documentation. See the following documentation annotations added to IndexController:
+1. Our three controllers have been added a basic documentation. See the following documentation annotations added to IndexController:
 
 5.我们的三个控制器已经添加了一个基本文档。 请参阅添加到IndexController的以下文档注释：
 
@@ -98,10 +98,10 @@ public class IndexController extends CloudstreetApiWCI {
     @ApiOperation(value = "Get overviews of indices", notes = "Return a page of index-overviews")
     public Page<IndexOverviewDTO> getIndices(@ApiIgnore @PageableDefault(size=10, page=0, sort={"dailyLatestValue"}, 
                     direction=Direction.DESC) Pageable pageable){
-    
+
         return marketService.getLastDayIndicesOverview(pageable);
     }
-    
+
     @RequestMapping(value="/{market}", method=GET)
     @ApiOperation(value = "Get overviews of indices filtered by market", notes = "Return a page of index-overviews")
     public Page<IndexOverviewDTO> getIndicesPerMarket(@PathVariable MarketCode market,
@@ -109,7 +109,7 @@ public class IndexController extends CloudstreetApiWCI {
                 @PageableDefault(size=10, page=0,sort={"dailyLatestValue"}, direction=Direction.DESC)Pageable pageable){
                     return marketService.getLastDayIndicesOverview(market, pageable);
     }
-    
+
     @RequestMapping(value="/{market}/{index}/histo",method=GET)
     @ApiOperation(value = "Get historical-data for one index", notes = "Return a set of historical-data from one index")
     public HistoProductDTO getHistoIndex(@PathVariable("market") MarketCode market,
@@ -121,17 +121,17 @@ public class IndexController extends CloudstreetApiWCI {
                     @RequestParam(value="td",defaultValue="") Date toDate,
                     @ApiParam(value="Period between snapshots")
                     @RequestParam(value="i",defaultValue="MINUTE_30") QuotesInterval interval){
-                
+
         return marketService.getHistoIndex(indexCode, market, fromDate, toDate, interval);
     }
 }
 ```
 
-6. We have downloaded the swagger UI project from https://github.com/swagger-api/swagger-ui.This is a collection of static files \(JS, CSS, HTML, and pictures\). It has been pasted in the webapp directory of our cloudstreetmarket-api project.
+1. We have downloaded the swagger UI project from [https://github.com/swagger-api/swagger-ui.This](https://github.com/swagger-api/swagger-ui.This) is a collection of static files \(JS, CSS, HTML, and pictures\). It has been pasted in the webapp directory of our cloudstreetmarket-api project.
 
-6.我们从https://github.com/swagger-api/swagger-ui下载了swagger UI项目。这是一个静态文件（JS，CSS，HTML和图片）的集合。 它已粘贴在cloudstreetmarket-api项目的webapp目录中。
+6.我们从[https://github.com/swagger-api/swagger-ui下载了swagger](https://github.com/swagger-api/swagger-ui下载了swagger) UI项目。这是一个静态文件（JS，CSS，HTML和图片）的集合。 它已粘贴在cloudstreetmarket-api项目的webapp目录中。
 
-7. Finally, the following mvc namespace configuration has been added to dispatch-context.xml again in order for the Spring MVC to open access to static files in the project:
+1. Finally, the following mvc namespace configuration has been added to dispatch-context.xml again in order for the Spring MVC to open access to static files in the project:
 
 7.最后，下面的mvc命名空间配置已被添加到dispatch-context.xml中，以便Spring MVC打开对项目中的静态文件的访问权限：
 
@@ -140,9 +140,9 @@ public class IndexController extends CloudstreetApiWCI {
 <mvc:default-servlet-handler/>
 ```
 
-8. When we have this configuration, accessing the following URL on the server http://localhost:8080/api/index.html brings up the Swagger UI documentation portal:
+1. When we have this configuration, accessing the following URL on the server [http://localhost:8080/api/index.html](http://localhost:8080/api/index.html) brings up the Swagger UI documentation portal:
 
-8.当我们进行此配置时，访问服务器http://localhost:8080/api/index.html上的以下URL，将显示Swagger UI文档门户：
+8.当我们进行此配置时，访问服务器[http://localhost:8080/api/index.html上的以下URL，将显示Swagger](http://localhost:8080/api/index.html上的以下URL，将显示Swagger) UI文档门户：
 
 ![](/assets/74.png)
 
@@ -162,7 +162,7 @@ Swagger有自己的控制器来发布我们的API的元数据。  Swagger UI定�
 
 On the server side, with the com.mangofactory/swagger-springmvc dependency added to the swagger-springmvc project and with the presented SwaggerConfig class, the library creates a controller on the root path: /api-docs and publishes the entire metadata there for the REST API.
 
-If you visit http://localhost:8080/api/api-docs, you will reach the root of our REST API documentation:
+If you visit [http://localhost:8080/api/api-docs](http://localhost:8080/api/api-docs), you will reach the root of our REST API documentation:
 
 暴露的元数据
 
@@ -190,7 +190,7 @@ In this section, we suggest you to look further into Swagger and its Spring MVC 
 
 ### The Swagger.io
 
-Visit the framework's website and its specification: http://swagger.io.
+Visit the framework's website and its specification: [http://swagger.io](http://swagger.io).
 
 访问框架的网站及其规范：http//swagger.io。
 
@@ -200,17 +200,17 @@ The swagger-springmvc project is changing as it is becoming part of a bigger pro
 
 swagger-springmvc项目正在改变，因为它正成为一个名为SpringFox的更大项目的一部分。  SpringFox现在也支持第二个版本的Swagger规范。 我们建议您访问他们当前的参考文档：
 
-http://springfox.github.io/springfox/docs/current
-
-
+[http://springfox.github.io/springfox/docs/current](http://springfox.github.io/springfox/docs/current)
 
 They also provide a migration guide to move from the swagger specification 1.2 \(that we have implemented here\) to the swagger specification 2.0:
 
 他们还提供了一个迁移指南，从swagger规范1.2（我们在这里实现）到swagger规范2.0：
 
-https://github.com/springfox/springfox/blob/master/docs/transitioning-to-v2.md
+[https://github.com/springfox/springfox/blob/master/docs/transitioning-to-v2.md](https://github.com/springfox/springfox/blob/master/docs/transitioning-to-v2.md)
 
-## See also
+## 
+
+See also
 
 This section guides you toward alternative tools and specification to Swagger:
 
@@ -224,11 +224,9 @@ We have mentioned that there isn't a common standard yet that would clearly legi
 
 我们提到，没有一个共同的标准，明显使一种工具相对于另一种工具合法化。 因此，感谢Swagger以外的工具可能是好的，因为在这个领域里，事情正在快速地进行。 在这里，你可以找到两个伟大的比较文章：
 
-* http://www.mikestowe.com/2014/07/raml-vs-swagger-vs-apiblueprint.php
+* [http://www.mikestowe.com/2014/07/raml-vs-swagger-vs-apiblueprint.php](http://www.mikestowe.com/2014/07/raml-vs-swagger-vs-apiblueprint.php)
 
-* http://apiux.com/2013/04/09/rest-metadata-formats
-
-
+* [http://apiux.com/2013/04/09/rest-metadata-formats](http://apiux.com/2013/04/09/rest-metadata-formats)
 
 
 

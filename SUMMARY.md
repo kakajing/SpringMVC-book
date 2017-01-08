@@ -24,4 +24,6 @@
     * [添加分页，过滤器和排序功能](添加分页，过滤器和排序功能.md)
     * [全局处理异常](全局处理异常.md)
     * [使用Swagger记录和展示API](使用swagger记录和展示api.md)
+* [第五章 使用Spring MVC进行认证](第五章-使用spring-mvc进行认证.md)
+    * [配置Apache HTTP以代理您的Tomcat](配置apache-http以代理您的tomcat.md)
 
