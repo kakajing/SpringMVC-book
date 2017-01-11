@@ -29,4 +29,5 @@
     * [使users和roles适应Spring Security](使users和roles适应spring-security.md)
     * [通过BASIC方案进行认证](通过basic方案进行认证.md)
     * [使用第三方OAuth2方案进行身份验证](使用第三方oauth2方案进行身份验证.md)
+    * [在REST环境中存储凭据](在rest环境中存储凭据.md)
 
