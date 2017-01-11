@@ -101,7 +101,7 @@ cloudStreetMarketApp.factory("httpAuth", function ($http) {
 
 3.我们避免直接处理来自不同控制器的sessionStorage属性，以防止与此存储解决方案紧密耦合。
 
-4.account\_management.js文件重新分组不同的控制器（LoginByUsernameAndPasswordController，createNewAccountController和OAuth2Controller），它们通过httpAuth在sessionStorage中存储凭据和提供程序标识。
+4.account\_management.js文件重新分组不同的控制器（LoginByUsernameAndPasswordController，createNewAccountController和OAuth2Controller），它们通过httpAuth在sessionStorage中存储凭据和提供程序标识。  
 5.还修改了一些工厂来通过httpAuth工厂推送和推送数据。 例如，indiceTableFactory（从home\_financial\_table.js）请求具有透明处理的凭证的市场的索引：
 
 ```
@@ -112,7 +112,6 @@ cloudStreetMarketApp.factory("indicesTableFactory",function (httpAuth) {
         }
     }
 });
-
 ```
 
 ### Server side
@@ -125,7 +124,7 @@ cloudStreetMarketApp.factory("indicesTableFactory",function (httpAuth) {
 <bean id="passwordEncoder" class="org.sfw.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 ```
 
-2. In security-config.xml, a reference to the password-encoder is made, as follows, in our authenticationProvider to.
+1. In security-config.xml, a reference to the password-encoder is made, as follows, in our authenticationProvider to.
 
 2.在security-config.xml中，对密码编码器的引用如下，在我们的authenticationProvider中。
 
@@ -137,9 +136,9 @@ cloudStreetMarketApp.factory("indicesTableFactory",function (httpAuth) {
 </security:authentication-manager>
 ```
 
-3. The passwordEncoder bean is autowired in CommunityServiceImpl \(our UserDetailsService implementation\). Passwords are hashed here with passwordEncoder when accounts are registered. The stored hash is then compared to the user-submitted password when the user attempts to log in. The CommunityServiceImpl code is as follows:
+1. The passwordEncoder bean is autowired in CommunityServiceImpl \(our UserDetailsService implementation\). Passwords are hashed here with passwordEncoder when accounts are registered. The stored hash is then compared to the user-submitted password when the user attempts to log in. The CommunityServiceImpl code is as follows:
 
-3. passwordEncoder bean在CommunityServiceImpl（我们的UserDetailsS​​ervice实现）中自动连接。 在注册帐户时，使用passwordEncoder在此处对密码进行散列。 当用户尝试登录时，存储的哈希值与用户提交的密码进行比较。CommunityServiceImpl代码如下：
+2. passwordEncoder bean在CommunityServiceImpl（我们的UserDetailsS​​ervice实现）中自动连接。 在注册帐户时，使用passwordEncoder在此处对密码进行散列。 当用户尝试登录时，存储的哈希值与用户提交的密码进行比较。CommunityServiceImpl代码如下：
 
 ```
 @Service(value="communityServiceImpl")
@@ -152,10 +151,10 @@ public class CommunityServiceImpl implements CommunityService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     ...
-    
+
     @Override
     public User createUser(User user, Role role) {
-    
+
         if(findByUserName(user.getUsername()) != null){
             throw new ConstraintViolationException("The provided user name already exists!", null, null);
         }
@@ -164,10 +163,10 @@ public class CommunityServiceImpl implements CommunityService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
-    
+
     @Override
     public User identifyUser(User user) {
-    
+
         Preconditions.checkArgument(user.getPassword() != null, "The provided password cannot be null!");
         Preconditions.checkArgument(StringUtils.isNotBlank(user.getPassword()), "The provided password cannot be empty!");
         User retreivedUser = userRepository.findByUsername(user.getUsername());
@@ -180,7 +179,7 @@ public class CommunityServiceImpl implements CommunityService {
 }
 ```
 
-4. Our ConnectionFactory implementation SocialUserConnectionRepositoryImpl is instantiated in SocialUserServiceImpl with an instance of the Spring TextEncryptor. This gives the possibility to encrypt the stored connection-data for OAuth2 \(most importantly, the access-tokens and refresh-tokens\). At the moment, this data is not encrypted in our code.
+1. Our ConnectionFactory implementation SocialUserConnectionRepositoryImpl is instantiated in SocialUserServiceImpl with an instance of the Spring TextEncryptor. This gives the possibility to encrypt the stored connection-data for OAuth2 \(most importantly, the access-tokens and refresh-tokens\). At the moment, this data is not encrypted in our code.
 
 4.我们的ConnectionFactory实现SocialUserConnectionRepositoryImpl在SocialUserServiceImpl中用Spring TextEncryptor的实例实例化。 这为加密存储的OAuth2连接数据（最重要的是，访问令牌和刷新令牌）提供了可能性。 目前，这些数据在我们的代码中没有加密。
 
@@ -264,7 +263,7 @@ Now with the httpAuth abstraction layer the angular $http service, we make sure 
 
 Initiated from auth\_modal.html, signing in using OAuth2 creates a POST HTTP request to the API handler /api/signin/yahoo \(this handler is located in the abstracted ProviderSignInController\).
 
-The sign in request is redirected to the Yahoo! authentication screens. The whole page goes to Yahoo! until completion. When the API ultimately redirects the request to the home page of the portal, a spi request parameter is added: http://cloudstreetmarket.com/portal/index?spi=F2YY6VNSXIU7CTAUB2A6U6KD7E
+The sign in request is redirected to the Yahoo! authentication screens. The whole page goes to Yahoo! until completion. When the API ultimately redirects the request to the home page of the portal, a spi request parameter is added: [http://cloudstreetmarket.com/portal/index?spi=F2YY6VNSXIU7CTAUB2A6U6KD7E](http://cloudstreetmarket.com/portal/index?spi=F2YY6VNSXIU7CTAUB2A6U6KD7E)
 
 This spi parameter is the Yahoo! user ID \(GUID\). It is caught by the DefaultController\(cloudstreetmarket-webapp\) and injected into the model:
 
@@ -291,7 +290,6 @@ index.jsp文件直接在顶部菜单的DOM中呈现值：
 
 ```
 <div id="spi" class="hide">${spi}</div>
-
 ```
 
 When the menuController \(bound to the top menu\) initializes itself, this value is read and stored in sessionStorage:
@@ -356,7 +354,7 @@ Web存储是根据源（协议，主机名和端口号的组合）。 来自一�
 
 * window.sessionStorage：这存储一个会话的数据（数据在标签页关闭时丢失）。
 
-These two objects can be accessed directly from the window object and they both come with the self-explanatory methods:
+These two objects can be accessed directly from the window object and they both come with the self-explanatory methods:  
 这两个对象可以直接从窗口对象访问，它们都带有自解释的方法：
 
 ```
@@ -366,9 +364,9 @@ removeItem(key);
 clear();
 ```
 
-As indicated by http://www.w3schools.com/, localStorage is almost supported by all browsers nowadays \(between 94% and 98% depending upon your market\). The following table shows the first versions that fully support it:
+As indicated by [http://www.w3schools.com/](http://www.w3schools.com/), localStorage is almost supported by all browsers nowadays \(between 94% and 98% depending upon your market\). The following table shows the first versions that fully support it:
 
-如http://www.w3schools.com/所示，localStorage现在几乎被所有浏览器支持（根据您的市场，在94％和98％之间）。 下表显示了完全支持它的第一个版本：
+如[http://www.w3schools.com/所示，localStorage现在几乎被所有浏览器支持（根据您的市场，在94％和98％之间）。](http://www.w3schools.com/所示，localStorage现在几乎被所有浏览器支持（根据您的市场，在94％和98％之间）。) 下表显示了完全支持它的第一个版本：
 
 ![](/assets/94.png)
 
@@ -430,10 +428,6 @@ $2a$10$Qz5slUkuV7RXfaH/otDY9udROisOwf6XXAOLt4PHWnYgOhG59teC6
 $2a$10$GYCkBzp2NlpGS/qjp5f6NOWHeF56ENAlHNuSssSJpE1MMYJevHBWO
 $2a$10$5uKS72xK2ArGDgb2CwjYnOzQcOmB7CPxK6fz2MGcDBM9vJ4rUql36
 ```
-
-
-
-
 
 
 
