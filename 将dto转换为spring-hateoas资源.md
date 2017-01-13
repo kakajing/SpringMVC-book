@@ -16,21 +16,17 @@ HATEOAS原则在这一阶段已被应用于构成我们业务核心的所有资�
 >
 > 此分支包括使用来自Yahoo！的真实财务数据预填充数据库的SQL脚本。
 
-
-
-2. Among the pulled changes, a new /app configuration directory shows up at the same level as cloudstreetmarket-parent and zipcloud-parent. This /app directory has to be copied to your system's home directory:
+1. Among the pulled changes, a new /app configuration directory shows up at the same level as cloudstreetmarket-parent and zipcloud-parent. This /app directory has to be copied to your system's home directory:
 
 2.在拉取的更改中，新的/ app配置目录显示在与cloudstreetmarket-parent和zipcloud-parent相同的级别。 此/ app目录必须复制到系统的主目录：
 
-* [ ] Copy it to C:\Users\{system.username}\app if you are on Windows
+* [ ] Copy it to C:\Users{system.username}\app if you are on Windows
 
 * [ ] Copy it to /home/usr/{system.username}/app if you are on Linux
 
 * [ ]  If you are on Mac OS X, copy it at /Users/{system.username}/app
 
-
-
-3. Spring HATEOAS comes with the following dependency. This dependency has been added to cloudstreetmarket-parent, cloudstreetmarket-core, and cloudstreetmarket-api:
+1. Spring HATEOAS comes with the following dependency. This dependency has been added to cloudstreetmarket-parent, cloudstreetmarket-core, and cloudstreetmarket-api:
 
 Spring HATEOAS有以下依赖。 此依赖项已添加到cloudstreetmarket-parent，cloudstreetmarket-core和cloudstreetmarket-api：
 
@@ -42,15 +38,15 @@ Spring HATEOAS有以下依赖。 此依赖项已添加到cloudstreetmarket-paren
 </dependency>
 ```
 
-4. As the recipe title suggests, the goal is to get rid of the existing DTOs that were exposed with the REST API. We have, for now, removed IndexOverviewDTO, MarketOverviewDTO, ProductOverviewDTO, and StockProductOverviewDTO.
+1. As the recipe title suggests, the goal is to get rid of the existing DTOs that were exposed with the REST API. We have, for now, removed IndexOverviewDTO, MarketOverviewDTO, ProductOverviewDTO, and StockProductOverviewDTO.
 
-5. Those DTOs have been replaced by these classes: IndexResource,StockProductResource, ChartResource, ExchangeResource, IndustryResource,and MarketResource.
+2. Those DTOs have been replaced by these classes: IndexResource,StockProductResource, ChartResource, ExchangeResource, IndustryResource,and MarketResource.
 
 4.如配方标题所示，目标是摆脱使用REST API公开的现有DTO。 我们现在已经删除了IndexOverviewDTO，MarketOverviewDTO，ProductOverviewDTO和StockProductOverviewDTO。
 
 5.这些DTO已经被这些类取代：IndexResource，StockProductResource，ChartResource，ExchangeResource，IndustryResource和MarketResource。
 
-6. As shown with IndexResource, which is presented as follows, all these new classes inherit the Spring HATEOAS Resource class:
+1. As shown with IndexResource, which is presented as follows, all these new classes inherit the Spring HATEOAS Resource class:
 
 6.如IndexResource所示，如下所示，所有这些新类继承Spring HATEOAS Resource类：
 
@@ -66,9 +62,9 @@ public class IndexResource extends Resource<Index> {
 }
 ```
 
-7. As you can see, with IndexResource, resources are created from JPA entities \(here,Index.java\). These entities are stored in the Resource supertype under the content property name.
+1. As you can see, with IndexResource, resources are created from JPA entities \(here,Index.java\). These entities are stored in the Resource supertype under the content property name.
 
-8. We have transformed the JPA entities, abstracting their @Id in an implementation of the Identifiable interface:
+2. We have transformed the JPA entities, abstracting their @Id in an implementation of the Identifiable interface:
 
 7.您可以看到，使用IndexResource，从JPA实体（这里是Index.java）创建资源。 这些实体存储在内容属性名称下的资源超类中。
 
@@ -81,48 +77,48 @@ public class IndexResource extends Resource<Index> {
 public class Index extends ProvidedId<String> {
 
     private String name;
-    
+
     @Column(name="daily_latest_value")
     private BigDecimal dailyLatestValue;
-    
+
     @Column(name="daily_latest_change")
     private BigDecimal dailyLatestChange;
-    
+
     @Column(name="daily_latest_change_pc")
     private BigDecimal dailyLatestChangePercent;
-    
+
     @Column(name = "previous_close")
     private BigDecimal previousClose;
-    
+
     private BigDecimal open;
     private BigDecimal low;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonSerialize(using=IdentifiableSerializer.class)
     @JsonProperty("exchangeId")
     @XStreamConverter(value=IdentifiableToIdConverter.class,strings={"id"})
     @XStreamAlias("exchangeId")
     private Exchange exchange;
-    
+
     @JsonIgnore
     @XStreamOmitField
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "stock_indices", joinColumns ={@JoinColumn(name = "index_code") },
             inverseJoinColumns = {@JoinColumn(name = "stock_code")})
     private Set<StockProduct> components = new LinkedHashSet<>();
-    
+
     @Column(name="last_update", insertable=false,columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    
+
     public Index(){}
-    
+
     public Index(String indexId) {
     setId(indexId);
     }
-    
+
     //getters & setters
-    
+
     @Override
     public String toString() {
     return "Index [name=" + name + ", dailyLatestValue=" +
@@ -134,10 +130,9 @@ public class Index extends ProvidedId<String> {
     + lastUpdate + ", id=" + id + "]";
     }
 }
-
 ```
 
-9. Here are the details of the ProvidedId class, which is one of our Identifiable implementations:
+1. Here are the details of the ProvidedId class, which is one of our Identifiable implementations:
 
 9.这里是ProvideId类的细节，这是我们的Identifiable实现之一：
 
@@ -146,7 +141,7 @@ public class Index extends ProvidedId<String> {
 public class ProvidedId<ID extends Serializable> implements Identifiable<ID> {
     @Id
     protected ID id;
-    
+
     @Override
     public ID getId() {
         return id;
@@ -154,17 +149,17 @@ public class ProvidedId<ID extends Serializable> implements Identifiable<ID> {
     public void setId(ID id) {
         this.id = id;
     }
-    
+
     @Override
     public String toString() {
         return id;
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -211,8 +206,8 @@ To summarize, using Spring HATEOAS, we can decide to model our resource objects\
 
 * 我们还可以通过使它们继承其类型T对应于资源的POJO内容的类型的通用Resource &lt;T&gt;类来对它们建模。 这是我们选择的策略。 框架为我们的资源对象（Inde3xResource）提供内容绑定，链接创建，甚至在控制器级别的好东西。 我们很快就会看到这一切。
 
-The ResourceSupport class
-The ResourceSupport class is an object that implements Identifiable&lt;Link&gt;:
+The ResourceSupport class  
+The ResourceSupport class is an object that implements Identifiable&lt;Link&gt;:  
 The following is a sample from the ResourceSupport JavaDoc, which will provide you with an insight on its constructors and methods:
 
 ResourceSupport类是实现Identifiable &lt;Link&gt;的对象：
@@ -237,7 +232,7 @@ The Resource class is a wrapper for a POJO. The POJO is stored in a content prop
 
 Resource类是POJO的包装器。  POJO存储在此类的内容属性中。  Resource类本身扩展了ResourceSupport：
 
-`public class Resource <T> extends ResourceSupport`
+`public class Resource <T> extends ResourceSupport`
 
 Here is a sample from the Resource JavaDoc that provides an insight into its constructors and methods:
 
@@ -277,13 +272,9 @@ The most important use of this interface \(and method\) by the framework is to b
 
 框架对这个接口（和方法）的最重要的使用是从Resource对象构建链接。 看看LinkBuilderSupport的斜杠方法。 您将注意到，如果ID不是Identifiable的实例（这通常是最终结果），则该链接将附加ID类型的toString\(\)表示。
 
-
-
 > Bear this behavior in mind if you are thinking of implementing custom ID types.
 >
 > 如果你正在考虑实现自定义ID类型，记住这个行为。
-
-
 
 Abstracting the Entities' @Id
 
@@ -319,23 +310,25 @@ If our HATEOAS introduction wasn't clear enough to give you an idea of the princ
 
 如果我们的HATEOAS介绍不够清楚，给你一个想法的原则，请阅读这个演示文稿从Pivotal（Spring.io）在：
 
-https://spring.io/understanding/HATEOAS
+[https://spring.io/understanding/HATEOAS](https://spring.io/understanding/HATEOAS)
 
 ## See also
 
-* We recommend that you visit O. Gierke's Spring REST showcase application, which presents both Spring HATEOAS in practice coupled or not to Spring Data REST, at   https://github.com/olivergierke/spring-restbucks.
+* We recommend that you visit O. Gierke's Spring REST showcase application, which presents both Spring HATEOAS in practice coupled or not to Spring Data REST, at  
+   [https://github.com/olivergierke/spring-restbucks](https://github.com/olivergierke/spring-restbucks).
 
-* You can find a few discussions about ID exposure at https://github.com/spring-projects/spring-hateoas/issues/66.
+* You can find a few discussions about ID exposure at [https://github.com/spring-projects/spring-hateoas/issues/66](https://github.com/spring-projects/spring-hateoas/issues/66).
 
-* We advise you to read more about Spring Data REST since we have only introduced a little bit of it. Spring Data REST builds REST resources on top of Spring Data repositories and automatically publishes their CRUD services. You can learn more   about it at http://docs.spring.io/spring-data/rest/docs/current/reference/html.
+* We advise you to read more about Spring Data REST since we have only introduced a little bit of it. Spring Data REST builds REST resources on top of Spring Data repositories and automatically publishes their CRUD services. You can learn more  
+   about it at [http://docs.spring.io/spring-data/rest/docs/current/reference/html](http://docs.spring.io/spring-data/rest/docs/current/reference/html).
 
-* 我们建议您访问O. Gierke的Spring REST展示应用程序，它显示了Spring HATEOAS在实践中是否与Spring Data REST相耦合，  https//github.com/olivergierke/spring-restbucks。
+* 我们建议您访问O. Gierke的Spring REST展示应用程序，它显示了Spring HATEOAS在实践中是否与Spring Data REST相耦合，  
+  https//github.com/olivergierke/spring-restbucks。
 
 * 您可以在https//github.com/spring-projects/spring-hateoas/issues/66找到有关ID暴露的几个讨论。
 
-* 我们建议您阅读有关Spring Data REST的更多信息，因为我们只介绍了一点。  Spring Data REST在Spring数据存储库之上构建REST资源，并自动发布其CRUD服务。 您可以了解更多  关于它在http//docs.spring.io/spring-data/rest/docs/current/reference/html。
-
-
+* 我们建议您阅读有关Spring Data REST的更多信息，因为我们只介绍了一点。  Spring Data REST在Spring数据存储库之上构建REST资源，并自动发布其CRUD服务。 您可以了解更多  
+  关于它在http//docs.spring.io/spring-data/rest/docs/current/reference/html。
 
 
 
