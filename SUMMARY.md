@@ -31,4 +31,6 @@
     * [使用第三方OAuth2方案进行身份验证](使用第三方oauth2方案进行身份验证.md)
     * [在REST环境中存储凭据](在rest环境中存储凭据.md)
     * [对服务和控制器进行授权](对服务和控制器进行授权.md)
+* [实施HATEOAS](实施hateoas.md)
+    * [将DTO转换为Spring HATEOAS资源](将dto转换为spring-hateoas资源.md)
 
