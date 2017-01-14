@@ -26,11 +26,11 @@ public class IndexResourceAssembler extends ResourceAssemblerSupport<Index, Inde
 
     @Autowired
     private EntityLinks entityLinks;
-    
+
     public IndexResourceAssembler() {
         super(IndexController.class, IndexResource.class);
     }
-    
+
     @Override
     public IndexResource toResource(Index index) {
         IndexResource resource = createResourceWithId(index.getId(), index);
@@ -41,7 +41,7 @@ public class IndexResourceAssembler extends ResourceAssemblerSupport<Index, Inde
                 index.getId(), null, null, null,null)).withRel(COMPONENTS));
         return resource;
     }
-    
+
     @Override
     protected IndexResource instantiateResource(Index entity) {
         return new IndexResource(entity);
@@ -53,11 +53,9 @@ public class IndexResourceAssembler extends ResourceAssemblerSupport<Index, Inde
 >
 > 我们使用这些汇编器来生成与资源一起提供的链接。 它们使用ControllerLinkBuilder（linkTo和methodOn）中的静态方法和在资源本身（EXCHANGE，CHART和COMPONENTS）中定义为常量的显式标签。
 
+1. We have altered our previous SwaggerConfig class so that this class can be used for annotation-based configuration in other domains that Swagger. This class has been renamed to AnnotationConfig.
 
-
-2. We have altered our previous SwaggerConfig class so that this class can be used for annotation-based configuration in other domains that Swagger. This class has been renamed to AnnotationConfig.
-
-3. We have also added to this AnnotationConfig class the following two annotations:
+2. We have also added to this AnnotationConfig class the following two annotations:
 
 2.我们改变了我们以前的SwaggerConfig类，以便这个类可以用于Swagger的其他域中基于注释的配置。 此类已重命名为AnnotationConfig。
 
@@ -68,9 +66,9 @@ public class IndexResourceAssembler extends ResourceAssemblerSupport<Index, Inde
 @EnableEntityLinks(Because these two annotations don't have an XML equivalent yet).
 ```
 
-4. All the targeted controllers in these converters have been annotated with the `@ExposesResourceFor` annotation \(on the class level\).
+1. All the targeted controllers in these converters have been annotated with the `@ExposesResourceFor` annotation \(on the class level\).
 
-5. These controllers now also return the created resources or pages of resources:
+2. These controllers now also return the created resources or pages of resources:
 
 4.这些转换器中的所有目标控制器都已注释了`@ExposesResourceFor`注释（在类级别上）。
 
@@ -84,28 +82,28 @@ public class IndexController extends CloudstreetApiWCI<Index> {
 
     @Autowired
     private IndexService indexService;
-    
+
     @Autowired
     private IndexResourceAssembler assembler;
-    
+
     @RequestMapping(method=GET)
     public PagedResources<IndexResource> getSeveral(@RequestParam(value="exchange", required=false) String exchangeId,
             @RequestParam(value="market", required=false) MarketId marketId, 
             @PageableDefault(size=10, page=0,sort={"previousClose"}, direction=Direction.DESC) Pageable pageable){
-            
+
         return pagedAssembler.toResource(indexService.gather(exchangeId,marketId,pageable), assembler);
     }
-    
+
     @RequestMapping(value="/{index:[a-zA-Z0-9^.-]+}{extension:\\.[az]+}", method=GET)
     public IndexResource get(@PathVariable(value="index") String indexId,
             @PathVariable(value="extension") String extension){
-            
+
         return assembler.toResource(indexService.gather(indexId));
     } 
 }
 ```
 
-6. Here, we have made CloudstreetApiWCI generic. In this way, CloudstreetApiWCI can have a generic PagedResourcesAssembler @Autowired:
+1. Here, we have made CloudstreetApiWCI generic. In this way, CloudstreetApiWCI can have a generic PagedResourcesAssembler @Autowired:
 
 在这里，我们已经使CloudstreetApiWCI通用。 这样，CloudstreetApiWCI可以有一个通用的PagedResourcesAssembler `@Autowired`：
 
@@ -124,9 +122,7 @@ public class CloudstreetApiWCI<T extends Identifiable<?>> extends WebContentInte
 >
 > 由于不是WebCommonInterceptor类的传统目的用作超级控制器共享属性和实用程序方法，我们将在控制器和WebCommonInterceptor之间创建一个中间组件。
 
-
-
-7. In order to @Autowire the PagedResourcesAssemblers, as we did, we have registered a PagedResourcesAssembler bean in dispatcher-servlet.xml:
+1. In order to @Autowire the PagedResourcesAssemblers, as we did, we have registered a PagedResourcesAssembler bean in dispatcher-servlet.xml:
 
 7.为了@Autowire PagedResourcesAssemblers，像我们一样，我们在dispatcher-servlet.xml中注册了一个PagedResourcesAssembler bean：
 
@@ -137,9 +133,9 @@ public class CloudstreetApiWCI<T extends Identifiable<?>> extends WebContentInte
 </bean>
 ```
 
-8. As a result, now calling the API for a ^GDAXI index code \(http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml\) produces the following output:
+1. As a result, now calling the API for a ^GDAXI index code \([http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml\](http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml\)\) produces the following output:
 
-8.因此，现在调用^ GDAXI索引代码的API（http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml）会生成以下输出：
+8.因此，现在调用^ GDAXI索引代码的API（[http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml）会生成以下输出：](http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml）会生成以下输出：)
 
 ![](/assets/108.png)
 
@@ -195,7 +191,8 @@ public interface ResourceAssembler<T, D extends ResourceSupport> {
 }
 ```
 
-It can be noticed that we have overridden the instantiateResource method in our assemblers. As specified in the JavaDoc, not overriding it causes the Framework to instantiate the resource by reflection, looking for a no-arg constructor in the resource.
+It can be noticed that we have overridden the instantiateResource method in our  
+ assemblers. As specified in the JavaDoc, not overriding it causes the Framework to instantiate the resource by reflection, looking for a no-arg constructor in the resource.
 
 We have preferred here to avoid such constructors in our resources, as they can be a bit of an overhead.
 
@@ -213,7 +210,7 @@ Based on our presented configuration, you can try calling the following URL:
 
 根据我们提供的配置，您可以尝试调用以下URL：
 
-http://cloudstreetmarket.com/api/indices.xml
+[http://cloudstreetmarket.com/api/indices.xml](http://cloudstreetmarket.com/api/indices.xml)
 
 Doing this, you should obtain the following output:
 
@@ -234,7 +231,7 @@ In the IndexController.getSeveral\(\) method-handler \(shown in the following sn
 public PagedResources<IndexResource> getSeveral(@RequestParam(value="exchange", required=false) String exchangeId,
                 @RequestParam(value="market", required=false) MarketId marketId,
                 @PageableDefault(size=10, page=0, sort={"previousClose"},direction=Direction.DESC) Pageable pageable){
-                
+
     return pagedAssembler.toResource(indexService.gather(exchangeId, marketId, pageable),assembler);
 }
 ```
@@ -304,7 +301,7 @@ resource.add(
 
 As specified in the Spring HATEOAS reference, ControllerLinkBuilder uses Spring's ServletUriComponentsBuilder under the hood to obtain the basic URI information from the current request.
 
-If our application runs at http://cloudstreetmarket/api, then the Framework builds Links on top of this root URI, appending it with the root controller mapping\(/indices\) and then with the subsequent method-handler specific path.
+If our application runs at [http://cloudstreetmarket/api](http://cloudstreetmarket/api), then the Framework builds Links on top of this root URI, appending it with the root controller mapping\(/indices\) and then with the subsequent method-handler specific path.
 
 如Spring HATEOAS引用中所指定的，ControllerLinkBuilder在引擎下使用Spring的ServletUriComponentsBuilder从当前请求中获取基本的URI信息。
 
@@ -328,7 +325,7 @@ Here is the IndexController's get\(\) method:
 @RequestMapping(value="/{index:[a-zA-Z0-9^.-]+}{extension:\\.[a-z]+}", method=GET)
 public IndexResource get(@PathVariable(value="index") String indexId,
                 @PathVariable(value="extension") String extension){
-                
+
     return assembler.toResource(indexService.gather(indexId));
 }
 ```
@@ -355,9 +352,9 @@ The \[a-zA-Z0-9^.-\]+ expression, which specifically allows the ^ and . characte
 
 ## See also
 
-* To know more about Spring HATEOAS, refer to http://docs.spring.io/springhateoas/docs/current/reference/html/.
+* To know more about Spring HATEOAS, refer to [http://docs.spring.io/springhateoas/docs/current/reference/html/](http://docs.spring.io/springhateoas/docs/current/reference/html/).
 
-* The introduced HATEOAS representation implements the **Hypertext Application Language \(HAL\)**. HAL is supported by Spring HATEOAS as the default rendering. Learn more about the HAL specification at https://tools.ietf.org/html/draftkelly-json-hal-06 and http://stateless.co/hal\_specification.html.
+* The introduced HATEOAS representation implements the **Hypertext Application Language \(HAL\)**. HAL is supported by Spring HATEOAS as the default rendering. Learn more about the HAL specification at [https://tools.ietf.org/html/draftkelly-json-hal-06](https://tools.ietf.org/html/draftkelly-json-hal-06) and [http://stateless.co/hal\\_specification.html](http://stateless.co/hal\_specification.html).
 
 * 要了解有关Spring HATEOAS的更多信息，请参阅http//docs.spring.io/springhateoas/docs/current/reference/html/。
 

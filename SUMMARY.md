@@ -34,4 +34,5 @@
 * [第六章 实施HATEOAS](实施hateoas.md)
     * [将DTO转换为Spring HATEOAS资源](将dto转换为spring-hateoas资源.md)
     * [构建hypermedia-driven API的链接](构建hypermedia-driven-api的链接.md)
+    * [选择一个策略来公开JPA实体](选择一个策略来暴露jpa实体.md)
 
