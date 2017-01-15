@@ -35,4 +35,5 @@
     * [将DTO转换为Spring HATEOAS资源](将dto转换为spring-hateoas资源.md)
     * [构建hypermedia-driven API的链接](构建hypermedia-driven-api的链接.md)
     * [选择一个策略来公开JPA实体](选择一个策略来暴露jpa实体.md)
+    * [使用OAuth从第三方API检索数据](使用oauth从第三方api检索数据.md)
 
