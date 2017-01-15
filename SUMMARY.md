@@ -36,4 +36,6 @@
     * [构建hypermedia-driven API的链接](构建hypermedia-driven-api的链接.md)
     * [选择一个策略来公开JPA实体](选择一个策略来暴露jpa实体.md)
     * [使用OAuth从第三方API检索数据](使用oauth从第三方api检索数据.md)
+* [第七章 开发CRUD操作和验证](第七章-开发crud操作和验证.md)
+    * [将REST处理程序扩展到所有HTTP方法](将rest处理程序扩展到所有http方法.md)
 
