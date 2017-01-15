@@ -51,7 +51,7 @@ In early stage architectures, it is critical to consider the following decisions
 
 Choosing Maven secures these points and fulfills our project's need to make our project reusable, secure, and testable \(under automation\).
 
-**为什么要使用Maven？      
+**为什么要使用Maven？        
 **
 
 Maven是一个软件项目管理和理解工具。 它是一个由Apache社区和Apache软件基金会支持的开源项目。 近10年来，Maven给了巨大的利益。 它还为Java项目塑造了一个标准结构。 通过它的项目对象模型（POM）方法，它向任何人和潜在地向任何第三方软件提供一种统一和彻底的理解和构建具有所有依赖性的Java项目层次结构的方式。
@@ -68,11 +68,11 @@ Maven是一个软件项目管理和理解工具。 它是一个由Apache社区�
 
 选择Maven保护这些点并满足我们的项目的需要，使我们的项目可重用，安全和可测试（在自动化下）。
 
-**What does the Spring Framework bring?**
+### **What does the Spring Framework bring?**
 
 The Spring Framework and its community have contributed to pulling forward the Java platform for more than a decade. Presenting the whole framework in detail would require us to write more than a book. However, the core functionality based on the principles of **Inversion of Control\(IOC\)** and **Dependency Injection\(DI\)** through a performant access to the bean repository allows considerable reusability. Staying lightweight, it secures great scaling capabilities and could probably suit all modern architectures.
 
-**Spring Framework带来了什么？**
+### **Spring Framework带来了什么？**
 
 Spring框架及其社区已经推动了Java平台的十多年。 详细介绍整个框架将需要我们写一本书以外的书。 然而，通过对bean存储库的执行访问，基于**控制反转（IOC）**和**依赖注入（DI）**的原理的核心功能允许相当大的可重用性。 保持轻量级，它保证巨大的缩放能力，可能适合所有现代建筑。
 
