@@ -84,9 +84,9 @@ public class UsersController extends CloudstreetApiWCI{
 }
 ```
 
-5. The TransactionController is represented here in a simplified version:
+1. The TransactionController is represented here in a simplified version:
 
-5. TransactionController在这里以简化版本表示：
+2. TransactionController在这里以简化版本表示：
 
 ```
 @RestController
@@ -102,30 +102,30 @@ public class TransactionController extends CloudstreetApiWCI<Transaction> {
                         @RequestParam(value="quote:[\\d]+", required=false) Long quoteId,
                         @RequestParam(value="ticker:[a-zA-Z0-9-:]+", required=false) String ticker,
                         @PageableDefault(size=10, page=0, sort={"lastUpdate"}, direction=Direction.DESC) Pageable pageable){
-    
+
         Page<Transaction> page = transactionService.findBy(pageable, userName, quoteId,ticker);
         return pagedAssembler.toResource(page, assembler);
     }
-    
+
     @RequestMapping(value="/{id}", method=GET)
     @ResponseStatus(HttpStatus.OK)
     public TransactionResource get(@PathVariable(value="id") Long transactionId){
         return assembler.toResource(transactionService.get(transactionId));
     }
-    
+
     //(The PUT and DELETE method-handlers introduced here are non-readonly methods.)
     //（这里介绍的PUT和DELETE方法处理程序是非独立的方法。）
     @RequestMapping(method=POST)
     @ResponseStatus(HttpStatus.CREATED)
     public TransactionResource post(@RequestBody Transaction transaction) {
-    
+
         transactionService.hydrate(transaction);
         ...
         TransactionResource resource = assembler.toResource(transaction);
         response.setHeader(LOCATION_HEADER, resource.getLink("self").getHref());
         return resource;
     }
-    
+
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/{id}", method=DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -135,7 +135,7 @@ public class TransactionController extends CloudstreetApiWCI<Transaction> {
 }
 ```
 
-6. The call to the hydrate method in the post method prepares the Entity for underlying service uses. It populates its relationships from IDs received in the request payload.
+1. The call to the hydrate method in the post method prepares the Entity for underlying service uses. It populates its relationships from IDs received in the request payload.
 
 6.在post方法中对hydrate方法的调用准备实体用于基础服务使用。 它根据请求有效内容中收到的ID填充其关系。
 
@@ -143,7 +143,7 @@ public class TransactionController extends CloudstreetApiWCI<Transaction> {
 >
 > 此技术将实用于CRUD的所有REST资源。
 
-7. Here are the details of the hydrate method in transactionServiceImpl:
+1. Here are the details of the hydrate method in transactionServiceImpl:
 
 7.以下是transactionServiceImpl中的hydrate 的详细信息：
 
@@ -154,11 +154,11 @@ public Transaction hydrate(final Transaction transaction) {
     if(transaction.getQuote().getId() != null){
         transaction.setQuote(stockQuoteRepository.findOne(transaction.getQuote().getId()));
     }
-    
+
     if(transaction.getUser().getId() != null){
         transaction.setUser(userRepository.findOne(transaction.getUser().getId()));
     }
-    
+
     if(transaction.getDate() == null){
         transaction.setDate(new Date());
     }
@@ -170,9 +170,9 @@ public Transaction hydrate(final Transaction transaction) {
 >
 > 这里没有什么惊人的; 它主要是建立我们的实体，以适应我们的需要。 可以创建一个界面来标准化实践。
 
-8. All the service layers have been reviewed to drive uniform database transactions.
+1. All the service layers have been reviewed to drive uniform database transactions.
 
-9. The service implementations are now annotated by default with
+2. The service implementations are now annotated by default with
 
 8.所有服务层已经过审查，以驱动统一数据库事务。
 
@@ -192,7 +192,7 @@ public class TransactionServiceImpl implements TransactionService{
 }
 ```
 
-10. The non-readonly methods of these service implementations override the class definition with the `@Transactional` annotation:
+1. The non-readonly methods of these service implementations override the class definition with the `@Transactional` annotation:
 
 10.这些服务实现的非唯一方法使用`@Transactional`注释覆盖类定义：
 
@@ -208,7 +208,7 @@ public Transaction create(Transaction transaction) {
 }
 ```
 
-11. This principle has also been applied to custom repository implementations \(such as IndexRepositoryImpl\):
+1. This principle has also been applied to custom repository implementations \(such as IndexRepositoryImpl\):
 
 11.这个原则也被应用于自定义仓库实现（如IndexRepositoryImpl）：
 
@@ -219,11 +219,11 @@ public class IndexRepositoryImpl implements IndexRepository{
 
     @PersistenceContext
     private EntityManager em;
-    
+
     @Autowired
     private IndexRepositoryJpa repo;
     ...
-    
+
     @Override
     @Transactional
     public Index save(Index index) {
@@ -253,7 +253,7 @@ HTTP / 1.1规范 - RFC 7231语义和内容
 
 在开始之前，请随意访问与语义和内容相关的HTTP 1/1的Internet标准跟踪文档（RFC 7231）：
 
-https://tools.ietf.org/html/rfc7231
+[https://tools.ietf.org/html/rfc7231](https://tools.ietf.org/html/rfc7231)
 
 ### Basic requirements
 
@@ -333,7 +333,7 @@ In Chapter 4, Building a REST API for a Stateless Architecture, we have presente
 
 In this perspective, RequestMappingHandlerAdapter is the central piece to access and override HttpMessageConverters through `getMessageConverters()` and `setMessag eConverters(List<HttpMessageConverter<?>> messageConverters)`.
 
-The role of` @RequestBody` annotations is tightly coupled to HttpMessageConverters. We will introduce the HttpMessageConverters now.
+The role of`@RequestBody` annotations is tightly coupled to HttpMessageConverters. We will introduce the HttpMessageConverters now.
 
 使用@RequestBody映射请求有效内容
 
@@ -347,9 +347,9 @@ The role of` @RequestBody` annotations is tightly coupled to HttpMessageConverte
 
 HttpMessageConverters, custom or native, are bound to specific mime types. They are used in the following instances:
 
-* To convert Java objects into HTTP response payloads. Selected from Accept request header mime types, they serve the `@ResponseBody` annotation's purposes \(and indirectly `@RestController` annotations that abstract the `@ResponseBody `annotations\).
+* To convert Java objects into HTTP response payloads. Selected from Accept request header mime types, they serve the `@ResponseBody` annotation's purposes \(and indirectly `@RestController` annotations that abstract the `@ResponseBody`annotations\).
 
-* To convert HTTP request payloads into Java objects. Selected from the ContentType request header mime types, these converters are called when the `@RequestBody `annotation are present on a method handler argument.
+* To convert HTTP request payloads into Java objects. Selected from the ContentType request header mime types, these converters are called when the `@RequestBody`annotation are present on a method handler argument.
 
 More generally, HttpMessageConverters match the following HttpMessageConverter interface:
 
@@ -373,9 +373,9 @@ public interface HttpMessageConverter<T> {
 
 The `getSupportedMediaTypes()` method returns the list of mediaTypes \(mime types\) that a specific converter supports. This method is mainly used for reporting purposes and for the canRead and canWrite implementations. These canRead and canWrite eligibility methods are used by the framework to pick up at runtime the first HttpMessageConverter that either:
 
-f Matches the client-provided `Content-Type` request header for the given Java class targeted by `@RequestBody`
+f Matches the client-provided `Content-Type` request header for the given Java class targeted by `@RequestBody`
 
-f Matches the client-provided `Accept `request header for the Java class that the HTTP response-payload will correspond to \(the Type targeted by `@ResponseBody`\)
+f Matches the client-provided `Accept`request header for the Java class that the HTTP response-payload will correspond to \(the Type targeted by `@ResponseBody`\)
 
 `getSupportedMediaTypes()`方法返回特定转换器支持的mediaTypes（mime类型）的列表。 此方法主要用于报告目的和canRead和canWrite实现。 这些canRead和canWrite合格性方法被框架用于在运行时拾取第一个HttpMessageConverter：
 
@@ -409,11 +409,11 @@ This method has been preferred to posting an `application/x-www-form-urlencoded`
 
 或者，我们使用AngularJS将HTML表单映射到其属性与我们的实体匹配的已构建json对象。 继续这样，我们POST/PUT json对象作为application/json mime类型。
 
-这种方法优先于发布一个`application/x-www-form-urlencoded `表单内容，因为我们实际上可以将对象映射到一个实体。 在我们的示例中，表单完全匹配后端资源。 这是REST设计的有益结果（和约束）。
+这种方法优先于发布一个`application/x-www-form-urlencoded`表单内容，因为我们实际上可以将对象映射到一个实体。 在我们的示例中，表单完全匹配后端资源。 这是REST设计的有益结果（和约束）。
 
 ### Using @RequestPart to upload an image
 
-The `@RequestPart` annotation can be used to associate part of a `multipart/form-data` request with a method argument. It can be used with argument Types such as` org.springframework.web.multipart.MultipartFile` and `javax.servlet.http.Part`.
+The `@RequestPart` annotation can be used to associate part of a `multipart/form-data` request with a method argument. It can be used with argument Types such as`org.springframework.web.multipart.MultipartFile` and `javax.servlet.http.Part`.
 
 For any other argument Types, the content of the part is passed through an HttpMessageConverter just like `@RequestBody`.
 
@@ -465,7 +465,7 @@ The recipe highlights the basic principles we applied to handle transactions acr
 
 To build our transaction management, we kept in mind that Spring MVC Controllers are not transactional. Under this light, we cannot expect a transaction management over two different service calls in the same method handler of a Controller. Each service call starts a new transaction, and this transaction is expected to terminate when the result is returned.
 
-We defined our services as `@Transactional(readonly="true")` at the Type level, then methods the that need Write access override this definition with an extra `@Transactional `annotation at the method level. The tenth step of our recipe presents the Transactional changes on the TransactionServiceImpl service. With the default propagation, transactions are maintained and reused between Transactional services, repositories, or methods.
+We defined our services as `@Transactional(readonly="true")` at the Type level, then methods the that need Write access override this definition with an extra `@Transactional`annotation at the method level. The tenth step of our recipe presents the Transactional changes on the TransactionServiceImpl service. With the default propagation, transactions are maintained and reused between Transactional services, repositories, or methods.
 
 简单的途径
 
@@ -491,7 +491,7 @@ As mentioned earlier, we configured a consistent transaction management over the
 
 Our coverage is limited and we advise you to find external information about the following topics if you are not familiar with them.
 
-我们的覆盖范围有限，如果您不熟悉以下主题，我们建议您查找有关以下主题的外部信息。
+我们的覆盖范围有限，如果您不熟悉以下主题，我们建议您查找有关以下主题的外部信息。
 
 ### ACID properties
 
@@ -499,7 +499,7 @@ Four properties/concepts are frequently used to assess the transaction's reliabi
 
 经常使用四个属性/概念来评估交易的可靠性。 因此，在设计交易时记住他们是有用和重要的。 这些属性是原子性，一致性，隔离和耐久性。 阅读更多关于维基百科页面上的ACID交易：
 
-https://en.wikipedia.org/wiki/ACID
+[https://en.wikipedia.org/wiki/ACID](https://en.wikipedia.org/wiki/ACID)
 
 ### Global versus local transactions
 
@@ -513,31 +513,27 @@ Read more about the difference in this Spring reference document:
 
 阅读更多关于这个Spring参考文档的区别：
 
-http://docs.spring.io/spring/docs/2.0.8/reference/transaction.html
+[http://docs.spring.io/spring/docs/2.0.8/reference/transaction.html](http://docs.spring.io/spring/docs/2.0.8/reference/transaction.html)
 
-Historically, JTA transaction managers were exclusively provided by J2EE/JEE containers. With application-level JTA transaction manager implementations, we now have other alternatives such as Atomikos \(http://www.atomikos.com\), Bitronix \(https://github.com/bitronix/btm\), or JOTM \(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\) to assure global transactions in J2SE environments.
+Historically, JTA transaction managers were exclusively provided by J2EE/JEE containers. With application-level JTA transaction manager implementations, we now have other alternatives such as Atomikos \([http://www.atomikos.com\](http://www.atomikos.com\)\), Bitronix \([https://github.com/bitronix/btm\](https://github.com/bitronix/btm\)\), or JOTM \([http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\](http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\)\) to assure global transactions in J2SE environments.
 
 Tomcat \(7+\) can also work along with application-level JTA transaction manager implementations to reflect the transaction management in the container using the TransactionSynchronizationRegistry and JNDI datasources.
 
-历史上，JTA事务管理器仅由J2EE / JEE容器提供。 使用application-level JTA事务管理器实现，我们现在有其他替代品，如Atomikos\(http://www.atomikos.com\)，Bitronix（https://github.com/bitronix/btm）或JOTM\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\)，以确保J2SE环境中的全局事务。
+历史上，JTA事务管理器仅由J2EE / JEE容器提供。 使用application-level JTA事务管理器实现，我们现在有其他替代品，如Atomikos\([http://www.atomikos.com\\)，Bitronix（https://github.com/bitronix/btm）或JOTM\\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\\)，以确保J2SE环境中的全局事务。](http://www.atomikos.com\)，Bitronix（https://github.com/bitronix/btm）或JOTM\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\)，以确保J2SE环境中的全局事务。)
 
 Tomcat（7+）还可以与应用程序级JTA事务管理器实现一起使用，以使用TransactionSynchronizationRegistry和JNDI数据源反映容器中的事务管理。
 
-https://codepitbull.wordpress.com/2011/07/08/tomcat-7-with-full-jta
+[https://codepitbull.wordpress.com/2011/07/08/tomcat-7-with-full-jta](https://codepitbull.wordpress.com/2011/07/08/tomcat-7-with-full-jta)
 
 ## See also
 
 Performance and useful metadata benefits can be obtained from these three headers that are not detailed in the recipe.
 
-* Cache-Control, ETag, and Last-Modified: Spring MVC supports these headers and as an entry point, we suggest you check out the Spring reference: http://docs.spring.io/spring-framework/docs/current/spring-frameworkreference/html/mvc.html\#mvc-caching-etag-lastmodified
+* Cache-Control, ETag, and Last-Modified: Spring MVC supports these headers and as an entry point, we suggest you check out the Spring reference: [http://docs.spring.io/spring-framework/docs/current/spring-frameworkreference/html/mvc.html\\#mvc-caching-etag-lastmodified](http://docs.spring.io/spring-framework/docs/current/spring-frameworkreference/html/mvc.html\#mvc-caching-etag-lastmodified)
 
 可以从这三个标题中获取性能和有用的元数据优势，这些标题在配方中没有详细说明。
 
-* Cache-Control，ETag和Last-Modified：Spring MVC支持这些头文件，作为一个入口点，我们建议你查看Spring的参考文档：http://docs.spring.io/spring-framework/docs/current/ spring-frameworkreference / html / mvc.html＃mvc-caching-etag-lastmodified
-
-
-
-
+* Cache-Control，ETag和Last-Modified：Spring MVC支持这些头文件，作为一个入口点，我们建议你查看Spring的参考文档：[http://docs.spring.io/spring-framework/docs/current/](http://docs.spring.io/spring-framework/docs/current/) spring-frameworkreference / html / mvc.html＃mvc-caching-etag-lastmodified
 
 
 
