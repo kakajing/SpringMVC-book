@@ -40,4 +40,5 @@
     * [将REST处理程序扩展到所有HTTP方法](将rest处理程序扩展到所有http方法.md)
     * [使用bean验证支持验证资源](使用bean验证支持验证资源.md)
     * [使REST的消息和内容国际化](使rest的消息和内容国际化.md)
+    * [使用HTML5 AngularJS验证客户端表单](使用html5-angularjs验证客户端表单.md)
 
