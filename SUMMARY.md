@@ -41,6 +41,7 @@
     * [使用bean验证支持验证资源](使用bean验证支持验证资源.md)
     * [使REST的消息和内容国际化](使rest的消息和内容国际化.md)
     * [使用HTML5 AngularJS验证客户端表单](使用html5-angularjs验证客户端表单.md)
-* [第八章 通过WebSockets和STOMP进行通信](第八章-通过websockets和stomp进行通信.md)
-    * [使用STOMP通过SockJS流式社交活动](使用stomp通过sockjs流式社交活动.md)
+* [第八章-通过websockets和stomp进行通信](第八章-通过websockets和stomp进行通信.md)
+    * [使用STOMP通过SockJS流式social events](使用stomp通过sockjs流式social-events.md)
+    * [使用RabbitMQ作为多协议消息代理](使用rabbitmq作为多协议消息代理.md)
 
