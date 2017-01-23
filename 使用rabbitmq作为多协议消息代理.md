@@ -82,7 +82,7 @@ We will also update our WebSocket Spring configuration to rely on this full-feat
 
 14.添加了以下Maven依赖项：
 
-```script
+```java
 <dependency>
     <groupId>org.springframework.amqp</groupId>
     <artifactId>spring-rabbit</artifactId>
@@ -110,11 +110,11 @@ We will also update our WebSocket Spring configuration to rely on this full-feat
 </dependency>
 ```
 
-15. In the dispatcher-servlet.xml of the cloudstreetmarket-api module, the following beans have been added making use of the rabbit namespace:
+1. In the dispatcher-servlet.xml of the cloudstreetmarket-api module, the following beans have been added making use of the rabbit namespace:
 
 15.在cloudstreetmarket-api模块的dispatcher-servlet.xml中，添加了以下bean，并使用了rabbit命名空间：
 
-```
+```java
 <beans xmlns="http://www.sfw.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     ...
     xmlns:rabbit="http://www.sfw.org/schema/rabbit"
@@ -129,11 +129,11 @@ We will also update our WebSocket Spring configuration to rely on this full-feat
 </beans>
 ```
 
-16. In the csmcore-config.xml file \(in cloudstreetmarket-core\), the following beans have been added with the task namespace:
+1. In the csmcore-config.xml file \(in cloudstreetmarket-core\), the following beans have been added with the task namespace:
 
 16.在csmcore-config.xml文件（在cloudstreetmarket-core中）中，以下bean已添加任务命名空间：
 
-```
+```java
 <beans xmlns="http://www.sfw.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     ...
@@ -146,11 +146,11 @@ We will also update our WebSocket Spring configuration to rely on this full-feat
 </beans>
 ```
 
-17. Still in the Spring configuration side of things, our AnnotationConfig bean \(the main configuration bean for cloudstreetmarket-api\) has been added the two annotations:
+1. Still in the Spring configuration side of things, our AnnotationConfig bean \(the main configuration bean for cloudstreetmarket-api\) has been added the two annotations:
 
 17.仍然在Spring配置方面，我们的AnnotationConfig bean（cloudstreetmarket-api的主配置bean）已经添加了两个注释：
 
-```
+```java
 @EnableRabbit
 @EnableAsync
 public class AnnotationConfig {
@@ -158,9 +158,9 @@ public class AnnotationConfig {
 }
 ```
 
-18. Finally, the WebSocketConfig bean has been updated as well; especially the broker registration. We now make use of a StompBrokerRelay instead of a simples broker:
+1. Finally, the WebSocketConfig bean has been updated as well; especially the broker registration. We now make use of a StompBrokerRelay instead of a simples broker:
 
-```
+```java
 @Configuration
 @ComponentScan("edu.zipcloud.cloudstreetmarket.api")
 @EnableWebSocketMessageBroker
@@ -168,7 +168,7 @@ public class AnnotationConfig {
 @EnableAsync
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     ...
-    
+
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes(WEBAPP_PREFIX_PATH);
@@ -181,5 +181,41 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 >
 > 而已！ 一切都设置为使用RabbitMQ作为我们系统的外部代理。 但是，请注意，如果现在尝试启动服务器，代码将期望MySQL和Redis服务器一样安装。 这两个第三方系统将详细介绍下两个下一个配方。
 
+## How it works...
 
+### Using a full-featured message broker
+
+In comparison to a simple message broker, using a full-featured message broker such as RabbitMQ provides interesting benefits, which we will discuss now.
+
+使用全功能消息代理
+
+与简单的消息代理相比，我们现在将讨论使用诸如RabbitMQ的全功能消息代理提供的好处。
+
+### Clusterability – RabbitMQ
+
+A RabbitMQ broker is made of one or more Erlang nodes. Each of these nodes represent an instance of RabbitMQ in itself and can be started independently. Nodes can be linked with each other using the command line tool rabbitmqctl. For example, rabbitmqctl join\_cluster rabbit@rabbit.cloudstreetmarket.com would actually connect one node to an existing cluster network. RabbitMQ nodes use cookies to communicate with one another.To be connected on the same cluster, two nodes must have the same cookie.
+
+集群性 - RabbitMQ
+
+RabbitMQ代理由一个或多个Erlang节点组成。 每个节点代表RabbitMQ的实例，并可以独立启动。 节点可以相互使用命令行工具rabbitmqctl挂钩。 例如，rabbitmqctl join\_cluster rabbit@rabbit.cloudstreetmarket.com实际上是将一个节点连接到现有的群集网络。 RabbitMQ的节点使用cookies相互通信。 要在同一个群集上相连，两个节点必须有相同的cookie。
+
+### More STOMP message types
+
+A full-featured message message broker \(in comparison with a simple message broker\) supports additional STOMP frame commands. For example, ACK and RECEIPT are not supported by simple message brokers.
+
+更多STOMP消息类型
+
+全功能消息消息代理（与简单消息代理相比）支持额外的STOMP帧命令。 例如，ACK和RECEIPT不受简单消息代理支持。
+
+### StompMessageBrokerRelay
+
+In the previous recipe, we talked about the flow that a message passes through in the Spring WebSocket engine. As shown with the following image, this flow is not affected at all when switching to an external message broker relay.
+
+在前面的配方中，我们讨论了一个消息在Spring WebSocket引擎中传递的流程。 如下图所示，当切换到外部消息代理中传递时，该流程不受任何影响。
+
+![](/assets/139.png)
+
+Only the RabbitMQ external message broker shows up as an extra piece. BrokerMessageHandler \(StompBrokerRelayMessageHandler\) acts only as a proxy targeting a RabbitMQ node behind the scenes. Only one TCP connection is maintained between the StompBrokerRelay and its message broker. The StompBrokerRelay maintains the connection by sending heartbeat messages.
+
+只有RabbitMQ外部消息代理显示为一个额外的部分。 BrokerMessageHandler（StompBrokerRelayMessageHandler）只作为一个代理，定位到后台的RabbitMQ节点。 StompBrokerRelay与其消息代理之间仅维护一个TCP连接。 StompBrokerRelay通过发送heartbeat messages来维护连接。
 

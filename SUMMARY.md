@@ -44,4 +44,5 @@
 * [第八章-通过websockets和stomp进行通信](第八章-通过websockets和stomp进行通信.md)
     * [使用STOMP通过SockJS流式social events](使用stomp通过sockjs流式social-events.md)
     * [使用RabbitMQ作为多协议消息代理](使用rabbitmq作为多协议消息代理.md)
+    * [使用RabbitMQ和AMQP执行堆栈和消耗任务](使用rabbitmq和amqp执行堆栈和消耗任务.md)
 
