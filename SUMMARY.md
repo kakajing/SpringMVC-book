@@ -45,4 +45,5 @@
     * [使用STOMP通过SockJS流式social events](使用stomp通过sockjs流式social-events.md)
     * [使用RabbitMQ作为多协议消息代理](使用rabbitmq作为多协议消息代理.md)
     * [使用RabbitMQ和AMQP执行堆栈和消耗任务](使用rabbitmq和amqp执行堆栈和消耗任务.md)
+    * [使用Spring Session和Redis保护消息](使用spring-session和redis保护消息.md)
 
