@@ -98,7 +98,7 @@ In the chapter\_8/libs directory, you will also find the tomcat-redis-sessionman
 
 在chapter\_8/libs目录中，您还将找到**tomcat-redis-sessionmanager-2.0-tomcat-8.jar**归档文件。 将三个jars tomcat-redis-sessionmanager-2.0-tomcat-8.jar，commons-pool2-2.2.jar和jedis-2.5.2.jar复制到Eclipse所引用的本地Tomcat安装的lib目录中。 这应该是C:\tomcat8\lib或/home/usr/{system.username}/tomcat8/lib如果我们的说明已经遵循了第1章企业Spring Application的安装例程。
 
-8. Now in your workspace, open the context.xml file of your Server project.
+1. Now in your workspace, open the context.xml file of your Server project.
 
 8.现在在您的工作区中，打开Server项目的context.xml文件。
 
@@ -121,17 +121,17 @@ MySQL服务器安装
 
 在创建新的cloudstreetmarket-websocket Web应用程序时，我们还将数据库引擎从HSQLDB更改为MySQL。 这样做允许我们在api和websocket模块之间共享数据库。
 
-1.The first step for this section is to download and install the MySQL community server from http://dev.mysql.com/downloads/mysql.. Download the generally available release suited to your system. If you are using MS Windows, we recommend installing the installer.
+1.The first step for this section is to download and install the MySQL community server from [http://dev.mysql.com/downloads/mysql](http://dev.mysql.com/downloads/mysql).. Download the generally available release suited to your system. If you are using MS Windows, we recommend installing the installer.
 
-2.You can follow the installation instructions provided by the MySQL team at http://dev.mysql.com/doc/refman/5.7/en/installing.html. We are now going to define a common configuration for schema users and a database name.
+2.You can follow the installation instructions provided by the MySQL team at [http://dev.mysql.com/doc/refman/5.7/en/installing.html](http://dev.mysql.com/doc/refman/5.7/en/installing.html). We are now going to define a common configuration for schema users and a database name.
 
-3. Create a root user with the password of your choice.
+1. Create a root user with the password of your choice.
 
-4. Create a technical user \(with the administrator role\) that the application will use. This user needs to be called csm\_tech and needs to have the password csmDB1$55:
+2. Create a technical user \(with the administrator role\) that the application will use. This user needs to be called csm\_tech and needs to have the password csmDB1$55:
 
-1.此部分的第一步是从http://dev.mysql.com/downloads/mysql下载并安装MySQL社区服务器。下载适合您的系统的常用版本。 如果您使用的是MS Windows，我们建议您安装安装程序。
+1.此部分的第一步是从[http://dev.mysql.com/downloads/mysql下载并安装MySQL社区服务器。下载适合您的系统的常用版本。](http://dev.mysql.com/downloads/mysql下载并安装MySQL社区服务器。下载适合您的系统的常用版本。) 如果您使用的是MS Windows，我们建议您安装安装程序。
 
-2.您可以按照MySQL团队提供的安装说明，访问http://dev.mysql.com/doc/refman/5.7/en/installing.html。 我们现在要为模式用户和数据库名称定义一个公共配置。
+2.您可以按照MySQL团队提供的安装说明，访问[http://dev.mysql.com/doc/refman/5.7/en/installing.html。](http://dev.mysql.com/doc/refman/5.7/en/installing.html。) 我们现在要为模式用户和数据库名称定义一个公共配置。
 
 3.使用您选择的密码创建root用户。
 
@@ -139,11 +139,11 @@ MySQL服务器安装
 
 ![](/assets/147.png)
 
-5. Start the MySQL Client \(the command line tool\), as follows:
+1. Start the MySQL Client \(the command line tool\), as follows:
 
-* [ ] On MS Windows, start the program mysql.exe in the MySQL servers installation directory:\MySQL Server 5.6\bin\mysql.exe
+2. [ ] On MS Windows, start the program mysql.exe in the MySQL servers installation directory:\MySQL Server 5.6\bin\mysql.exe
 
-* [ ] On Linux or Mac OS, invoke the mysql command from the terminal
+3. [ ] On Linux or Mac OS, invoke the mysql command from the terminal
 
 On both platforms, the first step is then to provide the root password chosen earlier.
 
@@ -155,7 +155,7 @@ On both platforms, the first step is then to provide the root password chosen ea
 
 在这两个平台上，第一步是提供先前选择的root密码。
 
-6. Create a csm database either with the MySQL workbench or with MySQL client:
+1. Create a csm database either with the MySQL workbench or with MySQL client:
 
 6.使用MySQL工作台或MySQL客户端创建csm数据库：
 
@@ -163,7 +163,7 @@ On both platforms, the first step is then to provide the root password chosen ea
 mysql> CREATE DATABASE csm;
 ```
 
-7. Select the csm database as the current database:
+1. Select the csm database as the current database:
 
 7.选择csm数据库作为当前数据库：
 
@@ -171,9 +171,9 @@ mysql> CREATE DATABASE csm;
 mysql> USE csm;
 ```
 
-8. From Eclipse, start the local Tomcat server. Once it has started, you can shut it down again; this step was only to get Hibernate to generate the schema.
+1. From Eclipse, start the local Tomcat server. Once it has started, you can shut it down again; this step was only to get Hibernate to generate the schema.
 
-9. We need then to insert the data manually. To do so, execute the following import commands one after the other:
+2. We need then to insert the data manually. To do so, execute the following import commands one after the other:
 
 8.从Eclipse中，启动本地Tomcat服务器。 一旦它开始，你可以关闭它; 这一步只是为了让Hibernate生成模式。
 
@@ -302,11 +302,11 @@ cloudstreetmarket-core\src\main\resources\META-INF\db\indices.sql;
         authentication-manager-ref="authenticationManager"/>
 ```
 
-7. Two configuration-beans in cloudstreetmarket-websocket complete the XML configuration:
+1. Two configuration-beans in cloudstreetmarket-websocket complete the XML configuration:
 
 The WebSocketConfig bean in edu.zipcloud.cloudstreetmarket.ws.config is defined as follows:
 
-7. cloudstreetmarket-websocket中的两个配置bean完成XML配置：
+1. cloudstreetmarket-websocket中的两个配置bean完成XML配置：
 
 edu.zipcloud.cloudstreetmarket.ws.config中的WebSocketConfig bean定义如下：
 
@@ -329,25 +329,25 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         .withSockJS()
         .setClientLibraryUrl(Constants.SOCKJS_CLIENT_LIB);
     }
-    
+
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry registry) {
         registry.enableStompBrokerRelay("/topic", "/queue");
         registry.setApplicationDestinationPrefixes("/app");
     }
-    
+
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.taskExecutor()
             corePoolSize(Runtime.getRuntime().availableProcessors()*4);
     }
-    
+
     @Override
     //Increase number of threads for slow clients
     public void configureClientOutboundChannel(ChannelRegistration registration) {
         registration.taskExecutor().corePoolSize(Runtime.getRuntime().availableProcessors() *4);
     }
-    
+
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         registration.setSendTimeLimit(15*1000).setSendBufferSizeLimit(512*1024);
@@ -367,7 +367,7 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
         messages.simpMessageDestMatchers("/topic/actions", "/queue/*", "/app/queue/*").permitAll();
     }
-    
+
     @Override
     protected boolean sameOriginDisabled() {
         return true;
@@ -375,17 +375,17 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 }
 ```
 
-8. The ActivityFeedWSController class has been copied over to cloudstreetmarket-websocket to broadcast user activities. It still doesn't require any specific role or authentication:
+1. The ActivityFeedWSController class has been copied over to cloudstreetmarket-websocket to broadcast user activities. It still doesn't require any specific role or authentication:
 
-8. ActivityFeedWSController类已复制到cloudstreetmarket-websocket以广播用户活动。 它仍然不需要任何特定的角色或身份验证：
+2. ActivityFeedWSController类已复制到cloudstreetmarket-websocket以广播用户活动。 它仍然不需要任何特定的角色或身份验证：
 
 ```java
-    @MessageMapping("/channels/users/broadcast")
+@MessageMapping("/channels/users/broadcast")
     @SendTo("/topic/actions")
     public UserActivityDTO handle(UserActivityDTO message) throws Exception {
         return message;
     }
-    
+
     @RequestMapping(value="/channels/users/broadcast/info", produces={"application/json"})
     @ResponseBody
     public String info(HttpServletRequest request) {
@@ -394,7 +394,7 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 }
 ```
 
-9. One extra controller sends messages \(which are up-to-date stocks values\) into private queues:
+1. One extra controller sends messages \(which are up-to-date stocks values\) into private queues:
 
 9.一个额外的控制器将消息（其是最新的stocks values）发送到private queues中：
 
@@ -404,7 +404,7 @@ public class StockProductWSController extends CloudstreetWebSocket WCI<StockProd
 
     @Autowired
     private StockProductServiceOffline stockProductService;
-    
+
     @MessageMapping("/queue/CSM_QUEUE_{queueId}")
     @SendTo("/queue/CSM_QUEUE_{queueId}")
     @PreAuthorize("hasRole('OAUTH2')")
@@ -415,14 +415,14 @@ public class StockProductWSController extends CloudstreetWebSocket WCI<StockProd
         }
         return stockProductService.gather(username, tickers.toArray(new String[tickers.size()]));
     }
-    
+
     @RequestMapping(value=PRIVATE_STOCKS_ENDPOINT+"/info", produces={"application/xml", "application/json"})
     @ResponseBody
     @PreAuthorize("hasRole('OAUTH2')")
     public String info(HttpServletRequest request) {
         return "v0";
     }
-    
+
     private static String extractUserFromQueueId(String token){
         Pattern p = Pattern.compile("_[0-9]+$");
         Matcher m = p.matcher(token);
@@ -432,7 +432,7 @@ public class StockProductWSController extends CloudstreetWebSocket WCI<StockProd
 }
 ```
 
-10. On the client side, new WebSockets are initiated from the stock-search screens \(stocks result lists\). Especially in `stock_search.js` and `stock_search_by_market.js`, the following block has been added in order to regularly request data updates for the set of results that is displayed to the authenticated user:
+1. On the client side, new WebSockets are initiated from the stock-search screens \(stocks result lists\). Especially in `stock_search.js` and `stock_search_by_market.js`, the following block has been added in order to regularly request data updates for the set of results that is displayed to the authenticated user:
 
 10.在客户端，从stock-search screens（stocks result列表）启动新的WebSockets。 特别是在`stock_search.js`和`stock_search_by_market.js`中，添加了以下块，以便定期请求显示给已验证用户的一组结果的数据更新：
 
@@ -472,13 +472,13 @@ The `httpAuth.generatedQueueId()`function generates a random queue name based on
 
 RabbitMQ configuration
 
-1.Open the RabbitMQ WebConsole, select the Admin tab, then select the Policy menu \(also accessible from the http://localhost:15672/\#/policies URL\).
+1.Open the RabbitMQ WebConsole, select the Admin tab, then select the Policy menu \(also accessible from the [http://localhost:15672/\\#/policies](http://localhost:15672/\#/policies) URL\).
 
-2. Add the following policy:
+1. Add the following policy:
 
 RabbitMQ的配置
 
-1.打开RabbitMQ Web控制台，选择Admin 选项卡，然后选择Policy菜单（也可从http://localhost:15672/\#/policies URL访问）。
+1.打开RabbitMQ Web控制台，选择Admin 选项卡，然后选择Policy菜单（也可从[http://localhost:15672/\\#/policies](http://localhost:15672/\#/policies) URL访问）。
 
 2.添加以下policy：
 
@@ -510,9 +510,9 @@ This policy \(named PRIVATE\) applies to all auto-generated queues matching the 
 
 * [ ] Apache HTTP已经重新启动/重新加载
 
-2. When all these signals are green, start the Tomcat servers.
+* When all these signals are green, start the Tomcat servers.
 
-3. Log in to the application with your Yahoo! account, register a new user, and navigate to the screen: Prices and markets \| Search by markets. If you target a market that is potentially open at your time, you should be able to notice real-time updates on the result list:
+* Log in to the application with your Yahoo! account, register a new user, and navigate to the screen: Prices and markets \| Search by markets. If you target a market that is potentially open at your time, you should be able to notice real-time updates on the result list:
 
 2.当所有这些信号都为绿色时，启动Tomcat服务器。
 
@@ -544,7 +544,8 @@ Spring Session最有趣和最显著的特性是它与容器（Apache Tomcat）�
 
 ### SessionRepositoryFilter
 
-To make use of a custom HttpSession implementation, Spring Session completely replaces the HttpServletRequest with a custom wrapper \(SessionRepositoryRequestWrapper\). This operation is performed inside SessionRepositoryFilter, which is the servlet filter that needs to be configured in the web.xml to intercept the request flow \(before Spring MVC\).
+To make use of a custom HttpSession implementation, Spring Session  
+ completely replaces the HttpServletRequest with a custom wrapper \(SessionRepositoryRequestWrapper\). This operation is performed inside SessionRepositoryFilter, which is the servlet filter that needs to be configured in the web.xml to intercept the request flow \(before Spring MVC\).
 
 To do its job, the SessionRepositoryFilter must have an HttpSession implementation. At some point, we registered the RedisHttpSessionConfiguration bean. This bean defines a couple of other beans, and among them is a sessionRepository, which is a RedisOperationsSessionRepository.
 
@@ -558,7 +559,8 @@ See how the SessionRepositoryFilter is important for bridging across the applica
 
 ### CookieHttpSessionStrategy
 
-We have registered an HttpSessionStrategy implementation: RootPathCookieHttpSessionStrategy. This class is a customized version \(in our codebase\) of the Spring CookieHttpSessionStrategy.
+We have registered an HttpSessionStrategy implementation:  
+ RootPathCookieHttpSessionStrategy. This class is a customized version \(in our codebase\) of the Spring CookieHttpSessionStrategy.
 
 Because we wanted to pass the cookie from cloudstreetmarket-api to cloudstreetmarket-websocket, the cookie path \(which is a property of a cookie\) needed to be set to the root path \(and not the servlet context path\). Spring Session 1.1+ should offer a configurable path feature.
 
@@ -566,14 +568,175 @@ Because we wanted to pass the cookie from cloudstreetmarket-api to cloudstreetma
 
 因为我们想要将cookie从cloudstreetmarket-api传递到cloudstreetmarket-websocket，所以需要将cookie路径（cookie的属性）设置为根路径（而不是servlet上下文路径）。 Spring会话1.1+应该提供一个可配置的路径功能。
 
-https://github.com/spring-projects/spring-session/issues/155
+[https://github.com/spring-projects/spring-session/issues/155](https://github.com/spring-projects/spring-session/issues/155)
 
-  
 For now, our RootPathCookieHttpSessionStrategy \(basically CookieHttpSessionStrategy\) produces and expects cookies with a SESSION name:
 
 现在，我们的RootPathCookieHttpSessionStrategy（基本上是CookieHttpSessionStrategy）生成并期望具有**SESSION**名称的Cookie：
 
 ![](/assets/150.png)
 
+Currently, only cloudstreetmarket-api produces such cookies \(the two other web apps have been restricted in their cookie generation capabilities so they don't mess up our sessions\).
+
+目前，只有cloudstreetmarket-api生成这样的cookie（另外两个web应用程序的cookie生成功能受到限制，所以他们不会搞乱我们的sessions）。
+
+### Spring Data Redis and Spring Session Data Redis
+
+Do you remember our good friend Spring Data JPA? Well now, Spring Data Redis follows a similar purpose but for the Redis NoSQL key-value store:
+
+Spring数据Redis和Spring会话数据Redis
+
+你还记得我们的好朋友Spring Data JPA吗？ 现在，Spring Data Redis遵循类似的目的，但是对于Redis NoSQL键值存储：
+
+"The Spring Data Redis \(framework makes it easy to write Spring applications that use the Redis key value store by eliminating the redundant tasks and boiler plate code required for interacting with the store through Spring's excellent infrastructure support."
+
+“Spring Data Redis（框架使得使用Redis键值存储的Spring应用程序变得很容易，通过消除通过Spring的优秀基础架构支持与store 交互所需的冗余任务和锅炉板代码）。
+
+Spring Session Data Redis is the Spring module that specifically implements Spring Data Redis for the purpose of Spring Session management.
+
+Spring Session Data Redis是Spring模块，它专门实现了Spring Data Redis，用于Spring Session管理。
+
+### The Redis Session manager for Tomcat
+
+Apache Tomcat natively provides clustering and session-replication features. However, these features rely on load balancers sticky sessions. Sticky sessions have pros and cons for scalability. As cons, we can remember that sessions can be lost when servers go down. Also the stickiness of sessions can induce a slow loading time when we actually need to respond to a surge of traffic.
+
+We have also been using an open source project from James Coleman that allows a Tomcat servers to store non-sticky sessions in Redis immediately on session creation for potential uses by other Tomcat instances. This open source project can be reached at the following address:
+
+Tomcat的Redis会话管理器
+
+Apache Tomcat本地提供集群和session-replication功能。 但是，这些功能依赖于负载平衡器sticky sessions。 sticky sessions具有可扩展性的优点和缺点。 作为缺点，我们可以记住，当服务器关闭时，会话可能会丢失。 此外，当我们实际需要响应大量的通信量时，会话的粘性可能导致缓慢的加载时间。
+
+我们还使用了James Coleman的开源项目，允许Tomcat服务器在会话创建时立即在Redis中存储非粘性会话，以供其他Tomcat实例潜在使用。 可以通过以下地址访问此开源项目：
+
+https://github.com/jcoleman/tomcat-redis-session-manager
+
+  
+However, this project doesn't officially support Tomcat 8. Thus, another fork went further in the Tomcat Release process and is closer from the Tomcat 8 requirements:
+
+然而，这个项目没有正式支持Tomcat 8.因此，另一个分支在Tomcat发布过程中进一步发展，并且离Tomcat 8的要求更近：
+
+https://github.com/rmohr/tomcat-redis-session-manager
+
+  
+We forked this repository and provided an adaptation for Tomcat 8 in https://github.com/alex-bretet/tomcat-redis-session-manager.
+
+The tomcat-redis-session-manager-2.0-tomcat-8.jar copied to tomcat/lib comes from this repository.
+
+我们分配了这个存储库，并在https://github.com/alex-bretet/tomcat-redis-session-manager中为Tomcat 8提供了一个修改。
+
+将tomcat-redis-session-manager-2.0-tomcat-8.jar复制到tomcat / lib来自此存储库。
+
+> Tomcat 8 is still recent, and time is required for peripheral tools to follow releases. We don't provide tomcat-redis-session-manager-2.0-tomcat-8.jar for production use.
+>
+> Tomcat 8仍然是最新的，外围工具需要时间来跟踪发布。 我们不提供tomcat-redis-session-manager-2.0-tomcat-8.jar供生产使用。
+
+Viewing/flushing sessions in Redis
+
+In the main installation directory for Redis, an executable for a command line tool \(Cli\) can be found. This executable can be launched from the command:
+
+在Redis中查看/刷新会话
+
+在Redis的主安装目录中，可以找到命令行工具（Cli）的可执行文件。 这个可执行文件可以从命令启动：
+
+**`$ src/redis-cli `**或 **`$ redis-cli.exe`**
+
+  
+This executable gives access to the Redis console. From there, for example, the KEY \* command lists all the active sessions:
+
+此可执行文件可访问Redis控制台。 从那里，例如，KEY \*命令列出所有活动会话：
+
+```
+127.0.0.1:6379> keys *
+1) "spring:session:sessions:4fc39ce3-63b3-4e17-b1c4-5e1ed96fb021"
+2) "spring:session:expirations:1418772300000"
+```
+
+The FLUSHALL command clears all the active sessions:
+
+FLUSHALL命令清除所有活动会话：
+
+```
+redis 127.0.0.1:6379> FLUSHALL
+OK
+```
+
+> Discover the Redis client language with their online tutorial accessible at http://try.redis.io.
+>
+> 通过http://try.redis.io可访问的在线教程了解Redis客户端语言。
+
+securityContextPersistenceFilter
+
+We make use of this filter in the cloudstreetmarket-websocket Spring Security filter chain. Its role consists of injecting an external Spring Security context into a SecurityContextHolder from the configured SecurityContextRepository:
+
+我们在cloudstreetmarket-websocket Spring Security过滤器链中使用此过滤器。 它的作用包括从配置的SecurityContextRepository中将一个外部Spring Security上下文注入到一个SecurityContextHolder中：
+
+```js
+<bean id="securityContextPersistenceFilter" class="org.sfw.security.web.context.SecurityContextPersistenceFilter">
+    <constructor-arg name="repo" ref="httpSessionSecurityContextRepo" />
+</bean>
+<bean id="httpSessionSecurityContextRepo" class='org.sfw.security.web.context.HttpSessionSecurityContextRepository'>
+    <property name='allowSessionCreation' value='false' />
+</bean>
+```
+
+This filter interacts with SecurityContextRepository to persist the context once the filter chain has been completed. Combined with Spring Session, this filter is very useful when you need to reuse an authentication that has been performed in another component \(another web app in our case\).
+
+After this point, we have also been able to declare a `global-method-security` element \(of the `Spring Security` namespace\) that allows us to make use of `@PreAuthorize` annotations in` @MessageMapping` annotated methods \(our message handling methods\):
+
+此过滤器与SecurityContextRepository交互，以在过滤器链完成后保持上下文。 结合Spring Session，当你需要重用在另一个组件（在我们的例子中是另一个web应用）上执行的认证时，这个过滤器是非常有用的。
+
+在这一点之后，我们还能够声明一个`global-method-security`元素（`Spring Security`命名空间），它允许我们在`@MessageMapping`注解方法（我们的消息处理方法）中使用`@PreAuthorize`注解：
+
+```js
+<global-method-security secured-annotations="enabled" pre-postannotations="enabled" />
+```
+
+### AbstractSessionWebSocketMessageBrokerConfigurer
+
+This is a long title. We have used this abstract class to give our WebSocketConfig the ability to:
+
+* Ensure sessions are kept alive on incoming web socket messages
+
+* Ensure that WebSocket sessions are destroyed when session terminate
+
+这是一个长标题。 我们已经使用这个抽象类给我们的WebSocketConfig的技术：
+
+* 确保会话在传入的Web套接字消息上保持活动状态
+
+* 确保在会话终止时WebSocket会话被销毁
+
+### AbstractSecurityWebSocketMessageBrokerConfigurer
+
+In a similar fashion, this abstract class provides authorization capabilities to our WebSocketSecurityConfig bean. Thanks to it, the WebSocketSecurityConfig bean now controls the destinations that are allowed for incoming messages.
+
+以类似的方式，此抽象类为我们的WebSocketSecurityConfig bean提供授权功能。 感谢它，WebSocketSecurityConfig bean现在控制允许传入消息的目的地。
+
+## There's more…
+
+### Spring Session
+
+Once again, we recommend the Spring reference document on Spring Session, which is very well done. Please check it out:
+
+再一次，我们推荐在Spring Session上使用Spring参考文档，这是非常好的。 请检查一下：
+
+http://docs.spring.io/spring-session/docs/current/reference/html5
+
+###  Apache HTTP proxy extra configuration
+
+The few lines added to` httpd.conf` serve the purpose of rewriting the WebSocket scheme to ws during the WebSocket handshake. Not doing this causes SockJS to fall back to its XHR options \(one WebSocket emulation\).
+
+Apache HTTP代理额外配置
+
+添加到`httpd.conf`的几行用于在WebSocket握手期间将WebSocket方案重写为ws的目的。 不这样做会导致SockJS回退到其XHR选项（一个WebSocket仿真）。
+
+### Spring Data Redis
+
+Also, we recommend that you read more about the Spring Data Redis project \(in its reference document\):
+
+此外，我们建议您阅读有关Spring Data Redis项目（在其参考文档中）的更多信息：
+
+http://docs.spring.io/spring-data/data-redis/docs/current/reference/html
+
+  
 
 
