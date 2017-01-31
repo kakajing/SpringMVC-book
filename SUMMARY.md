@@ -41,9 +41,11 @@
     * [使用bean验证支持验证资源](使用bean验证支持验证资源.md)
     * [使REST的消息和内容国际化](使rest的消息和内容国际化.md)
     * [使用HTML5 AngularJS验证客户端表单](使用html5-angularjs验证客户端表单.md)
-* [第八章-通过websockets和stomp进行通信](第八章-通过websockets和stomp进行通信.md)
+* [第八章 通过websockets和stomp进行通信](第八章-通过websockets和stomp进行通信.md)
     * [使用STOMP通过SockJS流式social events](使用stomp通过sockjs流式social-events.md)
     * [使用RabbitMQ作为多协议消息代理](使用rabbitmq作为多协议消息代理.md)
     * [使用RabbitMQ和AMQP执行堆栈和消耗任务](使用rabbitmq和amqp执行堆栈和消耗任务.md)
     * [使用Spring Session和Redis保护消息](使用spring-session和redis保护消息.md)
+* [第九章 测试和故障排除](第九章-测试和故障排除.md)
+    * [使用FlyWay自动执行数据库迁移](使用flyway自动执行数据库迁移.md)
 
