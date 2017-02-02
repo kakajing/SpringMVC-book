@@ -50,4 +50,5 @@
     * [使用FlyWay自动执行数据库迁移](使用flyway自动执行数据库迁移.md)
     * [使用Mockito和Maven Surefire进行单元测试](使用mockito和maven-surefire进行单元测试.md)
     * [与Cargo，Restassured和Maven的集成测试失败保护](与cargo，restassured和maven的集成测试失败保护.md)
+    * [将Spring Bean注入集成测试](将spring-bean注入集成测试.md)
 
