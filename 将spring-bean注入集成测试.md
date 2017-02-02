@@ -63,7 +63,6 @@ For deleting social connections, we have created the following private method th
 private void deleteConnection(String spi, String id) {
     this.jdbcTemplate.update("delete from userconnection where providerUserId = ? and userId = "?", new Object[] {spi, id});
 }
-
 ```
 
 3.At the very top of the UserControllerIT class, the following two annotations can be noticed:
@@ -96,11 +95,12 @@ In its design, the SpringJUnit4ClassRunner is a direct subclass of the JUnit's B
 
 在其设计中，SpringJUnit4ClassRunner是JUnit的BlockJUnit4ClassRunner的直接子类。 SpringJUnit4ClassRunner，当加载TestContextManager时初始化。 TestContextManager管理TestContext的生命周期，并且还可以将测试事件反映到注册的TestExecutionListeners（来自`@BeforeClass`，`@AfterClass`，`@Before`和`@After`注解）。
 
-By loading a Spring context, the SpringJUnit4ClassRunner Spring context,SpringJUnit4ClassRunner enables the possibility use Spring managed beans in test classes. The SpringJUnit4ClassRunner also supports a set of annotations \(either from JUnit or from Spring test\) that can be used in test classes. The use of these annotations can be trusted for subsequently providing suitable life cycle management to context-defined objects.
+By loading a Spring context, the SpringJUnit4ClassRunner Spring context,  
+SpringJUnit4ClassRunner enables the possibility use Spring managed beans in test classes. The SpringJUnit4ClassRunner also supports a set of annotations \(either from JUnit or from Spring test\) that can be used in test classes. The use of these annotations can be trusted for subsequently providing suitable life cycle management to context-defined objects.
 
 通过加载Spring上下文，SpringJUnit4ClassRunner Spring上下文，SpringJUnit4ClassRunner启用在测试类中使用Spring托管的bean的可能性。 SpringJUnit4ClassRunner还支持一组可以在测试类中使用的注解（来自JUnit或来自Spring测试）。 可以信任这些注解的使用，以便随后向上下文定义的对象提供合适的生命周期管理。
 
-Those annotations are `@Test` \(with its expected and timeout annotation parameters\),` @Timed`, `@Repeat`, `@Ignore`, `@ProfileValueSourceConfiguration`, and `@IfProfileValue`.
+Those annotations are `@Test` \(with its expected and timeout annotation parameters\),`@Timed`, `@Repeat`, `@Ignore`, `@ProfileValueSourceConfiguration`, and `@IfProfileValue`.
 
 这些注解是`@Test`（具有其期望和超时注解参数），`@Timed`，`@Repeat`，`@Ignore`，`@ProfileValueSourceConfiguration`和`@IfProfileValue`。
 
@@ -143,7 +143,7 @@ In Chapter 1, Setup Routine for an Enterprise Spring Application, we have introd
 
 The JdbcTemplate is a key-class part of the Spring JDBC core package. It reliably allows performing of database operations with straightforward utility methods and also provides an abstraction for big chunks of boilerplate code. Once more, this tool saves us time and offers patterns to design quality products.
 
-在第1章“安装企业版Spring Application”中，我们介绍了使用Spring框架成为今天的不同模块。 一组模块是**数据访问和集成**。 此组包含JDBC，ORM，OXM，JMS和事务模块。
+在第1章“安装企业版Spring Application”中，我们介绍了使用Spring框架成为今天的不同模块。 其中一组模块是**数据访问和集成**。 此组包含JDBC，ORM，OXM，JMS和事务模块。
 
 JdbcTemplate是Spring JDBC核心包的键类部分。 它可靠地允许使用简单的实用程序方法执行数据库操作，并且还为大块的样板代码提供抽象。 再次，这个工具节省了我们的时间和提供模式设计优质的产品。
 
@@ -161,9 +161,9 @@ jdbcTemplate.update("delete from userconnection where providerUserId = ? and use
 
 Using jdbcTemplate, deleting a database element is a one-line instruction. It creates a PreparedStatement under the hood, chooses the right Type, depending upon the arguments we actually pass as values, and it manages the database connection for us, making sure to close this connection whatever happens.
 
-使用jdbcTemplate删除数据库元素是一个单行指令。 它在底层创建一个PreparedStatement，选择正确的类型，取决于我们实际传递的参数值，它管理我们的数据库连接，确保关闭这个连接，无论发生什么。
+使用jdbcTemplate删除数据库元素是一个单行指令。 它在底层创建一个PreparedStatement，选择正确的类型，取决于我们实际传递的参数值，它管理我们的数据库连接无论发生什么确保关闭这个连接。
 
-The` jdbcTemplate.update` method has been designed to issue a single SQL update operation. It can be used for inserts, updates, and also deletes.
+The`jdbcTemplate.update` method has been designed to issue a single SQL update operation. It can be used for inserts, updates, and also deletes.
 
 As often in Spring, jdbcTemplate also transforms the produced checked exceptions \(if any\) into unchecked exceptions. Here, the potential SQLExceptions would be wrapped in a RuntimeException.
 
@@ -195,7 +195,7 @@ In our example, if we would have wanted to reuse the generated connection IDs wh
 KeyHolder keyHolder = new GeneratedKeyHolder();
 jdbcTemplate.update(new PreparedStatementCreator() {
     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("insert into userconnection (accessToken, ... , secret, userId ) values (?, ?, ... , ?, ?)", new String[] {"id""});
+        PreparedStatement ps = connection.prepareStatement("insert into userconnection (accessToken, ... , secret, userId ) values (?, ?, ... , ?, ?)", new String[] {"id"});
         ps.setString(1, generateGuid());
         ps.setDate(2, new Date(System.currentTimeMillis()));
         ...
