@@ -8,9 +8,9 @@ This first recipe could appear redundant or unnecessary in regard to your educat
 
 For instance, you will certainly avoid unidentified bugs \(integration or development\). You will also experience the same interfaces as seen in the presented screenshots. Also, because the third-party products are living, you will not have the surprise of encountering unexpected screens or windows.
 
-这第一个配方可能看起来多余或不必要的教育或经验。 但是，本书中的统一配置将为您带来许多好处。
+这第一个配方可能看起来多余或不必要的教育或经验。 但是，本书中的统一配置将为你带来许多好处。
 
-例如，你一定会避免不明的错误（集成或开发）。 您还将体验与所提供的屏幕截图中所示的相同的界面。 此外，因为第三方产品是活的，你不会有遇到意外的屏幕或窗口的惊喜。
+例如，你一定会避免不明的错误（集成或开发）。 还将体验与所提供的屏幕截图中所示的相同的界面。 另外，因为第三方产品是现存的，你不会惊讶遇到意想不到的屏幕或窗口。
 
 ## **How to do it...    **
 
@@ -24,11 +24,11 @@ The product to download is not a compiled installer but a zip archive.
 
 * [ ] If you feel confident enough to use another version \(more recent\) of the Eclipse IDE for Java EE Developers, all of them can be found at [https://www.eclipse.org/downloads](https://www.eclipse.org/downloads).** **
 
-整个第一章一般需要一步一步的合作。 从下一章，我们将使用GIT，您的积极参与将被减轻。
+整个第一章一般需要一步一步的合作。 从下一章，我们将使用GIT，你的积极参与将被减轻。
 
 1. 为Java EE开发人员下载Eclipse IDE的发行版：
 
-2. [ ] 我们将在本书中使用Eclipse Luna发行版。 我们建议您安装此版本，以便完全符合我们的指南和屏幕截图。 从https//www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/lunasr1下载您选择的操作系统和环境的Luna发行版。
+2. [ ] 我们将在本书中使用Eclipse Luna发行版。 我们建议您安装此版本，以便完全符合我们的指南和屏幕截图。 从https//www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/lunasr1下载你选择的操作系统和环境的Luna发行版。
 
 要下载的产品不是已编译的安装程序，而是zip存档。
 
@@ -52,12 +52,13 @@ The product to download is not a compiled installer but a zip archive.
 
 * [ ] /home/usr/system.username/eclipse：如果你在Linux上，在这里提取
 
-* [ ] /Users/system.username/eclipse：如果您在Mac OS X上，请在此处解压缩
+* [ ] /Users/system.username/eclipse：如果你在Mac OS X上，请在此处解压缩
 
-1. Select and download JDK 8:
-2. [ ]  We suggest that you download the Oracle Hotspot JDK. Hotspot is a performant JVM implementation originally built by Sun Microsystems. Now owned by Oracle, the Hotspot JRE and JDK are downloadable for free.
+* Select and download JDK 8:
 
-3. [ ]  Then, choose the product corresponding to your machine through the Oracle website's link [http://www.oracle.com/technetwork/java/javase/](http://www.oracle.com/technetwork/java/javase/) downloads/jdk8-downloads-2133151.html.
+* [ ]  We suggest that you download the Oracle Hotspot JDK. Hotspot is a performant JVM implementation originally built by Sun Microsystems. Now owned by Oracle, the Hotspot JRE and JDK are downloadable for free.
+
+* [ ]  Then, choose the product corresponding to your machine through the Oracle website's link [http://www.oracle.com/technetwork/java/javase/](http://www.oracle.com/technetwork/java/javase/) downloads/jdk8-downloads-2133151.html.
 
 3.选择并下载JDK 8：
 
@@ -65,7 +66,7 @@ The product to download is not a compiled installer but a zip archive.
 
 * [ ] 然后，通过Oracle网站的链接http//www.oracle.com/technetwork/java/javase/ downloads / jdk8-downloads-2133151.html选择与您的计算机对应的产品。
 
-> To avoid a compatibility issue later on, do stay consistent with the architecture choice \(32 or 64 bits\) that you have made earlier for the Eclipse archive.   
+> To avoid a compatibility issue later on, do stay consistent with the architecture choice \(32 or 64 bits\) that you have made earlier for the Eclipse archive.  
 > 为了避免以后发生兼容性问题，请保持与先前为Eclipse归档所做的架构选择（32或64位）一致。
 
 1. Install JDK 8 on the operating system of your choice using the following instructions:
@@ -93,7 +94,7 @@ You must end up with the /usr/java/jdk1.8.0\_25 directory structure that contain
 在Windows上，这是使用可执行文件启动的受监控安装：
 
 ```
-    1.执行下载的文件并等待，直到到达下一个安装步骤
+1.执行下载的文件并等待，直到到达下一个安装步骤
 
     2.在安装步骤窗口中，注意目标目录并将其更改为C：\ java \ jdk1.8.X\_XX（X\_XX是指此处的最新版本，我们将在本书中使用jdk1.8.0\_25  。此外，不需要安装外部JRE，因此取消选中公共JRE功能。）
 ```
@@ -101,7 +102,7 @@ You must end up with the /usr/java/jdk1.8.0\_25 directory structure that contain
 在Linux / Mac上，执行以下步骤：
 
 ```
-   1.下载与您的环境相对应的tar.gz归档文件
+1.下载与您的环境相对应的tar.gz归档文件
 
    2.将当前目录更改为要安装Java的位置。 为了更容易的说明，让我们同意/ usr / java目录
 
@@ -114,29 +115,17 @@ You must end up with the /usr/java/jdk1.8.0\_25 directory structure that contain
 
 ## How it works…
 
-In this section we are going to provide more insights about the version of Eclipse we used and  
- about how we chose this specific version of JVM.
+In this section we are going to provide more insights about the version of Eclipse we used and about how we chose this specific version of JVM.
+
+在本节中，将提供关于我们使用的Eclipse版本以及我们如何选择这个特定版本的JVM的更多见解。
 
 ### Eclipse for Java EE developers
 
-We have successfully installed the Eclipse IDE for Java EE developers here. Comparatively  
- to Eclipse IDE for Java Developers, there are some additional packages coming along such  
- as Java EE Developer Tools, Data Tools Platform, and JavaScript Development Tools. This  
- version is appreciated for its ability to manage development servers as part of the IDE itself,  
- its capability to customize project facets, and its ability to support JPA. The Luna version is  
- officially Java SE 8 compatible; this has been a decisive factor at the time of writing.
+We have successfully installed the Eclipse IDE for Java EE developers here. Comparatively to Eclipse IDE for Java Developers, there are some additional packages coming along such as Java EE Developer Tools, Data Tools Platform, and JavaScript Development Tools. This version is appreciated for its ability to manage development servers as part of the IDE itself, its capability to customize project facets, and its ability to support JPA. The Luna version is officially Java SE 8 compatible; this has been a decisive factor at the time of writing.
 
-在本节中，我们将提供关于我们使用的Eclipse版本的更多见解  
-关于我们如何选择这个特定版本的JVM。
+Eclipse for Java EE开发人员
 
-**Eclipse for Java EE开发人员**
-
-我们已经为Java EE开发人员成功安装了Eclipse IDE。 比较  
-到Eclipse IDE for Java Developers，还有一些额外的软件包  
-作为Java EE开发工具，数据工具平台和JavaScript开发工具。 这个  
-版本是欣赏作为IDE自身的一部分管理开发服务器的能力，  
-其定制项目方面的能力，以及其支持JPA的能力。  Luna版本是  
-官方Java SE 8兼容; 这在写作时是一个决定性的因素。
+我们已经为Java EE开发人员成功安装了Eclipse IDE。 与Eclipse IDE for Java Developers相比，还有一些额外的软件包，如Java EE开发工具，数据工具平台和JavaScript开发工具。 这个版本赞赏其作为IDE自身的一部分管理开发服务器的能力，自定义项目方面的能力，以及其支持JPA的能力。 Luna版本是官方Java SE 8兼容; 这在写作时是一个决定性的因素。
 
 ### Choosing a JVM
 
@@ -146,7 +135,7 @@ There are lots of different JVM implementations, including couple of open source
 
 可以在性能，内存管理，垃圾回收和优化功能方面讨论JVM实现的选择。
 
-有很多不同的JVM实现，包括一些开源解决方案，如OpenJDK和IcedTea（RedHat）。  JVM的选择真的取决于应用程序的要求。 我们从经验和从生产部署的参考实现中选择了Oracle热点; 这个JVM实现可以被广泛的通用目的信任。 如果您必须运行Java UI应用程序，热点也表现得非常好。  Eclipse是其中之一。
+有很多不同的JVM实现，包括一些开源解决方案，如OpenJDK和IcedTea（RedHat）。  JVM的选择真的取决于应用程序的要求。 我们从经验和从生产部署的参考实现中选择了Oracle Hotspot; 这个JVM实现可以被广泛的通用目的信任。 如果必须运行Java UI应用程序，Hotspot也表现得非常好。  Eclipse是其中之一。
 
 ### **Java SE 8**
 
