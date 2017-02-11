@@ -284,27 +284,27 @@ $(function () {
 </script>
 ```
 
-## How it works...  
+## How it works...
 
 These changes don't produce fundamental UI improvements but they shape the data supply for our View layer.
 
 这些更改不会产生基本的UI改进，但它们为我们的View图层提供了数据。
 
-### The approach to handle our data  
+### The approach to handle our data
 
 We are going to review here the server side of the data-supply implementation.
 
-处理我们数据的方法  
+处理我们数据的方法
 
 我们将在这里回顾一下数据源实现的服务器端。
 
-### Injection of services via interfaces  
+### Injection of services via interfaces
 
 Forecasting application needs to feed the frontpage in dynamic data, the choice has been made to inject two service layers marketService and communityService into the controller. The problem was that we don't yet have a proper Data Access layer. \(This will be covered in Chapter 4, Building a REST API for a Stateless Architecture!\). We need the controller to be wired to render the front page though.
 
 Wiring the controller needs to be loosely coupled to its service layers. With the idea of creating dummy Service implementations in this chapter, the wiring has been designed using interfaces. We then rely on Spring to inject the expected implementations in the service dependencies, typed with the relevant Interfaces.
 
-通过接口注入服务  
+通过接口注入服务
 
 预测应用程序需要在动态数据中馈送首页，已经做出选择以将两个服务层marketService和communityService注入到控制器中。 问题是我们还没有合适的数据访问层。（这将在第4章，为无状态体系结构构建REST API！）。 我们需要连接控制器以渲染首页。
 
@@ -322,11 +322,11 @@ Note the types IMarketService and ICommunityService, which are not DummyCommunit
 
 注意类型IMarketService和ICommunityService，它们不是DummyCommunityServiceImpl或DummyMarketServiceImpl。 否则，当切换到实际实现时，我们将被绑定到这些类型。
 
-### How does Spring choose the dummy implementations?  
+### How does Spring choose the dummy implementations?
 
 It chooses these implementations in the cloudstreetmarket-core Spring context file: csmcore-config.xml. We have defined the beans earlier:
 
-Spring如何选择虚拟实现？  
+Spring如何选择虚拟实现？
 
 它在cloudstreetmarket-core Spring上下文文件中选择这些实现：csmcore-config.xml。 我们已经定义了bean:
 
@@ -361,21 +361,21 @@ We have made use of DTOs for the variables fetched in our JSPs. Exposed DTOs can
 
 We will implement **Entities **later. It is better not to make use of these **Entities **in the rendering or version-specific logic, but instead defer them to a layer dedicated to this purpose. Although, it must be specified that creating a DTO layer produces a fair amount of boilerplate code related to type conversion \(impacting both sides, other layers, tests, and so on\).
 
-要在View层中使用DTO  
+要在View层中使用DTO
 
 我们使用DTO来获取我们的JSP中获取的变量。 当涉及到同时维护多个版本时，暴露的DTO在Web服务中特别有用。 更一般地，当目标和目标对象明显不同时，实现DTO。
 
 我们将在以后实现**Entities **。 最好不要在渲染或版本特定的逻辑中使用这些**Entities **，而是将它们推迟到专用于此目的的层。 虽然，必须指定创建DTO层生成与类型转换相关的大量样板代码（影响双方，其他层，测试等）。
 
-### Dummy service implementations  
+### Dummy service implementations
 
 The DummyMarketServiceImpl implementation with the `getLastDayMarketActivity` method builds an activity map \(made of static daily times associated to values for the market, the index\). It returns a new DailyMarketActivityDTO instance \(built from this map\), it is in the end a wrapper carrying the daily activity for one single market or Index such as DAX 30.
 
-The `getLastDayMarketsOverview `method returns a list of MarketOverviewDTOs also constructed from hardcoded data. It emulates an overview of daily activities for a couple of markets \(indices\).
+The `getLastDayMarketsOverview`method returns a list of MarketOverviewDTOs also constructed from hardcoded data. It emulates an overview of daily activities for a couple of markets \(indices\).
 
 The DummyCommunityServiceImpl implementation with its getLastUserPublicActivity method returns a list of instantiated UserActivityDTO, which simulates the last six logged user activities.
 
-虚拟服务实现  
+虚拟服务实现
 
 使用`getLastDayMarketActivity`方法的DummyMarketServiceImpl实现构建活动映射（由与market的值相关联的静态日常时间，索引）。 它返回一个新的DailyMarketActivityDTO实例（从这个映射构建），它是一个包装器，承载单个market 或索引（如DAX 30）的每日活动。
 
@@ -383,7 +383,7 @@ The DummyCommunityServiceImpl implementation with its getLastUserPublicActivity 
 
 DummyCommunityServiceImpl实现及其getLastUserPublicActivity方法返回实例化的UserActivityDTO的列表，该列表模拟最后六个记录的用户活动。
 
-### Populating the Model in the controller  
+### Populating the Model in the controller
 
 Presenting the possible method-handler arguments in the first recipe of this chapter, we have seen that it can be injected-as-argument a Model. This Model can be populated with data within the method and it will be transparently passed to the expected View.
 
@@ -395,13 +395,13 @@ That is what we have done in the fallback method-handler. We have passed the thr
 
 这就是我们在后备方法处理程序中所做的。 我们将Service层中的三个结果传递给threeMarketActivity，dailyMarketsActivity和recentUserActivity三个变量，以便它们可以在View中使用。
 
-### Rendering variables with the JSP EL  
+### Rendering variables with the JSP EL
 
 The JSP Expression Language allows us to access application data stored in JavaBeans components. The notation ${…} used to access variables such as `${recentUserActivity}` or `${dailyMarketActivity.marketShortName}`is typically a JSP EL notation.
 
 An important point to remember when we want to access the attributes of an object \(like marketShortName for dailyMarketActivity\) is that the object class must offer JavaBeans standard getters for the targeted attributes.
 
-In other words, `dailyMarketActivity.marketShortName `refers in the MarketOverviewDTO class to an expected:
+In other words, `dailyMarketActivity.marketShortName`refers in the MarketOverviewDTO class to an expected:
 
 使用JSP EL呈现变量**  **
 
@@ -418,7 +418,7 @@ public String getMarketShortName() {
 }
 ```
 
-### Implicit objects  
+### Implicit objects
 
 The JSP EL also offers implicit objects, usable as shortcuts in the JSP without any declaration or prepopulation in the model. Among these implicit objects, the different scopes pageScope, requestScope, sessionScope, and applicationScope reflect maps of attributes in the related scope.
 
@@ -485,13 +485,13 @@ This description of operators comes from the JavaEE 5 tutorial.
 
 这个操作符的描述来自JavaEE 5教程。
 
-### Rendering variables with the JSTL  
+### Rendering variables with the JSTL
 
 The JSP Standard Tag Library \(JSTL\) is a collection of tools for JSP pages. It is not really a brand new feature of Java web but it is still used.
 
 The tags the most used are probably Core and I18N when we need a display logic, or when we need to format data or to build a hierarchy in the View layer.
 
-使用JSTL呈现变量  
+使用JSTL呈现变量
 
 JSP标准标记库（JSTL）是JSP页面的工具集合。 这不是真正的Java Web的一个全新的功能，但它仍然使用。
 

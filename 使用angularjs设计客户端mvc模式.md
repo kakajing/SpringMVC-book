@@ -4,15 +4,15 @@ This recipe explains the installation and the configuration of AngularJS to mana
 
 
 
-### Getting ready
+## Getting ready
 
 In this recipe, we explain how we got rid of the rendering logic introduced previously in the JSPs to build the DOM. We will now rely on AngularJS for this job.
 
 Even if we don't have yet a REST API that our frontend could query, we will temporarily make the JSP build the needed JavaScript objects as if they were provided by the API.
 
-在这个配方中，我们解释了我们如何摆脱前面在JSP中引入的渲染逻辑来构建DOM。 我们现在将依靠AngularJS来完成这项工作。
+在这个配方中，解释了我们如何摆脱前面在JSP中引入的渲染逻辑来构建DOM。 我们现在将依靠AngularJS来完成这项工作。
 
-即使我们还没有一个我们的前端可以查询的REST API，我们将暂时使JSP构建所需的JavaScript对象，就像它们由API提供的一样。
+即使我们还没有一个我们的前端可以查询的REST API，将暂时使JSP构建所需的JavaScript对象，就像它们由API提供的一样。
 
 AngularJS is an open source Web application Framework. It provides support for building single-page applications that can directly accommodate microservice architecture requirements. The first version of AngularJS was released in 2009. It is now maintained by Google and an open source community.
 
@@ -20,37 +20,37 @@ AngularJS is a whole topic in itself. As a Framework, it's deep and wide at the 
 
 For this reason, we are going to highlight details, features, and characteristics of the Framework that we can use to our advantage for the application.
 
-AngularJS是一个开源的Web应用程序框架。 它为构建可以直接适应微服务体系结构要求的单页应用程序提供支持。  AngularJS的第一个版本于2009年发布。它现在由Google和一个开源社区维护。
+AngularJS是一个开源的Web应用程序框架。 它为构建可以直接适应微服务体系结构要求的单页应用程序提供支持。AngularJS的第一个版本于2009年发布。它现在由Google和一个开源社区维护。
 
-AngularJS本身就是一个整体主题。 作为一个框架，它的深度和广泛的同时。 试图把它作为一个整体，将使我们超出了本书的范围，并不真的适合我们的方法。
+AngularJS本身就是一个整体主题。 作为一个框架，它的深度和广度在同一时期。 试图把它作为一个整体，将使我们超出了本书的范围，并不真的适合我们的方法。
 
-因此，我们将重点介绍框架的细节，特性和特性，以便我们为应用程序使用它们。
+出于这个原因，我们要突出的细节，功能和框架的特点，以便我们为应用程序使用它们。
 
 
 
-### **How to do it...  **
+### How to do it...
 
-**Setting up the DOM and creating modules  **
+### Setting up the DOM and creating modules
 
-1. Still from the previously checked-out v2.x.x branch, the index.jsp file has been added an Angular directive to the HTML tag:
+1.Still from the previously checked-out v2.x.x branch, the index.jsp file has been added an Angular directive to the HTML tag:
 
 `<HTML ng-app="cloudStreetMarketApp">`
 
-1. The AngularJS JavaScript library \(angular.min.js from [https://angularjs.org\](https://angularjs.org\)\) has been placed in the cloudstreetmarket-webapp/src/main/webapp/js directory.
+2.The AngularJS JavaScript library \(angular.min.js from [https://angularjs.org](https://angularjs.org)) has been placed in the cloudstreetmarket-webapp/src/main/webapp/js directory.
 
-**设置DOM和创建模块  **
+设置DOM和创建模块
 
-1. 仍然从以前检出的v2.x.x分支，index.jsp文件已经添加了一个Angular指令到HTML标签：
+1.仍然从以前检出的v2.x.x分支，index.jsp文件已经添加了一个Angular指令到HTML标签：
 
    &lt;HTML ng-app =“cloudStreetMarketApp”&gt;
 
-2. AngularJS JavaScript库（来自https//angularjs.org的angular.min.js）已放置在cloudstreetmarket-webapp / src / main / webapp / js目录中。
+2.AngularJS JavaScript库（来自https//angularjs.org的angular.min.js）已放置在cloudstreetmarket-webapp / src / main / webapp / js目录中。
 
 The index.jsp file has been added a wrapper landingGraphContainerAndTools div around landingGraphContainer, a select box and an ng-controller="homeFinancialGraphController":
 
-index.jsp文件已经添加了一个包装器landingGraphContainerAndTools在landingGraphContainer周围，一个选择框和一个ng-controller =“homeFinancialGraphController”：
+index.jsp文件已经添加了一个包装器landingGraphContainerAndTools在landingGraphContainer周围，一个选择框和一个`ng-controller =“homeFinancialGraphController”`：
 
-```
+```java
 <div id='landingGraphContainer' ng-controller="homeFinancialGraphController">
     <select class="form-control centeredElementBox">
         <option value="${dailyMarketActivity.marketId}">
@@ -64,7 +64,7 @@ The whole tableMarketPrices div has been reshaped in the following way:
 
 整个tableMarketPrices div已按以下方式重新形成：
 
-```
+```javascript
 <div id='tableMarketPrices'>
     <script>
         var dailyMarketsActivity = [];
@@ -108,7 +108,7 @@ Then, the `<div id="divRss3">` div has received significant refactoring:
 
 然后，`<div id =“divRss3”>` div已经收到了重大的重构：
 
-```
+```javascript
 <div id="divRss3">
     <ul class="feedEkList" data-ngcontroller='homeCommunityActivityController'>
         <script>
@@ -150,7 +150,7 @@ The graph generation section has disappeared, and it is now replaced with:
 
 图形生成部分已消失，现在替换为：
 
-```
+```javascript
 <script>
     var cloudStreetMarketApp = angular.module('cloudStreetMarketApp', []);
     var tmpYmax = <c:out value="${dailyMarketActivity.maxValue}"/>;
@@ -162,7 +162,7 @@ This graph generation has been externalized in one of the three custom JavaScrip
 
 此图形生成已在三个自定义JavaScript文件中的一个中外部化，包括在声明中：
 
-```
+```javascript
 <script src="js/angular.min.js"></script>
 
 <script src="js/home_financial_graph.js"></script>
@@ -176,20 +176,19 @@ We are going to see those three custom JavaScript files next.
 
 
 
-### **Defining the module's components**
+### Defining the module's components
 
 1. As introduced, three custom JavaScript files are located in the cloudstreetmarket-webapp/src/main/webapp/js directory.
 
 2. The first one, home\_financial\_graph.js, relates to the graph. It creates a factory whose ultimate role is to pull and provide data:
 
-**定义模块的组件  
-**
+定义模块的组件  
 
-1.如前所述，三个自定义JavaScript文件位于cloudstreetmarket-webapp / src / main / webapp / js目录中。
+1.如前所述，三个自定义JavaScript文件位于cloudstreetmarket-webapp/src/main/webapp/js目录中。
 
 2.第一个，home\_financial\_graph.js，与图有关。 它创建了一个工厂，其最终作用是提取和提供数据：
 
-```
+```javascript
 cloudStreetMarketApp.factory("financialDataFactory",
  function () {
 
@@ -211,7 +210,7 @@ This same file also creates a controller:
 
 同一个文件也创建一个控制器：
 
-```
+```javascript
 cloudStreetMarketApp.controller('homeFinancialGraphController', function ($scope, financialDataFactory){
 
     readSelectValue();
@@ -253,10 +252,10 @@ cloudStreetMarketApp.controller('homeFinancialGraphController', function ($scope
 The second file: home\_financial\_table.js relates to the markets overview table.  
 Just like home\_financial\_graph.js, it creates a factory:
 
-第二个文件：home\_financial\_table.js与市场概览表相关。  
+第二个文件：home\_financial\_table.js与markets overview表相关。  
 就像home\_financial\_graph.js一样，它创建了一个工厂：
 
-```
+```javascript
 cloudStreetMarketApp.factory("financialMarketsFactory", function () {
     var data=[];
     return {
@@ -282,7 +281,7 @@ The home\_financial\_table.js file also have its own controller:
 
 home\_financial\_table.js文件也有自己的控制器：
 
-```
+```javascript
 cloudStreetMarketApp.controller('homeFinancialTableController',function ($scope, financialMarketsFactory){
 
     financialMarketsFactory.pull();
@@ -290,13 +289,12 @@ cloudStreetMarketApp.controller('homeFinancialTableController',function ($scope,
 });
 ```
 
-1. The third and last file, home\_community\_activity.js relates to the community activity table. It defines a factory:
+3.The third and last file, home\_community\_activity.js relates to the community activity table. It defines a factory:
 
-3.第三个也是最后一个文件，home\_community\_activity.js与社区活动表有关。 它定义了一个工厂：
+3.第三个也是最后一个文件，home\_community\_activity.js与community activity表有关。 它定义了一个工厂：
 
-```
-cloudStreetMarketApp.factory("communityFactory", function
-() {
+```javascript
+cloudStreetMarketApp.factory("communityFactory", function() {
     var data=[];
     return {
         fetchData: function () {
@@ -326,16 +324,14 @@ And its controller:
 
 及其控制器：
 
-```
+```javascript
 cloudStreetMarketApp.controller('homeCommunityActivityController', function ($scope, communityFactory){
     communityFactory.pull();
     $scope.communityActivities = communityFactory.fetchData();
 });
 ```
 
-### 
-
-### How it works...
+## How it works...
 
 To understand better how our AngularJS deployment works, we will see how AngularJS is started and how our Angular module \(app\) is started. Then, we will discover the AngularJS Controllers and factories and finally the implemented Angular directives.
 
@@ -345,7 +341,7 @@ To understand better how our AngularJS deployment works, we will see how Angular
 
 AngularJS is automatically initialized when the DOM is loaded.
 
-**每个HTML文档有一个应用**
+每个HTML文档有一个应用
 
 当加载DOM时，AngularJS会自动初始化。
 
@@ -395,7 +391,7 @@ As introduced before, we can bootstrap an app manually, especially if we want to
 
 如前所述，我们可以手动引导应用程序，特别是如果我们想要控制初始化流程，或者如果我们每个文档有多个应用程序。 代码如下：
 
-```
+```javascript
 angular.element(document).ready(function() {
     angular.bootstrap(document, ['myApp']);
 });
@@ -417,9 +413,9 @@ AngularJS控制器是框架的核心部分。 它们监视在前端发生的所�
 
 The DOM binding is operated with the directive's ng-controller:
 
-DOM绑定操作与指令的ng-controller：
+DOM绑定操作与指令的`ng-controller`：
 
-```
+```javascript
 <div ng-controller="homeFinancialGraphController">
     <table data-ng-controller='homeFinancialTableController'>
     <ul data-ng-controller='homeCommunityActivityController'>
@@ -429,7 +425,7 @@ Each controller has a scope and this scope is being passed as a function-argumen
 
 每个控制器都有一个作用域，这个作用域作为控制器声明上的函数参数传递。 我们可以读取和修改它作为一个对象：
 
-```
+```javascript
 cloudStreetMarketApp.controller('homeCommunityActivityController', function ($scope, communityFactory){
     ...
     $scope.communityActivities = communityFactory.fetchData();
@@ -443,15 +439,15 @@ The scope is synchronized with the DOM area the controller is bound to. AngularJ
 
 The AngularJS model is the controller's scope object. Unlike Backbone.js, for example, there is not really a view layer in Angular since the model is directly reflected in the DOM.
 
-The content of a scope variable can be rendered in the DOM using the {{…}} notation. For example, the $scope.example variable can be fetched in the DOM with {{example}}.
+The content of a scope variable can be rendered in the DOM using the `{{…}}` notation. For example, the `$scope.example` variable can be fetched in the DOM with `{{example}}`.
 
 双向DOM范围绑定
 
-范围与控制器绑定的DOM区域同步。  AngularJS管理DOM和控制器范围之间的双向数据绑定。 这可能是最重要的AngularJS功能要了解。
+范围与控制器绑定的DOM区域同步。AngularJS管理DOM和控制器的范围之间的双向数据绑定。这可能是最重要的功能AngularJS要了解。
 
 AngularJS模型是控制器的范围对象。 与Backbone.js不同，例如，Angular中没有真正的视图层，因为模型直接反映在DOM中。
 
-范围变量的内容可以使用{{…}}表示法在DOM中呈现。 例如，$ scope.example变量可以在具有{{example}}的DOM中获取。
+范围变量的内容可以使用`{{…}}`表示法在DOM中呈现。 例如，`$scope.example`变量可以在具有`{{example}}`的DOM中获取。
 
 
 
@@ -463,9 +459,9 @@ We will try to visit as many directives as we can along this book. For the momen
 
 AngularJS指令
 
-这些指令也是AngularJS的一个着名特性。 它们提供了直接附加到DOM的能力。 我们可以创建自己的指令或使用内置的指令。
+这些指令也是AngularJS的一个着名特性。 它们提供了直接附加到DOM的功能。 我们可以创建自己的指令或使用内置的指令。
 
-我们将尝试访问尽可能多的指令，我们可以沿着这本书。 目前，我们使用了以下。
+我们将尝试访问尽可能多的指令，可以沿着这本书。 目前，我们使用了以下。
 
 
 
@@ -475,7 +471,7 @@ In order to iterate the communityActivities and financialMarkets collections, we
 
 为了迭代communityActivities和financialMarkets集合，我们定义一个局部变量名称作为循环的一部分，每个项目使用{{…}} 符号单独访问。 代码如下：
 
-```
+```javascript
 <li data-ng-repeat="value in communityActivities">
     <div class="itemTitle">
         <div class="listUserIco {{value.defaultProfileImage}}">
@@ -499,11 +495,11 @@ In the next example, the {{value.defaultProfileImage}} variable only renders the
 
 
 
-When the user has a profile picture, the value.urlProfilePicture variable is therefore populated, the ng-if condition is satisfied, and the &lt;img&gt; element is created in the DOM.The code is as follows:
+When the user has a profile picture, the `value.urlProfilePicture` variable is therefore populated, the `ng-if` condition is satisfied, and the &lt;img&gt; element is created in the DOM.The code is as follows:
 
-当用户具有简档图片时，因此填充value.urlProfilePicture变量，满足ng-if条件，并且在DOM中创建&lt;img&gt;元素。代码如下：
+当用户具有简档图片时，因此填充`value.urlProfilePicture`变量，满足`ng-if`条件，并且在DOM中创建&lt;img&gt;元素。代码如下：
 
-```
+```javascript
 <div class="listUserIco {{value.defaultProfileImage}}">
     <img ng-if="value.urlProfilePicture" src='{{value.urlProfilePicture}}'>
 </div>
@@ -513,9 +509,9 @@ When the user has a profile picture, the value.urlProfilePicture variable is the
 
 Factories are used to obtain new object instances. We have used factories as data generator. We will also use them as services coordinator and intermediate layer between the services and Controller. The Services will pull the data from the server APIs. The code is as follows:
 
-工厂用于获取新的对象实例。 我们使用工厂作为数据生成器。 我们还将使用它们作为服务协调器和服务与控制器之间的中间层。 服务将从服务器API拉取数据。 代码如下：
+工厂用于获取新的对象实例。 我们使用工厂作为数据生成器。 还将使用它们作为服务协调器和服务与控制器之间的中间层。 服务将从服务器API拉取数据。 代码如下：
 
-```
+```javascript
 cloudStreetMarketApp.factory("communityFactory", function () {
     var data=[];
     return {
@@ -546,7 +542,7 @@ In this factory, we define two functions: pull\(\) and fetchData\(\) that popula
 
 在这个工厂中，我们定义了两个函数：pull\(\)和fetchData\(\)来填充和检索数据：
 
-```
+```javascript
 cloudStreetMarketApp.controller('homeCommunityActivityController', function ($scope, communityFactory){
     communityFactory.pull();
     $scope.communityActivities = communityFactory.fetchData();
@@ -583,9 +579,9 @@ AngularJS使用进样器执行配置的进样。 有三种注释依赖关系的�
 
 Using the inline array annotation:
 
-* 使用内联数组注释：
+* 使用内联数组注解：
 
-```
+```javascript
 cloudStreetMarketApp.controller('homeCommunityActivityController', ['$scope', 'communityFactory', 
     function ($scope, communityFactory){
     
@@ -596,9 +592,10 @@ cloudStreetMarketApp.controller('homeCommunityActivityController', ['$scope', 'c
 
 sing the $inject property annotation:
 
-* sing注入$ inject属性：
+* sing注入`$ inject`属性：
 
-```
+```javascript
+
 var homeCommunityActivityController = function ($scope, communityFactory){
     communityFactory.pull();
     $scope.communityActivities = communityFactory.fetchData();
@@ -611,9 +608,9 @@ cloudStreetMarketApp.controller('homeCommunityActivityController', homeCommunity
 
 Using the implicit annotation mode from the function parameter names:
 
-* 从函数参数名称中使用隐式注释模式：
+* 从函数参数名称中使用隐式注解模式：
 
-```
+```javascript
 cloudStreetMarketApp.controller('homeCommunityActivityController', function ($scope, communityFactory){
     communityFactory.pull();
     $scope.communityActivities = communityFactory.fetchData();
@@ -622,7 +619,7 @@ cloudStreetMarketApp.controller('homeCommunityActivityController', function ($sc
 
 While we have been using mostly the implicit annotation style and the inline array annotation style, we have to highlight the fact that the implicit annotation dependency injection will not work using JavaScript minification.
 
-虽然我们主要使用隐式注释样式和内联数组注释样式，但我们必须强调隐式注释依赖注入不会使用JavaScript缩小的工作。
+虽然我们主要使用隐式注解样式和内联数组注解样式，但我们必须强调隐式注解依赖注入不会使用JavaScript缩小的工作。
 
 
 
