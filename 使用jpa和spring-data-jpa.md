@@ -4,7 +4,7 @@ Because we have set up the configuration for the JPA and Spring Data JPA, and be
 
 在本节中，我们将连接我们的应用程序所需的业务逻辑。
 
-因为我们已经为JPA和Spring Data JPA设置了配置，并且因为我们已经定义了我们的实体及其关系，所以我们现在可以使用这个模型用于时间和节能。
+因为我们已经为JPA和Spring Data JPA设置了配置，并且因为已经定义了我们的实体及其关系，所以现在可以使用这个模型用于时间和节能。
 
 ## How to do it...
 
@@ -12,11 +12,11 @@ The following steps will guide you through the changes:
 
 1. In the edu.zipcloud.cloudstreetmarket.core.daos package, we can find the following two interfaces:
 
-以下步骤将指导您完成更改：
+以下步骤将指导你完成更改：
 
 1.在edu.zipcloud.cloudstreetmarket.core.daos包中，我们可以找到以下两个界面：
 
-```
+```java
 public interface HistoricalIndexRepository {
 
     Iterable<HistoricalIndex> findIntraDay(String code, Date of);
@@ -33,41 +33,44 @@ public interface TransactionRepository {
 }
 ```
 
-2. These two interfaces come with their respective implementations. The HistoricalIndexRepositoryImpl implementation out of the two is defined as follows:
+2.These two interfaces come with their respective implementations. The HistoricalIndexRepositoryImpl implementation out of the two is defined as follows:
 
-这两个接口带有它们各自的实现。 两者中的HistoricalIndexRepositoryImpl实现定义如下：
+2.这两个接口带有它们各自的实现。 两者中的HistoricalIndexRepositoryImpl实现定义如下：
 
-```
+```java
 @Repository
 public class HistoricalIndexRepositoryImpl implements HistoricalIndexRepository{
 
     @PersistenceContext
     private EntityManager em;
-    
+
     @Override
     public Iterable<HistoricalIndex> findIntraDay(String code,Date of){
-    
-        TypedQuery<HistoricalIndex> sqlQuery = em.createQuery("from HistoricalIndex h where h.index.code = ? and h.fromDate >= ? and h.toDate <= ? ORDER BY h.toDate asc",
+
+        TypedQuery<HistoricalIndex> sqlQuery = 
+                em.createQuery("from HistoricalIndex h where h.index.code = ? and h.fromDate >= ? and h.toDate <= ? ORDER BY h.toDate asc",
                 HistoricalIndex.class);
         sqlQuery.setParameter(1, code);
         sqlQuery.setParameter(2, DateUtil.getStartOfDay(of));
         sqlQuery.setParameter(3, DateUtil.getEndOfDay(of));
-        
+
         return sqlQuery.getResultList();
     }
-    
+
     @Override
     public Iterable<HistoricalIndex> findLastIntraDay(String code) {
-    
+
         return findIntraDay(code, findLastHistoric(code).getToDate());
     }
-    
+
     @Override
     public HistoricalIndex findLastHistoric(String code){
-    
-        TypedQuery<HistoricalIndex> sqlQuery = em.createQuery("from HistoricalIndex h where h.index.code = ? ORDER BY h.toDate desc", HistoricalIndex.class);
+
+        TypedQuery<HistoricalIndex> sqlQuery = 
+                em.createQuery("from HistoricalIndex h where h.index.code = ? ORDER BY h.toDate desc", 
+                HistoricalIndex.class);
         sqlQuery.setParameter(1, code);
-        
+
         return sqlQuery.setMaxResults(1).getSingleResult();
     }
 }
@@ -77,36 +80,36 @@ And the TransactionRepositoryImpl implementation is as follows:
 
 而TransactionRepositoryImpl的实现如下：
 
-```
+```java
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository{
 
     @PersistenceContext
     private EntityManager em;
-    
+
     @Autowired
     private TransactionRepositoryJpa repo;
-    
+
     @Override
     public Iterable<Transaction> findByUser(User user) {
         TypedQuery<Transaction> sqlQuery = em.createQuery("from Transaction where user = ?", Transaction.class);
-        
+
         return sqlQuery.setParameter(1, user).getResultList();
     }
-    
+
     @Override
     public Iterable<Transaction> findRecentTransactions(Date from) {
-    TypedQuery<Transaction> sqlQuery = em.createQuery("from Transaction t where t.quote.date >= ?",Transaction.class);
+        TypedQuery<Transaction> sqlQuery = em.createQuery("from Transaction t where t.quote.date >= ?",Transaction.class);
     
-    return sqlQuery.setParameter(1, from).getResultList();
+        return sqlQuery.setParameter(1, from).getResultList();
     }
-    
+
     @Override
     public Iterable<Transaction> findRecentTransactions(int nb) {
         TypedQuery<Transaction> sqlQuery = em.createQuery("from Transaction t ORDER BY t.quote.date desc",Transaction.class);
         return sqlQuery.setMaxResults(nb).getResultList();
     }
-    
+
     @Override
     public Iterable<Transaction> findAll() {
         return repo.findAll();
@@ -114,25 +117,25 @@ public class TransactionRepositoryImpl implements TransactionRepository{
 }
 ```
 
-3. All the other interfaces in the dao package don't have explicitly defined implementations.
+3.All the other interfaces in the dao package don't have explicitly defined implementations.
 
-4. The following bean has been added to the Spring configuration file:
+4.The following bean has been added to the Spring configuration file:
 
 3.dao包中的所有其他接口没有明确定义的实现。
 
 4.以下bean已添加到Spring配置文件中：
 
-```
+```java
 <jdbc:initialize-database data-source="dataSource">
-<jdbc:script location="classpath:/METAINF/db/init.sql"/>
+    <jdbc:script location="classpath:/METAINF/db/init.sql"/>
 </jdbc:initialize-database>
 ```
 
-5. This last configuration allows the application to execute the created init.sql file **on startup**.
+5.This last configuration allows the application to execute the created init.sql file **on startup**.
 
-6. You will notice that the cloudstreetmarket-core module has been added in its pom.xml file, a dependency to zipcloud-core for the DateUtil class that we created.
+6.You will notice that the cloudstreetmarket-core module has been added in its pom.xml file, a dependency to zipcloud-core for the DateUtil class that we created.
 
-7. To replace the two dummy implementations that we created in Chapter 2, Designing a Microservice Architecture with Spring MVC, the CommunityServiceImpl and MarketServiceImpl implementations have been created.
+7.To replace the two dummy implementations that we created in Chapter 2, Designing a Microservice Architecture with Spring MVC, the CommunityServiceImpl and MarketServiceImpl implementations have been created.
 
 5.最后一个配置允许应用程序在启动时执行创建的init.sql文件。
 
@@ -140,25 +143,29 @@ public class TransactionRepositoryImpl implements TransactionRepository{
 
 7.要替换我们在第2章使用Spring MVC设计微服务架构中创建的两个虚拟实现，已经创建了CommunityServiceImpl和MarketServiceImpl实现。
 
-> We have injected repository dependencies in these implementations using @Autowired annotations.
+
+
+> We have injected repository dependencies in these implementations using `@Autowired` annotations.
 >
-> Also,we have tagged these two implementations with the Spring @Service annotations using a declared value identifier:
+> Also,we have tagged these two implementations with the Spring `@Service` annotations using a declared value identifier:
 >
-> 我们在这些实现中使用@Autowired注释注入了存储库依赖性。
+> 我们在这些实现中使用`@Autowired`注解注入了存储库依赖性。
 >
-> 另外，我们使用一个声明的值标识符将这两个实现标记为Spring @Service注解：
+> 另外，我们使用一个声明的值标识符将这两个实现标记为Spring `@Service`注解：
 >
-> `@Service(value="marketServiceImpl")`
+> `@Service(value="marketServiceImpl")`
 >
 > `@Service(value="communityServiceImpl")`
 
-8. In the cloudstreetmarket-webapp module, the DefaultController has been modified in its @Autowired field to target these new implementations and no longer the dummy ones. This is achieved by specifying the @Qualifier annotations on the @Autowired fields.
 
-8.在cloudstreetmarket-webapp模块中，DefaultController已在其@Autowired字段中进行了修改，以定位这些新实现，而不再是伪实例。 这是通过在@Autowired字段上指定@Qualifier注释来实现的。
 
-9. Starting the server and calling the home page URL, http://localhost:8080/portal/index, should log a couple of SQL queries into the console:
+8.In the cloudstreetmarket-webapp module, the DefaultController has been modified in its `@Autowired` field to target these new implementations and no longer the dummy ones. This is achieved by specifying the `@Qualifier` annotations on the `@Autowired` fields.
 
-9.启动服务器并调用主页URL（http：// localhost：8080 / portal / index）应该将几个SQL查询记录到控制台中：
+8.在cloudstreetmarket-webapp模块中，DefaultController已在其`@Autowired`字段中进行了修改，以定位这些新实现，而不再是伪实例。 这是通过在`@Autowired`字段上指定`@Qualifier`注解来实现的。
+
+9.Starting the server and calling the home page URL, [http://localhost:8080/portal/index](http://localhost:8080/portal/index), should log a couple of SQL queries into the console:
+
+9.启动服务器并调用主页URL（[http：// localhost：8080 / portal / index](http://localhost:8080/portal/index)）应该将几个SQL查询记录到控制台中：
 
 ![](/assets/55.png)
 
@@ -171,8 +178,6 @@ Also, the Welcome page should remain the same.
 Let's see the breakdown of this recipe with the following sections.
 
 让我们看看这个配方的细节与以下部分。
-
-
 
 ### Injecting an EntityManager instance
 
@@ -188,7 +193,7 @@ The `@PersistenceContext` annotation is a JPA annotation. It allows us to inject
 
 过去由容器创建的EntityManager需要处理事务（用户或容器管理器事务）。
 
-`@PersistenceContext`注释是一个JPA注释。 它允许我们注入一个EntityManager的实例，它的生命周期由容器管理。 在我们的例子中，Spring处理这个角色。 使用EntityManager，我们可以与持久化上下文进行交互，获取受管或分离的实体，并间接查询数据库。
+`@PersistenceContext`注解是一个JPA注解。 它允许我们注入一个EntityManager的实例，它的生命周期由容器管理。 在我们的例子中，Spring处理这个角色。 使用EntityManager，我们可以与持久化上下文进行交互，获取受管或分离的实体，并间接查询数据库。
 
 ### Using JPQL
 
@@ -198,9 +203,9 @@ You must have noticed the following query in the repositories:
 
 使用Java持久性查询语言（JPQL）是一种查询持久性上下文并间接查询数据库的标准化方法。  JPQL在语法中看起来像SQL，但是在JPA管理的实体上操作。
 
-您必须在存储库中注意到以下查询：
+你必须在存储库中注意到以下查询：
 
-`from Transaction where user = ?`
+`from Transaction where user = ?`
 
 The select part of the query is optional. Parameters can be injected into the query and this step is managed by the persistence providers’ implementation. Those implementations offer protections against SQL injection \(using Prepared Statements\) With the example here, take a look at how practical it is to filter a subentity attribute:
 
@@ -212,9 +217,9 @@ It avoids declaring a join when the situation is appropriate. We can still decla
 
 它避免在情况合适时声明联接。 我们仍然可以声明一个JOIN：
 
-`from HistoricalIndex h where h.index.code = ? ORDER BY h.toDate desc`
+`from HistoricalIndex h where h.index.code = ? ORDER BY h.toDate desc`
 
-A couple of keywords \(such as ORDER\) can be used as part of JPQL to operate functions that are usually available in SQL. Find the full list of keywords in the JPQL grammar from the JavaEE 6 tutorial at http://docs.oracle.com/javaee/6/tutorial/doc/bnbuf.html.
+A couple of keywords \(such as ORDER\) can be used as part of JPQL to operate functions that are usually available in SQL. Find the full list of keywords in the JPQL grammar from the JavaEE 6 tutorial at [http://docs.oracle.com/javaee/6/tutorial/doc/bnbuf.html](http://docs.oracle.com/javaee/6/tutorial/doc/bnbuf.html).
 
 JPQL has been inspired from the earlier-created Hibernate Query Language \(HQL\).
 
@@ -236,7 +241,7 @@ Our UserRepository interface is defined as follows:
 
 我们的UserRepository接口定义如下：
 
-```
+```java
 @Repository
 public interface UserRepository extends JpaRepository<User, String>{
 
@@ -265,21 +270,21 @@ Spring Data JPA在运行时透明地创建了我们的UserRepository接口的实
 
 Without specifying anything in the configuration, we have fallen back to the configuration by default for JPA repositories, which injects an instance of our single EntityManagerFactory bean and of our single TransactionManager bean.
 
-Our custom TransactionRepositoryImpl is an example that uses both custom JPQL queries and a JpaRepository implementation. As you might guess, the TransactionRepositoryJpa implementation , which is autowired in TransactionRepositoryImpl, inherits several methods for saving, deleting, and finding,Transaction Entities.
+Our custom TransactionRepositoryImpl is an example that uses both custom JPQL queries and a JpaRepository implementation. As you might guess, the TransactionRepositoryJpa implementation , which is autowired in TransactionRepositoryImpl, inherits several methods for saving, deleting, and finding,Transaction Entities.
 
-We will also use interesting paging features offered with these methods. The findAll\(\) method, which we have pulled, is one of them.
+We will also use interesting paging features offered with these methods. The `findAll()` method, which we have pulled, is one of them.
 
 没有在配置中指定任何内容，我们已经默认为JPA存储库的配置，它注入了我们的单个EntityManagerFactory bean和单个TransactionManager bean的实例。
 
-我们的自定义TransactionRepositoryImpl是一个使用自定义JPQL查询和JpaRepository实现的示例。 正如您可能猜到的，TransactionRepositoryImpl中自动连接的TransactionRepositoryJpa实现继承了几种保存，删除和查找方法，事务实体。
+我们的自定义TransactionRepositoryImpl是一个使用自定义JPQL查询和JpaRepository实现的示例。 正如你可能猜到的，TransactionRepositoryImpl中自动连接的TransactionRepositoryJpa实现继承了几种保存，删除和查找方法，事务实体。
 
-我们还将使用这些方法提供的有趣的分页功能。  findAll（）方法，我们已经拉过，是其中之一。
+我们还将使用这些方法提供的有趣的分页功能。  `findAll()`方法，我们已经拉过，是其中之一。
 
 ### Persisting Entities
 
 Spring Data JPA also specifies the following:
 
-Saving an entity can be performed via the CrudRepository.save\(…\) method. It will persist or merge the given entity using the underlying JPA EntityManager. If the entity has not been persisted yet, Spring Data JPA will save the entity via a call to the entityManager.persist\(…\) method; otherwise, the entityManager.merge\(…\) will be called.
+Saving an entity can be performed via the `CrudRepository.save(…)` method. It will persist or merge the given entity using the underlying JPA EntityManager. If the entity has not been persisted yet, Spring Data JPA will save the entity via a call to the `entityManager.persist(…)` method; otherwise, the `entityManager.merge(…)` will be called.
 
 This is interesting behavior that we will use to prevent again, a significant amount of boilerplate code.
 
@@ -287,7 +292,7 @@ This is interesting behavior that we will use to prevent again, a significant am
 
 Spring Data JPA还规定如下：
 
-保存实体可以通过CrudRepository.save\(…\) 方法执行。 它将使用底层的JPA EntityManager持久化或合并给定的实体。 如果实体尚未被持久化，Spring Data JPA将通过对entityManager.persist\(…\) 方法的调用来保存实体; 否则，将调用entityManager.merge\(…\)。
+保存实体可以通过`CrudRepository.save(…)` 方法执行。 它将使用底层的JPA EntityManager持久化或合并给定的实体。 如果实体尚未被持久化，Spring Data JPA将通过对`entityManager.persist(…) `方法的调用来保存实体; 否则，将调用`entityManager.merge(…)`。
 
 这是一个有趣的行为，我们将使用它来防止再次，大量的样板代码。
 
@@ -303,7 +308,7 @@ We haven't made use of native SQL queries yet, but we will. It is important to k
 
 The following link points to an article from the Oracle website, which is interesting as it relates to native SQL queries:
 
-http://www.oracle.com/technetwork/articles/vasiliev-jpql-087123.html
+[http://www.oracle.com/technetwork/articles/vasiliev-jpql-087123.html](http://www.oracle.com/technetwork/articles/vasiliev-jpql-087123.html)
 
 使用本机SQL查询
 
@@ -321,11 +326,7 @@ We haven't applied any specific transaction configuration to our repository impl
 
 ## See also
 
-f Custom implementations for Spring Data repositories: With the TransactionRepositoryImpl example, by redefining the methods we need from TransactionRepositoryJpa, we present a pattern for creating custom implementations of data repositories. It somehow forces us to maintain an intermediate proxy. The related Spring document proposes a different technique that solves this issue. This technique is detailed online at http://docs.spring.io/spring-data/jpa/docs/current/reference/html/\#repositories.custom-implementations.
+f Custom implementations for Spring Data repositories: With the TransactionRepositoryImpl example, by redefining the methods we need from TransactionRepositoryJpa, we present a pattern for creating custom implementations of data repositories. It somehow forces us to maintain an intermediate proxy. The related Spring document proposes a different technique that solves this issue. This technique is detailed online at [http://docs.spring.io/spring-data/jpa/docs/current/reference/html/\\#repositories.custom-implementations](http://docs.spring.io/spring-data/jpa/docs/current/reference/html/\#repositories.custom-implementations).
 
 Spring Data存储库的自定义实现：使用TransactionRepositoryImpl示例，通过重新定义我们需要的TransactionRepositoryJpa方法，我们提供了一种用于创建数据存储库的自定义实现的模式。 它不知何故迫使我们保持一个中间代理。 相关的Spring文档提出了一种解决这个问题的不同技术。 此技术在http//docs.spring.io/spring-data/jpa/docs/current/reference/html/\#repositories.custom-implementations中详细地在线。
-
-
-
-
 
