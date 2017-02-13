@@ -24,19 +24,19 @@ Java持久性API（JPA）是在不同版本中生成的规范从2006年（JPA 1.
 
 不止是**Enterprise JavaBeans \(EJB\)**的升级，JPA几乎是一个完整的重新设计。 当时，领先的对象关系映射解决方案提供商（如
 
-Hibernate）和J2EE应用服务器（如WebSphere，JBoss）一起参与，并且全局结果已经不可思议地更简单。 所有类型的EJB（有状态，无状态，和实体）现在是简单的纯旧Java对象（PO​​JO），富有特定元数据作为注释很好地呈现。
+Hibernate）和J2EE应用服务器（如WebSphere，JBoss）一起参与，并且全局结果已经不可思议地更简单。 所有类型的EJB（有状态，无状态，和实体）现在是简单的纯旧Java对象（PO​​JO），富有特定元数据作为注解很好地呈现。
 
 ### The Entities' benefits
 
 Entities play a key role in the EJB3 model. As simple POJOs, they can be used in every single layer of the application.
 
-Ideally, an entity represents an identifiable functional unit within a business domain. The norm is to make an entity representing a database table row. As simple POJOs, entities can rely on inheritance \(the IS-A relationship\) and can have attributes \(the HAS-A relationship\), just as a database schema is normally be described with. Through these relationships, an entity establishes connections with other Entities. These connections are described with @Annotations, which make the entity metadata.
+Ideally, an entity represents an identifiable functional unit within a business domain. The norm is to make an entity representing a database table row. As simple POJOs, entities can rely on inheritance \(the IS-A relationship\) and can have attributes \(the HAS-A relationship\), just as a database schema is normally be described with. Through these relationships, an entity establishes connections with other Entities. These connections are described with `@Annotations`, which make the entity metadata.
 
 实体的好处
 
 实体在EJB3模型中发挥关键作用。 作为简单的POJO，它们可以用于应用程序的每一层。
 
-理想地，实体表示业务域内的可识别功能单元。 规范是使实体表示数据库表行。 作为简单的POJO，实体可以依赖于继承（IS-A关系）并且可以具有属性（HAS-A关系），正如通常用数据库模式描述的那样。 通过这些关系，实体建立与其他实体的连接。 这些连接用@Annotations描述，它们构成实体元数据。
+理想地，实体表示业务域内的可识别功能单元。 规范是使实体表示数据库表行。 作为简单的POJO，实体可以依赖于继承（IS-A关系）并且可以具有属性（HAS-A关系），正如通常用数据库模式描述的那样。 通过这些关系，实体建立与其他实体的连接。 这些连接用`@Annotations`描述，它们构成实体元数据。
 
 An entity must be seen as the application-equivalent element of a database table row. JPA allows to operate this element and its whole ecosystem as a Java object hierarchy and to persist it as such.
 

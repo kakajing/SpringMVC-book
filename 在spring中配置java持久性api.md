@@ -22,7 +22,7 @@ We will see that our JPA configuration in Spring is done by defining two beans: 
 
 2.如前所述，我们向Spring配置文件（在核心模块中）添加了一些bean csmcore-config.xml：
 
-```
+```js
 <jpa:repositories base-package="edu.zc.csm.core.daos" />
 <bean id="dataSource" class="org.sfw.jdbc.datasource.DriverManagerDataSource>
     <property name="driverClassName">
@@ -56,7 +56,7 @@ We will see that our JPA configuration in Spring is done by defining two beans: 
 </bean>
 ```
 
-1. Finally, the following dependencies have been added to the parent and core projects:
+3.Finally, the following dependencies have been added to the parent and core projects:
 
 3.最后，以下依赖项已添加到父项目和核心项目中：
 
@@ -152,7 +152,7 @@ A more extended example of our bean configuration on Spring Data JPA could be th
 
 Spring Data JPA配置
 
-我们将使用Spring Data JPA项目中的一些非常有用的工具。 这些工具旨在简化持久层的开发（和维护）。 最有趣的工具可能是存储库抽象。 您将看到，为某些数据库查询提供实现是可选的。 如果运行时它们的声明中的标准匹配，那么将在运行时从方法签名生成仓库接口的实现。
+我们将使用Spring Data JPA项目中的一些非常有用的工具。 这些工具旨在简化持久层的开发（和维护）。 最有趣的工具可能是存储库抽象。 你将看到，为某些数据库查询提供实现是可选的。 如果运行时它们的声明中的标准匹配，那么将在运行时从方法签名生成仓库接口的实现。
 
 例如，Spring将推断出以下方法签名的实现（如果User实体有一个String userName字段）：
 
@@ -160,7 +160,7 @@ Spring Data JPA配置
 
 Spring Data JPA上我们的bean配置的更多扩展示例可以是以下：
 
-```
+```js
 <jpa:repositories base-package="edu.zipcloud.cloudstreetmarket.core.daos" 
     entity-manager-factory-ref="entityManagerFactory"
     transaction-manager-ref="transactionManager"/>
@@ -173,12 +173,12 @@ As you can see, Spring Data JPA contains a custom namespace that allows us to de
 
 * Providing a transaction-manager-ref attribute is also optional if you have only one PlatformTransactionManager bean configured in ApplicationContext. It explicitly wires PlatformTransactionManager, which is to be used with the detected repositories.
 
-如您所见，Spring Data JPA包含一个自定义命名空间，允许我们定义以下存储库bean。 此命名空间可以配置如下：
+如你所见，Spring Data JPA包含一个自定义命名空间，允许我们定义以下存储库bean。 此命名空间可以配置如下：
 
 * 在此命名空间中提供`base-package`属性是强制的，以限制对Spring数据存储库的查找。
-* 如果您在ApplicationContext中只配置了一个EntityManagerFactory bean，则提供`entity-manager-factory-ref`属性是可选的。 它显式地连接EntityManagerFactory，它将与检测到的存储库一起使用。
+* 如果你在ApplicationContext中只配置了一个EntityManagerFactory bean，则提供`entity-manager-factory-ref`属性是可选的。 它显式地连接EntityManagerFactory，将与检测到的存储库一起使用。
 
-* 如果您在ApplicationContext中只配置了一个PlatformTransactionManager bean，则提供`transaction-manager-ref`属性也是可选的。 它显式地传递PlatformTransactionManager，它将与检测到的存储库一起使用。
+* 如果你在ApplicationContext中只配置了一个PlatformTransactionManager bean，则提供`transaction-manager-ref`属性也是可选的。 它显式地传递PlatformTransactionManager，将与检测到的存储库一起使用。
 
 More details can be found about this configuration on the project website at:
 

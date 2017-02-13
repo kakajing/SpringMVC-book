@@ -18,13 +18,13 @@ The following steps will help you create Entities in the application:
 
 1. All the changes from this recipe are located in the new package edu.zipcloud. cloudstreetmarket.core.entities. First, created three simple entities as shown here:
 
-以下步骤将帮助您在应用程序中创建实体：
+以下步骤将帮助你在应用程序中创建实体：
 
 1.此配方的所有更改都位于新软件包edu.zipcloud. cloudstreetmarket.core.entities中。 首先，创建三个简单的实体，如这里所示：
 
 * The User entity:
 
-```
+```java
 @Entity
 @Table(name="user")
 public class User implements Serializable{
@@ -48,7 +48,7 @@ public class User implements Serializable{
 
 * The Transaction entity:
 
-```
+```java
 @Entity
 @Table(name="transaction")
 public class Transaction implements Serializable{
@@ -77,7 +77,7 @@ public class Transaction implements Serializable{
 
 And the Market entity:
 
-```
+```java
 @Entity
 @Table(name="market")
 public class Market implements Serializable {
@@ -92,14 +92,14 @@ public class Market implements Serializable {
     @OneToMany(mappedBy = "market", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     private Set<Index> indices = new LinkedHashSet<>();
     ...
-}
+
 ```
 
-1. Then, we have created some more complex entity Types such as the abstract Historic entity:
+2.Then, we have created some more complex entity Types such as the abstract Historic entity:
 
 2.然后，我们创建了一些更复杂的实体类型，如抽象的Historic实体：
 
-```
+```java
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "historic_type")
@@ -147,7 +147,7 @@ We have also created the two Historic subtypes, HistoricalIndex and HistoricalSt
 
 我们还创建了两个Historic 子类型，HistoricalIndex和HistoricalStock：
 
-```
+```java
 @Entity
 @DiscriminatorValue("idx")
 public class HistoricalIndex extends Historic implementsSerializable {
