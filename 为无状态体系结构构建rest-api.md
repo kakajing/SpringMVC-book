@@ -34,7 +34,7 @@ REST is an architecture style. Its name is an abbreviation for Representational 
 
 REST是一种架构风格。 它的名称是Representational State Transfer的缩写。 该术语由Roy Fielding发明，Roy Fielding是HTTP规范的主要作者之一。  REST架构围绕几个标记设计：
 
-* **Identifiable resources**: Resources define the domain. A resource must be identifiable   by a URI. This URI must be as self-explanatory as possible using resource categories   and hierarchies. Our resources will be indices snapshots, stock snapshots, historical   index data, historical stock data, users, and so on.
+* **Identifiable resources**: Resources define the domain. A resource must be identifiable by a URI. This URI must be as self-explanatory as possible using resource categories and hierarchies. Our resources will be indices snapshots, stock snapshots, historical index data, historical stock data, users, and so on.
 * **HTTP as a communication protocol**: We interact with resources using a limited number of HTTP methods \(GET, POST, PUT, DELETE, HEAD, and OPTIONS\).
 
 * **Resource representation**: A resource is visualized under a specific representation. A representation usually corresponds to a media type \(application/json,application/xml, text/html\) and/or a file extension \(\*.json, \*.xml, \*.html\).
@@ -45,16 +45,12 @@ REST是一种架构风格。 它的名称是Representational State Transfer的�
 
 * **Hypermedia**: As we just mentioned, with resources come links, and those links drive conversation transitions.
 
-
-
-* **可识别资源**：资源定义域。 资源必须可以通过URI标识。此URI必须尽可能不使用资源类别和层次结构 。 我们的资源将是索引快照，股票快照，历史  索引数据，历史库存数据，用户等。
+* **可识别资源**：资源定义域。 资源必须可以通过URI标识。 使用资源类别和层次结构，此URI必须尽可能不言自明。 我们的资源将是索引快照，股票快照，历史索引数据，历史股票数据，用户等。
 * **HTTP作为通信协议**：我们使用有限数量的HTTP方法（GET，POST，PUT，DELETE，HEAD和OPTIONS）与资源交互。
-*  **资源表示**：资源在特定表示下可视化。 表示通常对应于媒体类型（application / json，application / xml，text / html）和/或文件扩展名（\* .json，\* .xml，\* .html）。
+* **资源表示**：资源在特定表示下可视化。 表示通常对应于媒体类型（application / json，application / xml，text / html）和/或文件扩展名（\* .json，\* .xml，\* .html）。
 * **无状态对话**：服务器不得保留对话的痕迹。必须禁止使用HTTP会话，并通过导航通过资源提供的链接（超媒体） 。 对每个请求重复客户端认证。
 * **可扩展性**：无状态设计意味着轻松的可扩展性。 一个请求可以分派到一个或另一个服务器。 这是负载平衡器的作用。
 * **超媒体**：正如我们刚才提到的，随着资源的链接，这些链接驱动对话转换。
-
-
 
 ## RESTful CloudStreetMarket
 

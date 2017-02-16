@@ -10,11 +10,11 @@ We are mostly going to review the XML configuration here. Then, we will test the
 
 ## How to do it...
 
-1. The RequestMappingHandlerAdapter configuration has been altered in dispatcher-context.xml. A contentNegotiationManager property has been added, as well as an xmlConverter bean:
+1.The RequestMappingHandlerAdapter configuration has been altered in dispatcher-context.xml. A contentNegotiationManager property has been added, as well as an xmlConverter bean:
 
 1.在dispatcher-context.xml中更改了RequestMappingHandlerAdapter配置。 添加了一个contentNegotiationManager属性，以及一个xmlConverter bean：
 
-```
+```js
 <bean class="org.sfw.web...method.annotation.RequestMappingHandlerAdapter">
     <property name="messageConverters">
         <list>
@@ -64,11 +64,11 @@ We are mostly going to review the XML configuration here. Then, we will test the
 </bean>
 ```
 
-2. A Maven dependency has been added to XStream as follows:
+2.A Maven dependency has been added to XStream as follows:
 
-2. XStream中添加了一个Maven依赖项，如下所示：
+2.XStream中添加了一个Maven依赖项，如下所示：
 
-```
+```js
 <dependency>
     <groupId>com.thoughtworks.xstream</groupId>
     <artifactId>xstream</artifactId>
@@ -76,15 +76,15 @@ We are mostly going to review the XML configuration here. Then, we will test the
 </dependency>
 ```
 
-3. Calling the URL: http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.json should target the getHistoIndex\(\) handler the same way as before and you should receive the same json response:
+3.Calling the URL: [http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.json](http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.json) should target the `getHistoIndex()` handler the same way as before and you should receive the same json response:
 
-3.调用URL：http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.json 应该像以前一样以getHistoIndex\(\)处理程序为目标，你应该收到相同的json响应：
+3.调用URL：[http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.json](http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.json) 应该像以前一样以`getHistoIndex()`处理程序为目标，你应该收到相同的json响应：
 
 ![](/assets/63.png)
 
-4. Also, calling the URL http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.xml should now generate the following XML formatted response:
+4.Also, calling the URL [http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.xml](http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.xml) should now generate the following XML formatted response:
 
-4.此外，调用URL http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.xml现在应该生成以下XML格式化响应：
+4.此外，调用URL [http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.xml ](http://localhost:8080/api/indices/EUROPE/^GDAXI/histo.xml现在应该生成以下XML格式化响应：) 现在应该生成以下XML格式化响应：
 
 ![](/assets/64.png)
 
@@ -102,7 +102,7 @@ As we said in the previous recipe, MarshallingHttpMessageConverter comes with th
 
 正如我们在前面的配方中所说的，MarshallingHttpMessageConverter自带了框架，但它需要spring-oxm依赖，以及marshaller和unmarshaller的定义。  spring-oxm是Maven的参考文献：
 
-```
+```js
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-oxm</artifactId>
@@ -116,7 +116,7 @@ We chose XStreamMarshaller as the provider for the XML marshalling operations:
 
 我们选择XStreamMarshaller作为XML编组操作的提供者：
 
-```
+```js
 <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
     <property name="autodetectAnnotations" value="true"/>
 </bean>
@@ -126,31 +126,29 @@ The XStream marshaller is part of the spring-oxm project. Even if it is not reco
 
 Types and fields can be annotated to customize the default behavior. You can find some examples here from their documentation:
 
-* @XStreamAlias: Used on the type, field, or attribute
+* `@XStreamAlias`: Used on the type, field, or attribute
 
-* f@XStreamImplicit: Used in collections or arrays
+* `@XStreamImplicit`: Used in collections or arrays
 
-* @XStreamAsAttribute: Used to mark a field as an attribute
+* `@XStreamAsAttribute`: Used to mark a field as an attribute
 
-* @XStreamConverter: Targets a specific converter for the field
+* `@XStreamConverter`: Targets a specific converter for the field
 
 XStream marshaller是spring-oxm项目的一部分。 即使不推荐用于外部源解析（这不是我们打算做的），它是非常好的，需要很少的配置默认情况下（没有特定的类注册或初始映射策略需要）。
 
-可以注释类型和字段以自定义默认行为。 你可以从他们的文档中找到一些例子：
+可以注解类型和字段以自定义默认行为。 你可以从他们的文档中找到一些例子：
 
-* @XStreamAlias：用于类型，字段或属性
+* `@XStreamAlias`：用于类型，字段或属性
 
-* @XStreamImplicit：用于集合或数组
+* `@XStreamImplicit`：用于集合或数组
 
-* @XStreamAsAttribute：用于将字段标记为属性
+* `@XStreamAsAttribute：`用于将字段标记为属性
 
-* @XStreamConverter：针对字段的特定转换器
-
-
+* `@XStreamConverter`：针对字段的特定转换器
 
 In our case, we have applied a minimal marshalling customization in DTOs.
 
-You can find more information about XStream on their official website: http://xstream.codehaus.org.
+You can find more information about XStream on their official website: [http://xstream.codehaus.org](http://xstream.codehaus.org).
 
 在我们的例子中，我们在DTO中应用了最小的编组定制。
 
@@ -200,7 +198,7 @@ You can define a specific query parameter if you dislike the path extension opti
 
 This option can be set as the discriminator option with the favorParameter Boolean property.
 
-如果您不喜欢路径扩展选项，则可以定义特定的查询参数。 此参数的默认名称为format。 它可以使用parameterName属性自定义，潜在的期望值是注册的格式后缀（xml，html，json，csv等）。
+如果你不喜欢路径扩展选项，则可以定义特定的查询参数。 此参数的默认名称为format。 它可以使用parameterName属性自定义，潜在的期望值是注册的格式后缀（xml，html，json，csv等）。
 
 此选项可以使用favorParameter Boolean属性设置为discriminator选项。
 
@@ -212,13 +210,13 @@ Java激活框架
 
 将useJaf Boolean属性设置为true配置为依赖于Java Activation Framework，而不是Spring MVC本身，用于后缀到介质类型映射（json对应于application / json，xml对应于application / xml，等等 ）。
 
-### @RequestMapping annotations as ultimate filters
+### `@RequestMapping` annotations as ultimate filters
 
-Finally, the controller with the @RequestMapping annotations and especially the producesattribute should have the final word on which format will be rendered.
+Finally, the controller with the `@RequestMapping` annotations and especially the producesattribute should have the final word on which format will be rendered.
 
-@RequestMapping注释作为最终过滤器
+`@RequestMapping`注解作为最终过滤器
 
-最后，带有@RequestMapping注解的控制器，特别是produce属性，应该有最后一个字，它将被渲染的格式。
+最后，带有`@RequestMapping`注解的控制器，特别是produce属性，应该有最后一个字，它将被渲染的格式。
 
 ## There's more...
 
@@ -230,21 +228,19 @@ Now we will look at the implementation of JAXB2 as an XML parser and the Content
 
 JAXB2 is the current Java specification for XML bindings. Our example with XStream was just an example and another XML marshaller can of course be used. Spring supports JAXB2. It even provides a default JAXB2 implementation in the spring-oxm package: org. springframework.oxm.jaxb.Jaxb2Marshaller.
 
-Using JAXB2 annotations in DTOs is probably a better choice for portability. Visit the Jaxb2Marshaller JavaDoc for more details about its configuration: http://docs.spring.io/autorepo/docs/spring/4.0.4.RELEASE/javadoc-api/org/springframework/oxm/jaxb/Jaxb2Marshaller.html.
+Using JAXB2 annotations in DTOs is probably a better choice for portability. Visit the Jaxb2Marshaller JavaDoc for more details about its configuration: [http://docs.spring.io/autorepo/docs/spring/4.0.4.RELEASE/javadoc-api/org/springframework/oxm/jaxb/Jaxb2Marshaller.html](http://docs.spring.io/autorepo/docs/spring/4.0.4.RELEASE/javadoc-api/org/springframework/oxm/jaxb/Jaxb2Marshaller.html).
 
 使用JAXB2实现作为XML解析器
 
 JAXB2是当前用于XML绑定的Java规范。 我们使用XStream的例子只是一个例子，当然可以使用另一个XML编组器。  Spring支持JAXB2。 它甚至在spring-oxm软件包中提供了一个默认的JAXB2实现：org.SpringFramework.oxm.jaxb.Jaxb2Marshaller。
 
-在DTO中使用JAXB2注释可能是可移植性的更好选择。 有关其配置的更多详细信息，请访问Jaxb2Marshaller JavaDoc：http//docs.spring.io/autorepo/docs/spring/4.0.4.RELEASE/javadoc-api/org/springframework/oxm/jaxb/Jaxb2Marshaller.html。
+在DTO中使用JAXB2注注解可能是可移植性的更好选择。 有关其配置的更多详细信息，请访问Jaxb2Marshaller JavaDoc：http//docs.spring.io/autorepo/docs/spring/4.0.4.RELEASE/javadoc-api/org/springframework/oxm/jaxb/Jaxb2Marshaller.html。
 
 ### The ContentNegotiationManagerFactoryBean JavaDoc
 
-The full possible configuration for ContentNegotiationManagerFactoryBean is accessible again in its JavaDoc:http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/accept/ContentNegotiationManagerFactoryBean.html
+The full possible configuration for ContentNegotiationManagerFactoryBean is accessible again in its JavaDoc:
 
-ContentNegotiationManagerFactoryBean的完整可能配置可在其JavaDoc中再次访问：http：//docs.spring.io/spring/docs/current/javadoc-api/org/springframework / web / accept / ContentNegotiationManagerFactoryBean.html
+[http://docs.spring.io/spring/docs/current/javadoc-api/org/](http://docs.spring.io/spring/docs/current/javadoc-api/org/)springframework/web/accept/ContentNegotiationManagerFactoryBean.html
 
-
-
-
+ContentNegotiationManagerFactoryBean的完整可能配置可在其JavaDoc中再次访问：http：//docs.spring.io/spring/docs/current/javadoc-api/org/springframework /web/accept/ContentNegotiationManagerFactoryBean.html
 
