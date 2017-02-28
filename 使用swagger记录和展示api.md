@@ -10,11 +10,11 @@ There isn't yet a recognized and universal standard for the format of the API me
 
 We have chosen Swagger here because it has the largest and the most active community. It has existed since 2011, and it offers a very nice UI/test harness and great configuration by default.
 
-我们经常需要为用户和客户记录API。 在记录API时，根据我们使用的工具，我们经常会得到一些额外的功能，例如能够从API元数据生成客户端代码，甚至生成API的集成测试工具。
+我们经常需要为用户和客户记录API。 在记录API时，根据我们使用的工具，经常会得到一些额外的功能，例如能够从API元数据生成客户端代码，甚至生成API的集成测试工具。
 
 对于API元数据的格式，还没有公认的通用标准。 这种标准的缺乏导致了REST文档市场上的一些不同的解决方案。
 
-我们在这里选择了Swagger，因为它拥有最大和最活跃的社区。 它自2011年以来一直存在，它提供了一个非常漂亮的UI /测试工具和伟大的配置默认情况下。
+我们在这里选择了Swagger，因为它拥有最大和最活跃的社区。 它自2011年以来一直存在，默认情况下提供了一个非常漂亮的UI /测试工具和伟大的配置。
 
 ## How to do it...
 
@@ -22,11 +22,11 @@ This section details what can be done and also what we have done in the code bas
 
 这一节详细介绍了可以做什么，以及我们在签出v4.x.x分支的代码库中做了什么。
 
-1. We have added a Maven dependency for the swagger-springmvc project \(version 0.9.5\) to cloudstreetmarket-core and cloudstreetmarket-parent:
+1.We have added a Maven dependency for the swagger-springmvc project \(version 0.9.5\) to cloudstreetmarket-core and cloudstreetmarket-parent:
 
 1.我们为swagger-springmvc项目（版本0.9.5）添加了一个Maven依赖项到cloudstreetmarket-core和cloudstreetmarket-parent：
 
-```
+```java
 <dependency>
     <groupId>com.mangofactory</groupId>
     <artifactId>swagger-springmvc</artifactId>
@@ -34,11 +34,11 @@ This section details what can be done and also what we have done in the code bas
 </dependency>
 ```
 
-1. The following swagger configuration class has been created:
+2.The following swagger configuration class has been created:
 
 2.创建了以下swagger配置类：
 
-```
+```java
 @Configuration
 @EnableSwagger //Loads the beans required by the framework
 public class SwaggerConfig {
@@ -65,30 +65,30 @@ public class SwaggerConfig {
 }
 ```
 
-1. The following configuration has been added to the dispatch-context.xml:
+3.The following configuration has been added to the dispatch-context.xml:
 
 3.以下配置已添加到dispatch-context.xml中：
 
-```
+```js
 <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 <bean class="edu.zc.csm.api.swagger.SwaggerConfig"/>
 <context:property-placeholder location="classpath*:/METAINF/properties/swagger.properties" />
 ```
 
-1. As per the previous configuration, a swagger.properties file has been added at the path src/main/resources/META-INF/properties with the content:
+4.As per the previous configuration, a swagger.properties file has been added at the path src/main/resources/META-INF/properties with the content:
 
-4.根据先前的配置，在路径src / main / resources / META-INF / properties中添加了一个swagger.properties文件，其内容如下：
+4.根据先前的配置，在路径src/main/resources/META-INF/properties中添加了一个swagger.properties文件，其内容如下：
 
-```
+```java
 documentation.services.version=1.0
 documentation.services.basePath=http://localhost:8080/api
 ```
 
-1. Our three controllers have been added a basic documentation. See the following documentation annotations added to IndexController:
+5.Our three controllers have been added a basic documentation. See the following documentation annotations added to IndexController:
 
 5.我们的三个控制器已经添加了一个基本文档。 请参阅添加到IndexController的以下文档注释：
 
-```
+```java
 @Api(value = "indices", description = "Financial indices")
 @RestController
 @RequestMapping(value="/indices",produces={"application/xml", "application/json"})
@@ -127,22 +127,22 @@ public class IndexController extends CloudstreetApiWCI {
 }
 ```
 
-1. We have downloaded the swagger UI project from [https://github.com/swagger-api/swagger-ui.This](https://github.com/swagger-api/swagger-ui.This) is a collection of static files \(JS, CSS, HTML, and pictures\). It has been pasted in the webapp directory of our cloudstreetmarket-api project.
+6.We have downloaded the swagger UI project from [https://github.com/swagger-api/swagger-ui.This](https://github.com/swagger-api/swagger-ui.This) is a collection of static files \(JS, CSS, HTML, and pictures\). It has been pasted in the webapp directory of our cloudstreetmarket-api project.
 
-6.我们从[https://github.com/swagger-api/swagger-ui下载了swagger](https://github.com/swagger-api/swagger-ui下载了swagger) UI项目。这是一个静态文件（JS，CSS，HTML和图片）的集合。 它已粘贴在cloudstreetmarket-api项目的webapp目录中。
+6.我们从[https://github.com/swagger-api/swagger-ui](https://github.com/swagger-api/swagger-ui下载了swagger) 下载了swagger UI项目。这是一个静态文件（JS，CSS，HTML和图片）的集合。 它已粘贴在cloudstreetmarket-api项目的webapp目录中。
 
-1. Finally, the following mvc namespace configuration has been added to dispatch-context.xml again in order for the Spring MVC to open access to static files in the project:
+7.Finally, the following mvc namespace configuration has been added to dispatch-context.xml again in order for the Spring MVC to open access to static files in the project:
 
 7.最后，下面的mvc命名空间配置已被添加到dispatch-context.xml中，以便Spring MVC打开对项目中的静态文件的访问权限：
 
-```
+```js
 <!-- Serve static content-->
 <mvc:default-servlet-handler/>
 ```
 
-1. When we have this configuration, accessing the following URL on the server [http://localhost:8080/api/index.html](http://localhost:8080/api/index.html) brings up the Swagger UI documentation portal:
+8.When we have this configuration, accessing the following URL on the server [http://localhost:8080/api/index.html](http://localhost:8080/api/index.html) brings up the Swagger UI documentation portal:
 
-8.当我们进行此配置时，访问服务器[http://localhost:8080/api/index.html上的以下URL，将显示Swagger](http://localhost:8080/api/index.html上的以下URL，将显示Swagger) UI文档门户：
+8.当我们进行此配置时，访问服务器[http://localhost:8080/api/index.html](http://localhost:8080/api/index.html上的以下URL，将显示Swagger) 上的以下URL，将显示Swagger UI文档门户：
 
 ![](/assets/74.png)
 
@@ -168,7 +168,7 @@ If you visit [http://localhost:8080/api/api-docs](http://localhost:8080/api/api-
 
 在服务器端，将com.mangofactory / swagger-springmvc从属项添加到swagger-springmvc项目中并使用所呈现的SwaggerConfig类，库在根路径上创建一个控制器：/ api-docs并发布整个元数据 REST API。
 
-如果您访问http：// localhost：8080 / api / api-docs，您将访问我们的REST API文档的根目录：
+如果您访问[ http://localhost8080/api/api-docs](http://localhost:8080/api/api-docs)，您将访问我们的REST API文档的根目录：
 
 ![](/assets/76.png)
 

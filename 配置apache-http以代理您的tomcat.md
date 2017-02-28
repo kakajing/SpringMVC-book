@@ -14,7 +14,7 @@ You will discover how this configuration can allow a great flexibility and simpl
 
 ## How to do it...
 
-1. On MS Windows, download and install Apache HTTP Server.
+1.On MS Windows, download and install Apache HTTP Server.
 
 1.在MS Windows上，下载并安装Apache HTTP Server。
 
@@ -34,7 +34,7 @@ You will discover how this configuration can allow a great flexibility and simpl
 >
 > 你应该能够通过这种形式到达bin目录：C：\ apache24 \ bin。
 
-1. On Linux / Mac OS, download and install Apache HTTP Server.
+2.On Linux / Mac OS, download and install Apache HTTP Server.
 
 2.在Linux / Mac OS上，下载并安装Apache HTTP Server。
 
@@ -71,7 +71,7 @@ NN命令是Apache HTTP的当前版本。
 
 `$ make install`
 
-1. On MS Windows, add a new alias in the hosts file.
+3.On MS Windows, add a new alias in the hosts file.
 
 3.在MS Windows上，在hosts文件中添加一个新别名。
 
@@ -83,7 +83,7 @@ NN命令是Apache HTTP的当前版本。
 
 This file has no extension, Notepad 'doesn't complain about that when you want to save the file.
 
-这个文件没有扩展名，记事本'不抱怨，当你想保存文件。
+此文件没有扩展名，“记事本”在保存文件时不抱怨。
 
 1. Add the following entry at the end of the file:
 
@@ -95,7 +95,7 @@ This file has no extension, Notepad 'doesn't complain about that when you want t
 
 3.保存修改。
 
-1. On Linux/Mac OS, add a new alias in the hosts file.
+4.On Linux/Mac OS, add a new alias in the hosts file.
 
 4.在Linux / Mac OS上，在hosts文件中添加新别名。
 
@@ -109,13 +109,13 @@ This file has no extension, Notepad 'doesn't complain about that when you want t
 
 127.0.0.1 cloudstreetmarket.com
 
-1. Save the modification.
+ 3.Save the modification.
 
-   3.保存修改。
+ 3.保存修改。
 
-1. For all Operation Systems, edit the httpd.conf Apache configuration file.
+5.For all Operation Systems, edit the httpd.conf Apache configuration file.
 
-   1. This file can either be found at C:\apache24\conf \(on Windows\) or at
+1. This file can either be found at C:\apache24\conf \(on Windows\) or at
 
 /usr/local/apache2/conf \(on Linux or Mac\).
 
@@ -145,7 +145,7 @@ LoadModule proxy\_http\_module modules / mod\_proxy\_http.so
 
 3.在文件的最底部添加以下块：
 
-```
+```js
 <VirtualHost cloudstreetmarket.com:80>
     ProxyPass /portal http://localhost:8080/portal
     ProxyPassReverse /portal http://localhost:8080/portal
@@ -153,28 +153,25 @@ LoadModule proxy\_http\_module modules / mod\_proxy\_http.so
     ProxyPassReverse /api http://localhost:8080/api
     RedirectMatch ^/$ /portal/index
 </VirtualHost>
-
 ```
 
 > A sample of a modified httpd.conf file \(for Apache HTTP 2.4.18\) can be found in the chapter\_5/source\_code/app/apache directory.
 >
 > 修改的httpd.conf文件（对于Apache HTTP 2.4.18）的示例可以在chapter\_5 / source\_code / app / apache目录中找到。
 
+6.Edit the server.xml Tomcat configuration file.
 
+1. This file can either be found at C:\tomcat8\conf \(on Windows\) or at /home/usr/{system.username}/tomcat8/conf \(on Linux or Mac\).
 
-6. Edit the server.xml Tomcat configuration file.
-
-  1. This file can either be found at C:\tomcat8\conf \(on Windows\) or at /home/usr/{system.username}/tomcat8/conf \(on Linux or Mac\).
-
-  2. Find the &lt;Connector port"="8080"" protocol"="HTTP/1.1""...&gt; definition and edit it as follows:
+2. Find the &lt;Connector port"="8080"" protocol"="HTTP/1.1""...&gt; definition and edit it as follows:
 
 6.编辑server.xml Tomcat配置文件。
 
-  1.此文件可以在C：\ tomcat8 \ conf（在Windows上）或在/home/usr/system.username/tomcat8/conf（在Linux或Mac上）找到。
+1.此文件可以在C：\tomcat8\conf（在Windows上）或在/home/usr/system.username/tomcat8/conf（在Linux或Mac上）找到。
 
-  2.找到&lt;连接器端口&gt; =“8080”“协议”=“HTTP / 1.1”“...&gt;定义并编辑如下：
+2.找到&lt;连接器端口&gt; =“8080”“协议”=“HTTP / 1.1”“...&gt;定义并编辑如下：
 
-```
+```js
 <Connector port"="8080"" protocol"="HTTP/1.1""
 connectionTimeout"="20000"
 redirectPort"="8443""
@@ -185,11 +182,11 @@ proxyName"="cloudstreetmarket.com"" proxyPort"="80""/>
 >
 > 可以在chapter\_5 / source\_code / app / tomcat目录中找到修改的server.xml文件（对于Apache Tomcat 8.0.30）的示例。
 
-7. On MS Windows, start the Apache HTTP server.
+7.On MS Windows, start the Apache HTTP server.
 
 1. Open a command prompt window.
 
-* [ ]  Enter the following command:
+2. [ ]  Enter the following command:
 
 7.在MS Windows上，启动Apache HTTP服务器。
 
@@ -197,23 +194,21 @@ proxyName"="cloudstreetmarket.com"" proxyPort"="80""/>
 
 * [ ] 输入以下命令：
 
-`$ cd C:/apache24/bin`
+`$ cd C:/apache24/bin`
 
-2. Install an Apache service:
+1. Install an Apache service:
 
 2.安装Apache服务：
 
-`$ httpd.exe –k install`
+`$ httpd.exe –k install`
 
  Start the server:
 
 * [ ] 启动服务器：
 
-`$ httpd.exe –k start`
+`$ httpd.exe –k start`
 
-
-
-8. On Linux/Mac OS, start the Apache HTTP server:
+1. On Linux/Mac OS, start the Apache HTTP server:
 
  8.在Linux / Mac OS上，启动Apache HTTP服务器：
 
@@ -223,7 +218,7 @@ Start the server:
 
 `$ sudo apachectl start`
 
-Now start the Tomcat server and open your favorite web browser. Go to http://cloudstreetmarket.com, you should obtain the following landing-page:
+Now start the Tomcat server and open your favorite web browser. Go to [http://cloudstreetmarket.com](http://cloudstreetmarket.com), you should obtain the following landing-page:
 
 现在启动Tomcat服务器并打开您喜欢的Web浏览器。 转到http//cloudstreetmarket.com，您应该获得以下着陆页：
 
@@ -255,7 +250,7 @@ DNS配置或主机别名
 
 * 如果不成功，它询问另一个DNS并等待响应缓存结果并将其发送回调用者
 
-A DNS managing one specific domain is called a** Start Of Authority \(SOA\)**. Such DNS are usually provided by registrars, and we usually use their services to configure records \(and our server IP\) for a domain zone.
+A DNS managing one specific domain is called a** Start Of Authority \(SOA\)**. Such DNS are usually provided by registrars, and we usually use their services to configure records \(and our server IP\) for a domain zone.  
 Around the web, each DNS tries to resolve the ultimate SOA. The top hierarchy of DNS servers is called **root name servers**. There are hundreds of them bound to one specific **Top-Level Domain** \(TLD such as .com, .net, .org…\).
 
 When the browser gets the IP, it tries to establish a TCP connection on the specified port \(it defaults to 80\). The remote server accepts the connection and the HTTP request is sent over the network.
@@ -306,7 +301,7 @@ Third-parties sometimes block call-back URLs that are pointing to localhost:8080
 
 Configuring a proxy for the hostname \(in the hosts file\) and a virtual host in an HTTP server to manage ports, URL rewriting, and redirections is a good solution for the local environment but also for a production infrastructure.
 
-第三方有时阻止指向localhost的回调URL：8080.在本地测试和开发OAuth2对话仍然是必要的。
+第三方阻止有时指向localhost的回调URL：8080.在本地测试和开发OAuth2对话仍然是必要的。
 
 为HTTP服务器中的主机名（在主机文件中）和虚拟主机配置代理，以管理端口，URL重写和重定向是本地环境的一个很好的解决方案，也是生产基础设施的一个很好的解决方案。
 
@@ -324,11 +319,11 @@ Apache HTTP服务器使用TCP / IP协议并提供HTTP的实现.TCP / IP允许计
 
 ### Virtual-hosting
 
-This feature allows us to run and maintain more than one website from a single instance of Apache. We usually group in a &lt;VirtualHost...&gt; section, a set of Apache directives for a dedicated site. Each group is identified by a site ID.
+This feature allows us to run and maintain more than one website from a single instance of Apache. We usually group in a `<VirtualHost...> `section, a set of Apache directives for a dedicated site. Each group is identified by a site ID.
 
 虚拟主机
 
-此功能允许我们从单个Apache实例运行和维护多个网站。 我们通常在一个&lt;VirtualHost ...&gt;部分，一组Apache指令为adedicated站点。 每个组由站点ID标识。
+此功能允许我们从单个Apache实例运行和维护多个网站。 我们通常在一个`<VirtualHost ...>`部分，一组Apache指令为adedicated站点。 每个组由站点ID标识。
 
 Different sites can be defined as follows:
 
@@ -336,24 +331,24 @@ Different sites can be defined as follows:
 
 1. By name:
 
-```
+```js
 NameVirtualHost 192.168.0.1
 <VirtualHost portal.cloudstreetmarket.com>…</VirtualHost>
 <VirtualHost api.cloudstreetmarket.com>…</VirtualHost>
 ```
 
-2. By IP \(you will still have to define a ServerName inside the block\):
+2.By IP \(you will still have to define a ServerName inside the block\):
 
 2.通过IP（你仍然必须在块中定义一个ServerName）：
 
-```
+```js
 <VirtualHost 192.168.0.1>…</VirtualHost>
 <VirtualHost 192.168.0.2>…</VirtualHost>
 ```
 
-3. By port:
+3.By port:
 
-```
+```js
 Listen 80
 Listen 8080
 <VirtualHost 192.168.0.1:80>…</VirtualHost>
@@ -384,7 +379,7 @@ Reverse-proxies handle responses and redirections exactly as if they were webser
 
 反向代理处理响应和重定向，就像它们是自己的网络服务器一样。 要激活，它们通常绑定到ProxyPass定义，如我们在这里的用例：
 
-```
+```js
 ProxyPass /api http://localhost:8080/api
 ProxyPassReverse /api http://localhost:8080/api
 ```
@@ -395,14 +390,14 @@ Proxies manage the configuration of underlying servers and also the communicatio
 
 代理管理底层服务器的配置，以及它们之间的通信参数，这些对象称为工作者（请参阅作为一组参数）。 当用于反向代理时，这些工作器使用ProxyPass或ProxyPassMatch进行配置
 
-```
+```js
 ProxyPass /api http://localhost:8080/api connectiontimeout=5
 timeout=30
 ```
 
-Some examples of worker-parameters are: `connectiontimeout` \(in seconds\), `keepalive `\(On/Off\), `loadfactor `\(from 1 to 100\), `route `\(bound to sessionid when used inside a load balancer\), `ping `\(it sends CPING requests to ajp13 connections to ensure Tomcat is not busy\), `min/max` \(number of connection pool entries to the underlying server\), `ttl `\(expiry time for connections to underlying server\).
+Some examples of worker-parameters are: `connectiontimeout` \(in seconds\), `keepalive`\(On/Off\), `loadfactor`\(from 1 to 100\), `route`\(bound to sessionid when used inside a load balancer\), `ping`\(it sends CPING requests to ajp13 connections to ensure Tomcat is not busy\), `min/max` \(number of connection pool entries to the underlying server\), `ttl`\(expiry time for connections to underlying server\).
 
-工作参数的一些示例是：`connectiontimeout`（以秒为单位），`keepalive`（开/关），`loadfactor`（从1到100），`route  `（在负载均衡器内使用时绑定到sessionid），`ping`（它向ajp13发送CPING请求 连接以确保Tomcat不忙），`min / max`（到底层服务器的连接池条目数），`ttl`（到底层服务器的连接的到期时间）。
+工作参数的一些示例是：`connectiontimeout`（以秒为单位），`keepalive`（开/关），`loadfactor`（从1到100），`route`（在负载均衡器内使用时绑定到sessionid），`ping`（它向ajp13发送CPING请求 连接以确保Tomcat不忙），`min / max`（到底层服务器的连接池条目数），`ttl`（到底层服务器的连接的到期时间）。
 
 ### The mod\_alias module
 
@@ -432,7 +427,8 @@ HTTP连接器
 
 默认情况下，此连接器在8080端口上的Tomcat中设置。 它支持HTTP1 / 1协议，并允许Catalina作为独立的Web服务器工作。 HTTP连接器可以在代理后使用。 Tomcat支持mod\_proxy作为负载均衡器。 这是我们想要的配置。 当在代理后实现时，可以设置属性proxyName和proxyPort，以便servlet将指定的值绑定到请求属性请求。 getServerPort\(\)和request.getServerName\(\)。
 
-“此连接器具有最低的延迟和最佳的整体性能。”
+“此连接器具有最低的延迟和最佳的整体性能。  
+”
 
 The Tomcat documentation also states the following about HTTP proxying:
 
@@ -442,7 +438,8 @@ However, configuring an AJP clustering adds an extra layer on the architecture. 
 
 Tomcat文档还说明了有关HTTP代理的以下内容：
 
-“应当注意，HTTP代理的性能通常低于AJP的性能。"
+“应当注意，HTTP代理的性能通常低于AJP的性能。  
+"
 
 但是，配置AJP集群会在架构上添加一个额外的层。 这种额外层的必要性对于无状态架构是有争议的。
 
@@ -471,37 +468,43 @@ In this section, we will provide a few links for a deeper understanding on the t
 
 在本节中，我们将提供一些链接，以便更深入地了解这些主题：
 
-* DNS and the distributed system:   DNS和分布式系统：
+* DNS and the distributed system:
+   DNS和分布式系统：
 
-http://computer.howstuffworks.com/dns.htm
+[http://computer.howstuffworks.com/dns.htm](http://computer.howstuffworks.com/dns.htm)
 
-https://en.wikipedia.org/wiki/Root\_name\_server
+[https://en.wikipedia.org/wiki/Root\\_name\\_server](https://en.wikipedia.org/wiki/Root\_name\_server)
 
-* How the domain name system works:   域名系统的工作原理：
+* How the domain name system works:
+   域名系统的工作原理：
 
-http://wiki.bravenet.com/How\_the\_domain\_name\_system\_works
+[http://wiki.bravenet.com/How\\_the\\_domain\\_name\\_system\\_works](http://wiki.bravenet.com/How\_the\_domain\_name\_system\_works)
 
 * Apache HTTP:
 
-http://httpd.apache.org/docs/trunk/getting-started.html
+[http://httpd.apache.org/docs/trunk/getting-started.html](http://httpd.apache.org/docs/trunk/getting-started.html)
 
-* The modules we have used:   我们使用的模块：
+* The modules we have used:
+   我们使用的模块：
 
-http://httpd.apache.org/docs/2.2/mod/mod\_alias.html
+[http://httpd.apache.org/docs/2.2/mod/mod\\_alias.html](http://httpd.apache.org/docs/2.2/mod/mod\_alias.html)
 
-http://httpd.apache.org/docs/2.2/en/mod/mod\_proxy.html
+[http://httpd.apache.org/docs/2.2/en/mod/mod\\_proxy.html](http://httpd.apache.org/docs/2.2/en/mod/mod\_proxy.html)
 
-* Tomcat connectors:   Tomcat连接器：
+* Tomcat connectors:
+   Tomcat连接器：
 
-http://tomcat.apache.org/tomcat-8.0-doc/connectors.html
+[http://tomcat.apache.org/tomcat-8.0-doc/connectors.html](http://tomcat.apache.org/tomcat-8.0-doc/connectors.html)
 
-http://wiki.apache.org/tomcat/FAQ/Connectors
+[http://wiki.apache.org/tomcat/FAQ/Connectors](http://wiki.apache.org/tomcat/FAQ/Connectors)
 
-https://www.mulesoft.com/tcat/tomcat-connectors
+[https://www.mulesoft.com/tcat/tomcat-connectors](https://www.mulesoft.com/tcat/tomcat-connectors)
 
-* In proxy mode:   在代理模式下：
+* In proxy mode:
+   在代理模式下：
 
-http://tomcat.apache.org/tomcat-8.0-doc/proxy-howto.html\#Apache\_2.0\_Proxy\_Support
+[http://tomcat.apache.org/tomcat-8.0-doc/proxy-howto](http://tomcat.apache.org/tomcat-8.0-doc/proxy-howto).  
+html\#Apache\_2.0\_Proxy\_Support
 
 ## See also
 
@@ -509,33 +512,29 @@ http://tomcat.apache.org/tomcat-8.0-doc/proxy-howto.html\#Apache\_2.0\_Proxy\_S
 
 当使用AJP连接器时，ProxyPassReverse定义与HTTP连接器略有不同：
 
-http://www.apachetutor.org/admin/reverseproxies
+[http://www.apachetutor.org/admin/reverseproxies](http://www.apachetutor.org/admin/reverseproxies)
 
-http://www.humboldt.co.uk/the-mystery-of-proxypassreverse
+[http://www.humboldt.co.uk/the-mystery-of-proxypassreverse](http://www.humboldt.co.uk/the-mystery-of-proxypassreverse)
 
 * fIf you wish to implement an AJP Cluster, go through the following URL:
 
 如果要实现AJP集群，请访问以下URL：
 
-http://www.richardnichols.net/2010/08/5-minute-guideclustering-apache-tomcat/
+[http://www.richardnichols.net/2010/08/5-minute-guideclustering-apache-tomcat/](http://www.richardnichols.net/2010/08/5-minute-guideclustering-apache-tomcat/)
 
 ### Alternatives to Apache HTTP
 
 The use of Apache HTTP can be argued on very high traffic, especially because the default configuration can lead the program to create a new process for every single connection.
 
-If we only look for a proxy and load-balancer, we should also consider HAProxy. HAProxy is a high-availability load-balancer and proxy server. It is a free and open source \(GPL v2\) product used in references such as GitHub, StackOverflow, Reddit, Twitter, and others\(http://haproxy.org\).
+If we only look for a proxy and load-balancer, we should also consider HAProxy. HAProxy is a high-availability load-balancer and proxy server. It is a free and open source \(GPL v2\) product used in references such as GitHub, StackOverflow, Reddit, Twitter, and others\([http://haproxy.org\](http://haproxy.org\)\).
 
-Nginx is probably \(and currently\) the most adopted alternative to Apache HTTP. Being focused on high concurrency and low memory usage, its license is a 2-clause BSD license\(http://nginx.org\).
+Nginx is probably \(and currently\) the most adopted alternative to Apache HTTP. Being focused on high concurrency and low memory usage, its license is a 2-clause BSD license\([http://nginx.org\](http://nginx.org\)\).
 
 Apache HTTP的替代方法
 
 Apache HTTP的使用可以在非常高的流量上争论，特别是因为默认配置可以导致程序为每个单个连接创建一个新的进程。
 
-如果我们只寻找一个代理和负载平衡器，我们也应该考虑HAProxy。 HAProxy是一个高可用性负载均衡器和代理服务器。 它是一个免费和开源的（GPL v2）产品，用于参考文献，如GitHub，StackOverflow，Reddit，Twitter和其他（http://haproxy.org）。
+如果我们只寻找一个代理和负载平衡器，我们也应该考虑HAProxy。 HAProxy是一个高可用性负载均衡器和代理服务器。 它是一个免费和开源的（GPL v2）产品，用于参考文献，如GitHub，StackOverflow，Reddit，Twitter和其他（[http://haproxy.org）。](http://haproxy.org）。)
 
-Nginx可能是（目前）最常用的替代Apache HTTP。 由于专注于高并发和低内存使用，它的许可证是一个2子句BSD许可证（http://nginx.org）。
-
-
-
-
+Nginx可能是（目前）最常用的替代Apache HTTP。 由于专注于高并发和低内存使用，它的许可证是一个2子句BSD许可证（[http://nginx.org）。](http://nginx.org）。)
 
