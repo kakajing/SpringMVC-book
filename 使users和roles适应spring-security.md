@@ -10,7 +10,7 @@ In this recipe, we will install the Spring Security dependencies and update the 
 
 ## How to do it...
 
-1. From the Git Perspective in Eclipse, checkout the latest version of the branch v5.x.x. Then, run a maven clean install command on the cloudstreetmarket-parent module \(right-click on the module, go to Run as… \| Maven Clean, and then navigate to Run as… \| Maven Install\). Execute a Maven Update Project to synchronize Eclipse with the maven configuration \(right-click on the module and then navigate to Maven \| Update Project…\).
+1.From the Git Perspective in Eclipse, checkout the latest version of the branch v5.x.x. Then, run a maven clean install command on the cloudstreetmarket-parent module \(right-click on the module, go to Run as… \| Maven Clean, and then navigate to Run as… \| Maven Install\). Execute a Maven Update Project to synchronize Eclipse with the maven configuration \(right-click on the module and then navigate to Maven \| Update Project…\).
 
 1.从Eclipse中的**Git Perspective** 中，检出最新版本的分支v5.x.x. 然后，在cloudstreetmarket-parent模块上运行`maven clean install`命令（右键单击模块，转到**Run as ... \| Maven Clean**，然后导航到**Run as ... \| Maven Install**）。 执行**Maven Update Project**以使Eclipse与maven配置同步（右键单击模块，然后导航到**Maven \| Update Project...**）。
 
@@ -18,13 +18,13 @@ In this recipe, we will install the Spring Security dependencies and update the 
 >
 > 你会注意到在代码的前端和后端的几个更改。
 
-1. Spring Security comes with the following dependencies, added in cloudstreetmarket-parent, cloudstreetmarket-core and
+2.Spring Security comes with the following dependencies, added in cloudstreetmarket-parent, cloudstreetmarket-core and
 
 cloudstreetmarket-api:
 
-1. Spring Security具有以下依赖项，在cloudstreetmarket-parent，cloudstreetmarket-core和cloudstreetmarket-api中添加：
+2.Spring Security具有以下依赖项，在cloudstreetmarket-parent，cloudstreetmarket-core和cloudstreetmarket-api中添加：
 
-```
+```js
 <!-- Spring Security -->
 <dependency>
     <groupId>org.springframework.security</groupId>
@@ -38,48 +38,48 @@ cloudstreetmarket-api:
 </dependency>
 ```
 
-3. The User entity has been updated. It now reflects the users table \(instead of the previous user table\). It also implements the UserDetails interface:
+3.The User entity has been updated. It now reflects the users table \(instead of the previous user table\). It also implements the UserDetails interface:
 
 3.用户实体已更新。 它现在反映users表（而不是以前的用户表）。 它还实现UserDetails接口：
 
-```
+```java
 @Entity
 @Table(name="users")
 public class User implements UserDetails{
 
     private static final long serialVersionUID = 1990856213905768044L;
-    
+
     @Id
     @Column(name = "user_name", nullable = false)
     private String username;
-    
+
     @Column(name = "full_name")
     private String fullName;
-    
+
     private String email;
-    
+
     private String password;
-    
+
     private boolean enabled = true;
-    
+
     private String profileImg;
-    
+
     @Column(name="not_expired")
     private boolean accountNonExpired;
-    
+
     @Column(name="not_locked")
     private boolean accountNonLocked;
-    
+
     @Enumerated(EnumType.STRING)
     private SupportedCurrency currency;
-    
+
     @OneToMany(mappedBy= "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @OrderBy("id desc")
     private Set<Action> actions = new LinkedHashSet<Action>();
-    
+
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Authority> authorities = new LinkedHashSet<Authority>();
-    
+
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SocialUser> socialUsers = new LinkedHashSet<SocialUser>();
     //getters and setters as per the UserDetails interface
@@ -91,47 +91,47 @@ This User Entity has a relationship with SocialUser. SocialUser comes into play 
 
 此用户实体与SocialUser具有关系。 SocialUser开始使用OAuth2身份验证，我们稍后将开发此部分。
 
-4. An Authority Entity has been created and maps a authorities table. This Entity also implements the GrantedAuthority interface. The class is the following:
+4.An Authority Entity has been created and maps a authorities table. This Entity also implements the GrantedAuthority interface. The class is the following:
 
 4.已创建权限实体并映射权限表。 此实体还实现GrantedAuthority接口。 该类如下：
 
-```
+```java
 @Entity
 @Table(name"="authorities"",uniqueConstraints={@UniqueConstraint(columnNames = "{"username""","authority""})})
 public class Authority implements GrantedAuthority{
 
     private static final long serialVersionUID = 1990856213905768044L;
-    
+
     public Authority() {}
-    
+
     public Authority(User user, Role authority) {
     this.user = user;
     this.authority = authority;
     }
-    
+
     @Id
     @GeneratedValue
     private Long id;
-    
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = ""username"", nullable=false)
     private User user;
-    
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role authority;
-    
+
     //getters and setters as per the GrantedAuthority
     //interface
     ...
 }
 ```
 
-5. For a more readable code, we have created a Role Enum in the cloudstreetmarket-core module, for the different roles:
+5.For a more readable code, we have created a Role Enum in the cloudstreetmarket-core module, for the different roles:
 
 5.对于更可读的代码，我们在cloudstreetmarket-core模块中为不同的roles创建了一个Role Enum：
 
-```
+```java
 public enum Role {
     ROLE_ANONYMOUS,
     ROLE_BASIC,
@@ -142,20 +142,19 @@ public enum Role {
 }
 ```
 
-6. Also, we have made a few changes in the init.sql file. The existing pre-initialization scripts related to users, have been adapted to suit the new schema:
+6.Also, we have made a few changes in the init.sql file. The existing pre-initialization scripts related to users, have been adapted to suit the new schema:
 
-此外，我们在init.sql文件中进行了一些更改。 与用户相关的现有预初始化脚本已经适应了新的模式：
+6.此外，我们在init.sql文件中进行了一些更改。 与用户相关的现有预初始化脚本已经适应了新的模式：
 
-```
+```java
 insert into users(username, fullname, email, password, profileImg, enabled, not_expired, not_locked) values
 ('userC', '', 'fake12@fake.com', '123456', '', true, true, true);
 insert into authorities(username, authority) values ('userC', 'ROLE_'BASIC');
-
 ```
 
-7. Start the application. \(No exceptions should be observed\).
+7.Start the application. \(No exceptions should be observed\).
 
-8. Click on the **login **button \(on the right-hand side of the main menu\). You will see the following popup that allows entering a username and a password to log in:
+8.Click on the **login **button \(on the right-hand side of the main menu\). You will see the following popup that allows entering a username and a password to log in:
 
 7.启动应用程序。 （不应观察到例外）。
 
@@ -163,17 +162,17 @@ insert into authorities(username, authority) values ('userC', 'ROLE_'BASIC');
 
 ![](/assets/78.png)
 
-9. You also have the option to create a new user. In the previous popup, click on the **Create new account** link that can be found at the bottom right. This will load the following pop-up content:
+9.You also have the option to create a new user. In the previous popup, click on the **Create new account** link that can be found at the bottom right. This will load the following pop-up content:
 
 9.您还可以选择创建新用户。 在上一个弹出窗口中，点击右下角的**Create new account**。 这将加载以下弹出内容：
 
 ![](/assets/79.png)
 
-10. Let's create a new user with the following values:
+10.Let's create a new user with the following values:
 
 10.让我们使用以下值创建一个新用户：
 
-```
+```java
 username: <marcus>
 email: <marcus@chapter5.com>
 password: <123456>
@@ -194,9 +193,9 @@ Finally, hit the **Sign up** button and the popup should disappear.
 
 最后，点击**Sign up**按钮，弹出窗口应该消失。
 
-11. Now, call the following URI: http://cloudstreetmarket.com/api/users/marcus. The application should fetch the following persisted data for the Marcus user:
+11.Now, call the following URI: [http://cloudstreetmarket.com/api/users/marcus](http://cloudstreetmarket.com/api/users/marcus). The application should fetch the following persisted data for the Marcus user:
 
-11.现在，调用以下URI：http://cloudstreetmarket.com/api/users/marcus。 应用程序应为Marcus用户提取以下持久性数据：
+11.现在，调用以下URI：[http://cloudstreetmarket.com/api/users/marcus。](http://cloudstreetmarket.com/api/users/marcus。) 应用程序应为Marcus用户提取以下持久性数据：
 
 ![](/assets/81.png)
 
@@ -216,13 +215,9 @@ Spring Security基于三个核心组件构建：SecurityContextHolder对象，Se
 
 SecurityContextHolder对象允许我们定义和携带一个JVM一个SecurityContextHolderStrategy实现（集中在存储和检索一个SecurityContext）。
 
-
-
 > The SecurityContextHolder has the following static field: private static SecurityContextHolderStrategy strategy;
 >
 > SecurityContextHolder具有以下静态字段：private static SecurityContextHolderStrategy strategy;
-
-
 
 By default, and in most of the designs, the selected-strategy uses Threadlocals \(ThreadLocalSecurityContextHolderStrategy\).
 
@@ -234,10 +229,9 @@ A Tomcat instance manages a Spring MVC servlet \(like any other servlet\) with m
 
 Tomcat实例在多个HTTP请求进入时管理具有多个线程的Spring MVC servlet（就像任何其他servlet一样）。代码如下：
 
-```
+```java
 final class ThreadLocalSecurityContextHolderStrategy implements SecurityContextHolderStrategy {
-    private static final ThreadLocal<SecurityContext>
-    contextHolder = new ThreadLocal<SecurityContext>();
+    private static final ThreadLocal<SecurityContext> contextHolder = new ThreadLocal<SecurityContext>();
     ...
 }
 ```
@@ -258,8 +252,6 @@ There is a bunch of noticeable interfaces in Spring Security. We will particular
 
 Spring Security中有一堆值得注意的接口。 我们将特别访问Authentication，UserDetails，UserDetailsManager和GrantedAuthority。
 
-
-
 ### The Authentication interface
 
 The Spring Authentication object can be retrieved from the SecurityContext. This object is usually managed by Spring Security but applications still often need to access it for their business.
@@ -272,7 +264,7 @@ Spring Authentication对象可以从SecurityContext中检索。 这个对象通�
 
 这里是Authentication对象的接口：
 
-```
+```java
 public interface Authentication extends Principal, Serializable {
     Collection<? extends GrantedAuthority> getAuthorities();
     Object getCredentials();
@@ -287,7 +279,7 @@ It provides access to the Principal \(representing the identified user, entity, 
 
 它提供对Principal（表示所识别的用户，实体，公司或客户），其凭证，其权限以及可能需要的一些额外细节的访问。 现在让我们看看如何从SecurityContextHolder，用户可以检索：
 
-```
+```java
 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 if (principal instanceof UserDetails) {
     String username = ((UserDetails) principal).getUsername();
@@ -310,11 +302,10 @@ UserDetails实现以可扩展和应用程序特定的方式表示Principal。
 
 您必须知道单方法UserDetailsService接口，该接口为核心框架中的account-retrieval提供了键方法loadUserByUsername：
 
-```
+```java
 public interface UserDetailsService {
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }
-
 ```
 
 Spring Security offers two implementations for this interface:
@@ -337,7 +328,7 @@ Spring Security访问用户和角色数据的方式使用具有安全命名空�
 
 下面是使用本机UserDetailsService实现时的两个配置示例：
 
-```
+```js
 <security:authentication-manager alias="authenticationManager">
     <security:authentication-provider>
         <security:jdbc-user-service data-source-ref="dataSource" />
@@ -349,20 +340,19 @@ This first example specifies a JDBC-based UserDetailsService. The next example s
 
 第一个示例指定基于JDBC的UserDetailsService。 下一个示例指定一个内存中的UserDetailsService。
 
-```
+```js
 <security:authentication-manager alias="authenticationManager">
     <security:authentication-provider>
         <security:user-service id="inMemoryUserDetailService"/>
     </security:authentication-provider>
 </security:authentication-manager>
-
 ```
 
 In our case, we have registered our own UserDetailsService implementation\(communityServiceImpl\) as follows:
 
 在我们的例子中，我们注册了我们自己的UserDetailsService实现（communityServiceImpl），如下所示：
 
-```
+```js
 <security:authentication-manager alias="authenticationManager">
     <security:authentication-provider user-serviceref='communityServiceImpl'>
         <security:password-encoder ref="passwordEncoder"/>
@@ -380,7 +370,7 @@ Spring Security provides a UserDetails implementation org.sfw.security.core.user
 
 Spring Security提供了一个UserDetails实现org.sfw.security.core.userdetails.User，它可以直接使用或扩展。 User类定义如下：
 
-```
+```java
 public class User implements UserDetails, CredentialsContainer {
     private String password;
     private final String username;
@@ -401,7 +391,7 @@ Guiding us towards a structure for UserDetails, Spring Security also provides a 
 
 指导我们走向UserDetails的结构，Spring Security还提供了一个用于管理用户的UserDetailsManager接口：
 
-```
+```java
 public interface UserDetailsManager extends UserDetailsService {
     void createUser(UserDetails user);
     void updateUser(UserDetails user);
@@ -425,13 +415,9 @@ Within Spring Security, GrantedAuthorities reflects the application-wide permiss
 
 在Spring Security中，GrantedAuthorities反映授予Principal的应用程序范围的权限。 Spring Security指导我们实现基于角色的身份验证。 这种认证强加了能够执行操作的用户组的创建。
 
-
-
 > Unless there is a strong business meaning for a feature, do prefer for example ROLE\_ADMIN or ROLE\_GUEST to ROLE\_DASHBOARD or ROLE\_PAYMENT…
 >
 > 除非功能具有较强的业务含义，否则请优先选择例如ROLE\_ADMIN或ROLE\_GUEST到ROLE\_DASHBOARD或ROLE\_PAYMENT ...
-
-
 
 Roles can be pulled out of the `Authentication` object from `getAuthorities()`, as an array of GrantedAuthority implementations.
 
@@ -441,7 +427,7 @@ Roles 可以从`getAuthorities()`中的`Authentication`对象中拉出，作为G
 
 GrantedAuthority接口很简单：
 
-```
+```java
 public interface GrantedAuthority extends Serializable {
     String getAuthority();
 }
@@ -489,17 +475,20 @@ The technical overview is a great introduction to the Spring Security Framework:
 
 技术概述是Spring Security Framework的一个很好的介绍：
 
-http://docs.spring.io/spring-security/site/docs/3.0.x/reference/technical-overview.html
+[http://docs.spring.io/spring-security/site/docs/3.0.x/reference/](http://docs.spring.io/spring-security/site/docs/3.0.x/reference/)  
+technical-overview.html
 
 ### Sample applications
 
-The Spring Security reference provides many Spring Security examples on different authentications types \(LDAP, OPENID, JAAS, and so on.\). Other role-based examples can also be found at:
+The Spring Security reference provides many Spring Security examples on different authentications types \(LDAP, OPENID, JAAS, and so on.\). Other role-based examples can also  
+ be found at:
 
 示例应用程序
 
 Spring Security参考提供了许多针对不同认证类型（LDAP，OPENID，JAAS等）的Spring Security示例。 其他基于角色的例子也可以在：
 
-http://docs.spring.io/spring-security/site/docs/3.1.5.RELEASE/reference/sample-apps.html
+[http://docs.spring.io/spring-security/site/docs/3.1.5.RELEASE/](http://docs.spring.io/spring-security/site/docs/3.1.5.RELEASE/)  
+reference/sample-apps.html
 
 ### Core services
 
@@ -509,9 +498,6 @@ Find out more about the built-in UserDetailsService implementations \(in-memory 
 
 有关内置UserDetailsService实现（内存或JDBC）的更多信息，请访问：
 
-http://docs.spring.io/spring-security/site/docs/3.1.5.RELEASE/reference/core-services.html
-
-
-
-
+[http://docs.spring.io/spring-security/site/docs/3.1.5.RELEASE/](http://docs.spring.io/spring-security/site/docs/3.1.5.RELEASE/)  
+reference/core-services.html
 
