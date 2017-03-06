@@ -8,20 +8,20 @@ In this recipe, we complete the Spring Security configuration. We make it suppor
 
 We slightly customize the generated response-headers, so they don't trigger the browser to show-up a native BASIC authentication form \(which is not an optimal experience for our users\).
 
-在这个配方中，我们完成了Spring Security配置。 我们使它支持应用所需的BASIC认证方案。
+在这个配方中，我们完成了Spring Security配置，使它支持应用所需的BASIC认证方案。
 
 我们稍微自定义生成的响应头，因此它们不会触发浏览器显示本机BASIC身份验证表（这不是我们的用户的最佳体验）。
 
 ## How to do it...
 
-1. In order to use the Spring security namespace, we add the following filter to the cloudstreetmarket-api web.xml:
+1.In order to use the Spring security namespace, we add the following filter to the cloudstreetmarket-api web.xml:
 
 1.为了使用Spring安全命名空间，我们将以下过滤器添加到cloudstreetmarket-api web.xml中：
 
-```
+```js
 <filter>
     <filter-name>springSecurityFilterChain</filter-name>
-    <filter-class> org.sfw.web.filter.DelegatingFilterProxy</filter- class>
+    <filter-class> org.sfw.web.filter.DelegatingFilterProxy</filter-class>
 </filter>
 <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
@@ -29,52 +29,52 @@ We slightly customize the generated response-headers, so they don't trigger the 
 </filter-mapping>
 ```
 
-2. A Spring configuration file has been created specifically for Spring Security in the cloudstreetmarket-api module. This file hosts the following bean definitions:
+2.A Spring configuration file has been created specifically for Spring Security in the cloudstreetmarket-api module. This file hosts the following bean definitions:
 
 2.在cloudstreetmarket-api模块中专门为Spring Security创建了Spring配置文件。 此文件托管以下bean定义：
 
-```
+```js
 <bean id="authenticationEntryPoint" class="edu.zc.csm.api.authentication.CustomBasicAuthenticationEntryPoint">
-    <property name="realmName" value="cloudstreetmarket.com" />
+<property name="realmName" value="cloudstreetmarket.com" />
 </bean>
 
 <security:http create-session="stateless" authenticationmanager-ref="authenticationManager" entry-pointref="authenticationEntryPoint">
-    <security:custom-filter ref="basicAuthenticationFilter" after="BASIC_AUTH_FILTER" />
-    <security:csrf disabled="true"/>
+<security:custom-filter ref="basicAuthenticationFilter" after="BASIC_AUTH_FILTER" />
+<security:csrf disabled="true"/>
 </security:http>
 
 <bean id="basicAuthenticationFilter" class="org.sfw.security.web.authentication.www.BasicAuthenticationFilter">
-    <constructor-arg name="authenticationManager" ref="authenticationManager" />
-    <constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+<constructor-arg name="authenticationManager" ref="authenticationManager" />
+<constructor-arg name="authenticationEntryPoint" ref="authenticationEntryPoint" />
 </bean>
 <security:authentication-manager alias="authenticationManager">
-    <security:authentication-provider user-serviceref='communityServiceImpl'>
-        <security:password-encoder ref="passwordEncoder"/>
-    </security:authentication-provider>
+<security:authentication-provider user-serviceref='communityServiceImpl'>
+    <security:password-encoder ref="passwordEncoder"/>
+</security:authentication-provider>
 </security:authentication-manager>
 <security:global-method-security securedannotations="enabled" pre-post-annotations="enabled" authentication-manager-ref="authenticationManager"/>
 ```
 
-3. This new configuration refers to the CustomBasicAuthenticationEntryPoint class. This class has the following content:
+3.This new configuration refers to the CustomBasicAuthenticationEntryPoint class. This class has the following content:
 
-这个新配置引用了CustomBasicAuthenticationEntryPoint类。 此类具有以下内容：
+3.这个新配置引用了CustomBasicAuthenticationEntryPoint类。 此类具有以下内容：
 
-```
+```java
 public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, 
                 AuthenticationException authException) throws IOException, ServletException {
     
-    response.setHeader("WWW-Authenticate", "CSM_Basicrealm=\ + getRealmName() + \");
-    response.sendError(HttpServletResponse.SC_UNAUTHORIZED,authException.getMessage());
+        response.setHeader("WWW-Authenticate", "CSM_Basicrealm=\ + getRealmName() + \");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,authException.getMessage());
     }
 }
 ```
 
-4. A new @ExceptionHandler has been added to catch authentication Exceptions:
+4.A new `@ExceptionHandler `has been added to catch authentication Exceptions:
 
-4.添加了一个新的@ExceptionHandler以捕获身份验证异常：
+4.添加了一个新的`@ExceptionHandler`以捕获身份验证异常：
 
 ```
 @ExceptionHandler({BadCredentialsException.class,AuthenticationException.class,AccessDeniedException.class})
@@ -83,18 +83,17 @@ protected ResponseEntity<Object> handleBadCredentials(final RuntimeException ex,
     return handleExceptionInternal(ex, "The attempted operation has been denied!", new HttpHeaders(), FORBIDDEN,request);
 }
 ...
-
 ```
 
 > That's pretty much it! We have made our backend support a BASIC authentication. However, we haven't restricted our services \(as secure objects\) yet. We will do that now.
 >
 > 这就是它！ 我们已经使我们的后端支持BASIC身份验证。 然而，我们还没有限制我们的服务（作为安全对象）。 我们现在就这样做。
 
-5. For the example purpose, please do update the IMarketService interface in cloudstreetmarket-core. Add the @Secured\("ROLE\_BASIC"\) annotation to the Type as follows:
+5.For the example purpose, please do update the IMarketService interface in cloudstreetmarket-core. Add the `@Secured("ROLE_BASIC")` annotation to the Type as follows:
 
-5.为了示例的目的，请更新cloudstreetmarket-core中的IMarketService接口。 将@Secured（“ROLE\_BASIC”）注释添加到类型中，如下所示：
+5.为了示例的目的，请更新cloudstreetmarket-core中的IMarketService接口。 将`@Secured("ROLE_BASIC")`注解添加到类型中，如下所示：
 
-```
+```java
 @Secured ("ROLE_BASIC")
 public interface IMarketService {
     Page<IndexOverviewDTO> getLastDayIndicesOverview(MarketCode market, Pageable pageable);
@@ -103,9 +102,9 @@ public interface IMarketService {
 }
 ```
 
-6. Now restart the Tomcat server \(doing this will drop your previous user creation\).
+6.Now restart the Tomcat server \(doing this will drop your previous user creation\).
 
-7. In your favorite web browser, open the developer-tab and observe the AJAX queries when you refresh the home page. You should notice that two AJAX queries have returned a 403 status code \(FORBIDDEN\).
+7.In your favorite web browser, open the developer-tab and observe the AJAX queries when you refresh the home page. You should notice that two AJAX queries have returned a 403 status code \(FORBIDDEN\).
 
 6.现在重新启动Tomcat服务器（这样做会删除以前的用户创建）。
 
@@ -125,7 +124,7 @@ These queries have also returned the JSON response:
 }
 ```
 
-8. Now, using the login feature/popup, do log in with one of the previously created users that have a BASIC role:
+8.Now, using the login feature/popup, do log in with one of the previously created users that have a BASIC role:
 
 8.现在，使用登录功能/弹出窗口，请登录具有BASIC角色的先前创建的用户之一：
 
@@ -134,15 +133,15 @@ Username: <userC>
 Password: <123456>
 ```
 
-9. Refresh the page and observe the same two AJAX queries. Amongst the request headers, you can see that our frontend has sent a special Authorization header:
+9.Refresh the page and observe the same two AJAX queries. Amongst the request headers, you can see that our frontend has sent a special Authorization header:
 
 9.刷新页面并观察相同的两个AJAX查询。 在请求标头中，您可以看到我们的前端发送了一个特殊的授权标头：
 
 ![](/assets/83.png)
 
-10. This Authorization header carries the value: Basic dXNlckM6MTIzNDU2. The encoded dXNlckM6MTIzNDU2 is the base64-encoded value for userC:123456.
+10.This Authorization header carries the value: Basic dXNlckM6MTIzNDU2. The encoded dXNlckM6MTIzNDU2 is the base64-encoded value for userC:123456.
 
-11. Let's have a look at the response to these queries:
+11.Let's have a look at the response to these queries:
 
 10.此授权报头携带值：Basic dXNlckM6MTIzNDU2。 编码的dXNlckM6MTIzNDU2是userC：123456的base64编码值。
 
@@ -156,13 +155,13 @@ The status is now 200 \(OK\) and you should also have received the right JSON re
 
 ![](/assets/85.png)
 
-12. The Server sent back a WWW-Authenticate header in the response to the value:
+12.The Server sent back a WWW-Authenticate header in the response to the value:
 
 12.服务器在对值的响应中发回了WWW-Authenticate头：
 
-`CSM_Basic realm"="cloudstreetmarket.com"`
+`CSM_Basic realm"="cloudstreetmarket.com"`
 
-13. Finally, do revert the change you made in IMarketService \(in the 5th step\).
+13Finally, do revert the change you made in IMarketService \(in the 5th step\).
 
 13.最后，请还原您在IMarketService中所做的更改（在第5步）。
 
@@ -182,39 +181,35 @@ The Spring Security namespace comes with the spring-security-config dependency a
 
 Spring Security命名空间附带了spring-security-config依赖项，可以在Spring配置文件中定义如下：
 
-
-
-```
+```js
 <beans xmlns="http://www.springframework.org/schema/beans"
-xmlns:security="http://www.springframework.org/schema/security"
-xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance
-xsi:schemaLocation"="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans.xsd
-http://www.springframework.org/schema/security
-http://www.springframework.org/schema/security/spring-security-4.0.0.xsd">
-...
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance
+    xsi:schemaLocation"="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-4.0.0.xsd">
+    ...
 </beans>
 ```
 
-The namespace stages three top-level components:` <http>` \(about web and HTTP security\),`<authentication-manager>`, and `<global-method-security>` \(service or controller restriction\).
+The namespace stages three top-level components:`<http>` \(about web and HTTP security\),`<authentication-manager>`, and `<global-method-security>` \(service or controller restriction\).
 
 命名空间分为三个顶级组件：`<http>`（关于Web和HTTP安全性），`<authentication-manager>`和`<global-method-security>`（服务或控制器限制）。
 
-Then, other concepts are referenced by those top-level components as attribute or as child element: `<authentication-provider>`, `<access-decision-manager> `\(provides access decisions for web and security methods\), and `<user-service>` \(as UserDetailsService implementations\).
+Then, other concepts are referenced by those top-level components as attribute or as child element: `<authentication-provider>`, `<access-decision-manager>`\(provides access decisions for web and security methods\), and `<user-service>` \(as UserDetailsService implementations\).
 
 然后，其他概念被那些顶级组件引用为属性或作为子元素：`<authentication-provider>`，`<access-decision-manager>`（提供Web和安全方法的访问决策）和`<user-service>` 作为UserDetailsS​​ervice实现）。
 
-
-
 ### The &lt;http&gt; component
 
-The` <http> `component of the namespace provides an `auto-config` attribute that we didn't use here. The `<http auto-config"="true"> `definition would have been a shortcut for the following definition:
+The`<http>`component of the namespace provides an `auto-config` attribute that we didn't use here. The `<http auto-config"="true">`definition would have been a shortcut for the following definition:
 
 &lt;http&gt;组件
 
 命名空间的`<http>`组件提供了一个我们在这里没有使用的`auto-config`属性。  `<http auto-config“=”true“>`定义将是以下定义的快捷方式：
 
-```
+```js
 <http>
     <form-login />
     <http-basic />
@@ -226,7 +221,7 @@ It isn't worth it for our REST API because we didn't plan to implement a server-
 
 这对于我们的REST API是不值得的，因为我们没有计划为表单登录实现服务器端生成的视图。 此外，`<logout>`组件对我们来说是无用的，因为我们的API不管理会话。
 
-Finally, the &lt;http-basic&gt; element creates underlying BasicAuthenticationFilter and BasicAuthenticationEntryPoint to the configuration.
+Finally, the `<http-basic>` element creates underlying BasicAuthenticationFilter and BasicAuthenticationEntryPoint to the configuration.
 
 We have made use of our own BasicAuthenticationFilter in order to customize the WWW-Authenticate response's header value from Basic base64token to CSM\_Basic base64token. This because the AJAX HTTP responses \(from our API\) containing a WWWAuthenticate header with a value starting with a Basic keyword automatically trigger the web-browser to open a native Basic-form popup. It was not the type of user experience we wanted to set up.
 
@@ -242,7 +237,7 @@ Spring Security过滤器链
 
 在配方的第一步，我们在web.xml中声明了一个名为springSecurityFilterChain的过滤器
 
-```
+```js
 <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.sfw.web.filter.DelegatingFilterProxy</filter-class>
@@ -257,21 +252,21 @@ here, springSecurityFilterChain is also a Spring bean that is created internally
 
 The whole Spring Security machinery is hooked-up in this way through finally one single bean.
 
-The configuration of the &lt;http&gt; element plays a central-role in the definition of what the filter-chain is made of. It is directly the elements it defines, that create the related filters.
+The configuration of the `<http>` element plays a central-role in the definition of what the filter-chain is made of. It is directly the elements it defines, that create the related filters.
 
 这里，springSecurityFilterChain也是由Spring Security命名空间（特别是http组件）内部创建的Spring bean。 DelegatingFilterProxy是一个Spring基础结构，它在应用程序上下文中查找特定的bean并调用它。 目标bean必须实现Filter接口。
 
 整个Spring Security机器以这种方式通过终止一个单一的bean。
 
-&lt;http&gt;元件的配置在定义过滤器链是什么中起着中心作用。 它直接是它定义的元素，创建相关的过滤器。
+`<http>`元件的配置在定义过滤器链是什么中起着中心作用。 它直接是它定义的元素，创建相关的过滤器。
 
 "Some core filters are always created in a filter chain and others will be added to the stack depending on the attributes and child elements which are present."
 
 “一些核心筛选器总是在筛选器链中创建，而其他核心筛选器将根据存在的属性和子元素添加到堆栈中。”
 
-It is important to distinguish between the configuration-dependant filters and the core filters that cannot be removed. As core filters, we can count SecurityContextPersistenceFilter, ExceptionTranslationFilter, and FilterSecurityInterceptor. These three filters are natively bound to the &lt;http&gt; element and can be found in the next table.
+It is important to distinguish between the configuration-dependant filters and the core filters that cannot be removed. As core filters, we can count SecurityContextPersistenceFilter, ExceptionTranslationFilter, and FilterSecurityInterceptor. These three filters are natively bound to the` <http>` element and can be found in the next table.
 
-区分配置相关的过滤器和无法删除的核心过滤器很重要。 作为核心过滤器，我们可以计算SecurityContextPersistenceFilter，ExceptionTranslationFilter和FilterSecurityInterceptor。 这三个过滤器本地绑定到&lt;http&gt;元素，可以在下表中找到。
+区分配置相关的过滤器和无法删除的核心过滤器很重要。 作为核心过滤器，我们可以计算SecurityContextPersistenceFilter，ExceptionTranslationFilter和FilterSecurityInterceptor。 这三个过滤器本地绑定到`<http>`元素，可以在下表中找到。
 
 This table comes from the Spring Security reference document and it contains all the core filters \(coming with the framework\) that can be activated using specific elements or attributes. They are listed here in the order of their position in the chain.
 
@@ -285,13 +280,13 @@ Remember that custom filters can be positioned relatively, or can replace any of
 
 `<security:custom-filter ref="myFilter" after="BASIC_AUTH_FILTER"/>`
 
-Our &lt;http&gt; configuration
+### Our &lt;http&gt; configuration
 
-We have defined the following configuration for the &lt;http&gt; 'namespace's component:
+We have defined the following configuration for the `<http>` 'namespace's component:
 
-我们为&lt;http&gt;'命名空间的组件定义了以下配置：
+我们为`<http>`'命名空间的组件定义了以下配置：
 
-```
+```js
 <security:http create-session="stateless" entry-pointref="authenticationEntryPoint" authentication-managerref="authenticationManager">
     <security:custom-filter ref="basicAuthenticationFilter" after="BASIC_AUTH_FILTER" />
     <security:csrf disabled="true"/>
@@ -331,7 +326,7 @@ First of all, AuthenticationManager is a single-method interface:
 
 首先，AuthenticationManager是一个单方法接口：
 
-```
+```java
 public interface AuthenticationManager {
     Authentication authenticate(Authentication authentication) throws AuthenticationException;
 }
@@ -341,7 +336,7 @@ Spring Security provides one implementation: ProviderManager. This implementatio
 
 Spring Security提供了一个实现：ProviderManager。 这个实现允许我们插入几个AuthenticationProvider。  ProviderManager按顺序尝试所有AuthenticationProviders，调用它们的authenticate方法。 代码如下：
 
-```
+```java
 public interface AuthenticationProvider {
     Authentication authenticate(Authentication authentication) throws AuthenticationException;
     boolean supports(Class<?> authentication);
@@ -354,9 +349,9 @@ Using the namespace, a specific AuthenticationProviders can be targeted using th
 
 当发现一个非空的Authentication对象时，ProviderManager停止它的迭代。或者，当抛出一个AuthenticationException时，它会失败。
 
-使用命名空间，可以使用ref元素来定位特定的AuthenticationProviders，如下所示：
+使用命名空间，可以使用`ref`元素来定位特定的AuthenticationProviders，如下所示：
 
-```
+```js
 <security:authentication-manager >
     <security:authentication-provider ref='myAuthenticationProvider'/>
 </security:authentication-manager>
@@ -364,23 +359,23 @@ Using the namespace, a specific AuthenticationProviders can be targeted using th
 
 Now, here is our configuration:
 
-```
-<security:authentication-manager alias"="authenticationManager"">
+```js
+<security:authentication-manager alias="authenticationManager">
     <security:authentication-provider user-serviceref='communityServiceImpl'>
         <security:password-encoder ref="passwordEncoder"/>
     </security:authentication-provider>
 </security:authentication-manager>
 ```
 
-There is no ref element in our configuration. The namespace will by default instantiate a DaoAuthenticationProvider. It will also inject our UserDetailsService implementation: communityServiceImpl, because we have specified it with userservice-ref.
+There is no ref element in our configuration. The namespace will by default instantiate a DaoAuthenticationProvider. It will also inject our UserDetailsService implementation: communityServiceImpl, because we have specified it with `userservice-ref`.
 
 This DaoAuthenticationProvider throws an AuthenticationException when the password submitted in a UsernamePasswordAuthenticationToken doesn't match the one which is loaded by UserDetailsService \(making use of the loadUserByUsername method\).
 
-在我们的配置中没有ref元素。 命名空间将默认实例化DaoAuthenticationProvider。 它也将注入我们的UserDetailsS​​ervice实现：communityServiceImpl，因为我们已经指定了userservice-ref。
+在我们的配置中没有`ref`元素。 命名空间将默认实例化DaoAuthenticationProvider。 它也将注入我们的UserDetailsS​​ervice实现：communityServiceImpl，因为我们已经指定了`userservice-ref`。
 
 当在UsernamePasswordAuthenticationToken中提交的密码与由UserDetailsS​​ervice加载的密码（使用loadUserByUsername方法）不匹配时，此DaoAuthenticationProvider会抛出AuthenticationException。
 
-It exists a few other AuthenticationProviders that could be used in our projects, for example,, RememberMeAuthenticationProvider, LdapAuthenticationProvider, CasAuthenticationProvider, or JaasAuthenticationProvider.
+It exists a few other AuthenticationProviders that could be used in our projects, for example,RememberMeAuthenticationProvider, LdapAuthenticationProvider, CasAuthenticationProvider, or JaasAuthenticationProvider.
 
 它存在一些其他AuthenticationProviders，可以在我们的项目中使用，例如，RememberMeAuthenticationProvider，LdapAuthenticationProvider，CasAuthenticationProvider或JaasAuthenticationProvider。
 
@@ -410,9 +405,7 @@ The optional configuration of an authenticationEntryPoint drives the filter towa
 
 Both starts the same way: the filter is triggered from its position in the chain. It looks for the authentication header in the request and delegates to the authenticationManager,which then relies on the UserDetailsService implementation to compare it with the user credentials from the database.
 
-为了实现我们的基本认证，我们在我们的过滤器链中添加了BasicAuthenticationFilter。 此BasicAuthenticationFilter\(org.sfw.security.web.authentication.www.BasicAuthenticationFilter\)需要
-
-authenticationManager和可选的authenticationEntryPoint。
+为了实现我们的基本认证，我们在我们的过滤器链中添加了BasicAuthenticationFilter。 此BasicAuthenticationFilter\(org.sfw.security.web.authentication.www.BasicAuthenticationFilter\)需要authenticationManager和可选的authenticationEntryPoint。
 
 authenticationEntryPoint的可选配置将过滤器驱动为接下来呈现的两种不同行为。
 
@@ -458,20 +451,17 @@ Without an authenticationEntryPoint, the filter behaves as follows:
 
 ### In the Spring Security reference
 
-This section has been largely inspired from the Spring rsecurity reference, which is again a great resource:
+This section has been largely inspired from the Spring rsecurity reference, which is again a great resource:  
 本节主要是从Spring rsecurity引用，这也是一个伟大的资源：
 
-http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle
-An appendix provides a very complete guide to the Spring Security namespace:
+[http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle)  
+An appendix provides a very complete guide to the Spring Security namespace:  
 附录提供了Spring Security命名空间的非常完整的指南：
 
-http://docs.spring.io/spring-security/site/docs/current/reference/html/appendix-namespace.html
+[http://docs.spring.io/spring-security/site/docs/current/reference/html/appendix-namespace.html](http://docs.spring.io/spring-security/site/docs/current/reference/html/appendix-namespace.html)
+
 ### The remember-me cookie/feature
 
-We passed over the RememberMeAuthenticationFilter that provides different ways for the server to remember the identity of a Principal between sessions. The Spring Security reference provides extensive information on this topic.
+We passed over the RememberMeAuthenticationFilter that provides different ways for the server to remember the identity of a Principal between sessions. The Spring Security reference provides extensive information on this topic.  
 我们通过了RememberMeAuthenticationFilter，它为服务器提供了不同的方式来记住会话之间Principal的身份。 Spring Security参考提供了有关此主题的大量信息。
-
-
-
-
 
