@@ -18,9 +18,9 @@ On the client side, we are using HTML5 session storage to store temporarily the 
 
 1. We have made use of the HTML5 sessionStorage attribute. The main change has been the creation of a httpAuth factory. Presented in the http\_authorized.js file, this factory is a wrapper around $http to take care transparently of client-side storage and authentication headers. The code for this factory is as follows: 
 
-1.我们使用了HTML5 sessionStorage属性。 主要的变化是创建了一个httpAuth工厂。 提交在http\_authorized.js文件中，这个工厂是$ http包装，以便透明地处理客户端存储和认证头。 这个工厂的代码如下：
+1.我们使用了HTML5 `sessionStorage`属性。 主要的变化是创建了一个httpAuth工厂。 提交在http\_authorized.js文件中，这个工厂是`$http`包装，以便透明地处理客户端存储和认证头。 这个工厂的代码如下：
 
-```
+```js
 cloudStreetMarketApp.factory("httpAuth", function ($http) {
     return {
         clearSession: function () {
@@ -89,22 +89,22 @@ cloudStreetMarketApp.factory("httpAuth", function ($http) {
 });
 ```
 
-1. This factory is invoked everywhere \(or almost\) in the former place of $http to pass and handle transparently the credentials or identification headers required for AJAX requests.
+2.This factory is invoked everywhere \(or almost\) in the former place of $http to pass and handle transparently the credentials or identification headers required for AJAX requests.
 
-2. We have avoided dealing directly with the sessionStorage attribute from the different controllers, in order to prevent being tightly coupled with this storage solution.
+3.We have avoided dealing directly with the sessionStorage attribute from the different controllers, in order to prevent being tightly coupled with this storage solution.
 
-3. The account\_management.js file regroups different controllers \(LoginByUsernameAndPasswordController, createNewAccountController, and OAuth2Controller\) that store credentials and provider IDs in sessionStorage through httpAuth.
+4.The account\_management.js file regroups different controllers \(LoginByUsernameAndPasswordController, createNewAccountController, and OAuth2Controller\) that store credentials and provider IDs in sessionStorage through httpAuth.
 
-4. A couple of factories have also been modified to pull and push data through the httpAuth factory. For example, the indiceTableFactory \(from home\_financial\_table.js\) requests the indices of a market with credentials handled transparently:
+5.A couple of factories have also been modified to pull and push data through the httpAuth factory. For example, the indiceTableFactory \(from home\_financial\_table.js\) requests the indices of a market with credentials handled transparently:
 
-2.这个工厂在$ http的前一个地方（或几乎）被调用，以便透明地处理AJAX请求所需的凭证或标识头。
+2.这个工厂在`$ http`的前一个地方（或几乎）被调用，以便透明地处理AJAX请求所需的凭证或标识头。
 
-3.我们避免直接处理来自不同控制器的sessionStorage属性，以防止与此存储解决方案紧密耦合。
+3.我们避免直接处理来自不同控制器的`sessionStorage`属性，以防止与此存储解决方案紧密耦合。
 
 4.account\_management.js文件重新分组不同的控制器（LoginByUsernameAndPasswordController，createNewAccountController和OAuth2Controller），它们通过httpAuth在sessionStorage中存储凭据和提供程序标识。  
 5.还修改了一些工厂来通过httpAuth工厂推送和推送数据。 例如，indiceTableFactory（从home\_financial\_table.js）请求具有透明处理的凭证的市场的索引：
 
-```
+```js
 cloudStreetMarketApp.factory("indicesTableFactory",function (httpAuth) {
     return {
         get: function (market) {
@@ -116,19 +116,19 @@ cloudStreetMarketApp.factory("indicesTableFactory",function (httpAuth) {
 
 ### Server side
 
-1. We have declared a passwordEncoder bean in security-config.xml \(in the cloudstreetmarket-core module\):
+1.We have declared a passwordEncoder bean in security-config.xml \(in the cloudstreetmarket-core module\):
 
 1.我们在security-config.xml中（在cloudstreetmarket-core模块中）声明了一个passwordEncoder bean：
 
-```
+```js
 <bean id="passwordEncoder" class="org.sfw.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 ```
 
-1. In security-config.xml, a reference to the password-encoder is made, as follows, in our authenticationProvider to.
+2.In security-config.xml, a reference to the password-encoder is made, as follows, in our authenticationProvider to.
 
 2.在security-config.xml中，对密码编码器的引用如下，在我们的authenticationProvider中。
 
-```
+```js
 <security:authentication-manager alias"="authenticationManager">
     <security:authentication-provider user-serviceref='communityServiceImpl'>
         <security:password-encoder ref="passwordEncoder"/>
@@ -136,11 +136,11 @@ cloudStreetMarketApp.factory("indicesTableFactory",function (httpAuth) {
 </security:authentication-manager>
 ```
 
-1. The passwordEncoder bean is autowired in CommunityServiceImpl \(our UserDetailsService implementation\). Passwords are hashed here with passwordEncoder when accounts are registered. The stored hash is then compared to the user-submitted password when the user attempts to log in. The CommunityServiceImpl code is as follows:
+3.The passwordEncoder bean is autowired in CommunityServiceImpl \(our UserDetailsService implementation\). Passwords are hashed here with passwordEncoder when accounts are registered. The stored hash is then compared to the user-submitted password when the user attempts to log in. The CommunityServiceImpl code is as follows:
 
-2. passwordEncoder bean在CommunityServiceImpl（我们的UserDetailsS​​ervice实现）中自动连接。 在注册帐户时，使用passwordEncoder在此处对密码进行散列。 当用户尝试登录时，存储的哈希值与用户提交的密码进行比较。CommunityServiceImpl代码如下：
+3.passwordEncoder bean在CommunityServiceImpl（我们的UserDetailsS​​ervice实现）中自动连接。 在注册帐户时，使用passwordEncoder在此处对密码进行散列。 当用户尝试登录时，存储的哈希值与用户提交的密码进行比较。CommunityServiceImpl代码如下：
 
-```
+```java
 @Service(value="communityServiceImpl")
 @Transactional(propagation = Propagation.REQUIRED)
 public class CommunityServiceImpl implements CommunityService {
@@ -179,7 +179,7 @@ public class CommunityServiceImpl implements CommunityService {
 }
 ```
 
-1. Our ConnectionFactory implementation SocialUserConnectionRepositoryImpl is instantiated in SocialUserServiceImpl with an instance of the Spring TextEncryptor. This gives the possibility to encrypt the stored connection-data for OAuth2 \(most importantly, the access-tokens and refresh-tokens\). At the moment, this data is not encrypted in our code.
+4.Our ConnectionFactory implementation SocialUserConnectionRepositoryImpl is instantiated in SocialUserServiceImpl with an instance of the Spring TextEncryptor. This gives the possibility to encrypt the stored connection-data for OAuth2 \(most importantly, the access-tokens and refresh-tokens\). At the moment, this data is not encrypted in our code.
 
 4.我们的ConnectionFactory实现SocialUserConnectionRepositoryImpl在SocialUserServiceImpl中用Spring TextEncryptor的实例实例化。 这为加密存储的OAuth2连接数据（最重要的是，访问令牌和刷新令牌）提供了可能性。 目前，这些数据在我们的代码中没有加密。
 
@@ -217,13 +217,13 @@ Let's focus on how a state is maintained on the client side. We offer to our use
 
 When a user registers an account, he defines a username and a password. These credentials are stored using the httpAuth factory and the setCredentials method.
 
-In the account\_management.js file and especially in the createNewAccountController \(invoked through the create\_account\_modal.html modal\), the setCredentials call can be found in the success handler of the createAccount method:
+In the account\_management.js file and especially in the createNewAccountController \(invoked through the create\_account\_modal.html modal\), the `setCredentials` call can be found in the success handler of the `createAccount` method:
 
-当用户注册帐户时，他定义用户名和密码。 这些凭据使用httpAuth工厂和setCredentials方法存储。
+当用户注册帐户时，他定义用户名和密码。 这些凭据使用httpAuth工厂和`setCredentials`方法存储。
 
-在account\_management.js文件中，特别是在createNewAccountController（通过create\_account\_modal.html modal调用）中，setCredentials调用可以在createAccount方法的成功处理程序中找到：
+在account\_management.js文件中，特别是在createNewAccountController（通过create\_account\_modal.html modal调用）中，`setCredentials`调用可以在`createAccount`方法的成功处理程序中找到：
 
-```
+```java
 httpAuth.setCredentials($scope.form.username,$scope.form.password);
 ```
 
@@ -231,7 +231,7 @@ Right now, this method uses HTML5 sessionStorage as storage device:
 
 现在，这种方法使用HTML5 sessionStorage作为存储设备：
 
-```
+```js
 setCredentials: function (login, password) {
     var encodedData = window.btoa(login"+":"+password);
     var basicAuthToken = 'Basic '+encodedData;
@@ -241,15 +241,15 @@ setCredentials: function (login, password) {
 }
 ```
 
-The window.btoa\(...\) function encodes in base 64 the provided String. The $httpProvider.defaults.headers configuration object is also added a new header which will potentially be used by the next AJAX request.
+The `window.btoa(...)` function encodes in base 64 the provided String. The `$httpProvider.defaults.headers` configuration object is also added a new header which will potentially be used by the next AJAX request.
 
 When a user signs in using the BASIC form \(see also the account\_management.js and especially the LoginByUsernameAndPasswordController that is invoked from the auth\_modal.html modal\), the username and password are stored using the same method:
 
-window.btoa（...）函数在base 64中编码提供的String。  $ httpProvider.defaults.headers配置对象也添加了一个新的头，可能会被下一个AJAX请求使用。
+`window.btoa(...)`函数在base 64中编码提供的String。  `$httpProvider.defaults.headers`配置对象也添加了一个新的header，可能会被下一个AJAX请求使用。
 
 当用户使用BASIC表单登录时（另请参阅account\_management.js，尤其是从auth\_modal.html modal调用的LoginByUsernameAndPasswordController），用户名和密码使用相同的方法存储：
 
-```
+```js
 httpAuth.setCredentials($scope.form.username, $scope.form.password);
 ```
 
@@ -267,13 +267,13 @@ The sign in request is redirected to the Yahoo! authentication screens. The whol
 
 This spi parameter is the Yahoo! user ID \(GUID\). It is caught by the DefaultController\(cloudstreetmarket-webapp\) and injected into the model:
 
-从auth\_modal.html发起，使用OAuth2登录会向API处理程序/ api / signin / yahoo创建POST HTTP请求（此处理程序位于抽象的ProviderSignInController中）。
+从auth\_modal.html发起，使用OAuth2登录会向API处理程序/api/signin/yahoo创建POST HTTP请求（此处理程序位于抽象的ProviderSignInController中）。
 
 登录请求被重定向到Yahoo!身份验证屏幕。 整个页面转到Yahoo!，直到完成。 当API最终将请求重定向到门户网站的主页时，会添加spi请求参数：http//cloudstreetmarket.com/portal/index?spi=F2YY6VNSXIU7CTAUB2A6U6KD7E
 
 此spi参数是Yahoo!用户ID（GUID）。 它被DefaultController（cloudstreetmarket-webapp）捕获并注入到模型中：
 
-```
+```java
 @RequestMapping(value="/*", method={RequestMethod.GET,RequestMethod.HEAD})
 public String fallback(Model model, @RequestParam(value="spi",required=false) String spi) {
 
@@ -288,7 +288,7 @@ The index.jsp file renders the value directly in the top menu's DOM:
 
 index.jsp文件直接在顶部菜单的DOM中呈现值：
 
-```
+```js
 <div id="spi" class="hide">${spi}</div>
 ```
 
@@ -296,7 +296,7 @@ When the menuController \(bound to the top menu\) initializes itself, this value
 
 当menuController（绑定到顶部菜单）初始化自身时，此值被读取并存储在sessionStorage中
 
-```
+```js
 $scope.init = function () {
     if($('#spi').text()){
     httpAuth.setSession('oAuthSpiCSM', $('#spi').text());
@@ -304,15 +304,15 @@ $scope.init = function () {
 }
 ```
 
-In our httpAuth factory \(http\_authorized.js\), the refresh\(\) method that is invoked before every single call to the API checks if this value is present and add two extra headers:
+In our httpAuth factory \(http\_authorized.js\), the `refresh()` method that is invoked before every single call to the API checks if this value is present and add two extra headers:
 
 Spi with the GUID value and the **OAuthProvider** \(yahoo in our case\). The code is as follows:
 
-在我们的httpAuth工厂（http\_authorized.js）中，在每次调用API之前调用的refresh（）方法会检查此值是否存在，并添加两个额外的标头：
+在我们的httpAuth工厂（http\_authorized.js）中，在每次调用API之前调用的`refresh()`方法会检查此值是否存在，并添加两个额外的标头：
 
 Spi与GUID值和**OAuthProvider**（在我们的例子中为yahoo）。 代码如下：
 
-```
+```js
 refresh: function(){
     var authBasicItem = sessionStorage.getItem('basicHeaderCSM');
     var oAuthSpiItem = sessionStorage.getItem('oAuthSpiCSM');
@@ -334,7 +334,7 @@ The screenshot here shows those two headers for one of our an AJAX requests:
 
 ### HTML5 SessionStorage
 
-We used the SessionStorage as storage solution on the client side for user credentials and social identifiers \(GUIDs\).
+We used the `SessionStorage `as storage solution on the client side for user credentials and social identifiers \(GUIDs\).
 
 In HTML5, web pages have the capability to store data locally in the browser using the Web Storage technology. Data in stored Web Storage can be accessed from the page scripts' and values can be relatively large \(up to 5MB\) with no impact on client-side performance.
 
@@ -344,7 +344,7 @@ Web Storage is per origin \(the combination of protocol, hostname, and port numb
 
 * window.sessionStorage: This stores data for one session \(data is lost when the tab is closed\).
 
-我们在客户端使用SessionStorage作为存储解决方案来获取用户凭据和社区标识符（GUID）。
+我们在客户端使用`SessionStorage`作为存储解决方案来获取用户凭据和社区标识符（GUID）。
 
 在HTML5中，网页具有使用Web存储技术在浏览器中本地存储数据的能力。 存储的Web存储中的数据可以从页脚本访问，值可以相对较大（高达5MB），对客户端性能没有影响。
 
@@ -357,7 +357,7 @@ Web存储是根据源（协议，主机名和端口号的组合）。 来自一�
 These two objects can be accessed directly from the window object and they both come with the self-explanatory methods:  
 这两个对象可以直接从窗口对象访问，它们都带有自解释的方法：
 
-```
+```java
 setItem(key,value);
 getItem(key);
 removeItem(key);
@@ -404,7 +404,7 @@ We used a PasswordEncoder implementation invoked manually while persisting and u
 
 我们使用手动调用的PasswordEncoder实现来保持和更新用户。 另外PasswordEncoder是Spring Security核心的接口：
 
-```
+```java
 public interface PasswordEncoder {
     String encode(CharSequence rawPassword);
     boolean matches(CharSequence rawPassword, String encodedPassword);
@@ -423,7 +423,7 @@ Spring Security提供三种实现：StandardPasswordEncoder，NoOpPasswordEncode
 
 这允许为相同的密码存储不同的HASH值。 这里有一个不同的BCrypt哈希为123456值的例子：
 
-```
+```java
 $2a$10$Qz5slUkuV7RXfaH/otDY9udROisOwf6XXAOLt4PHWnYgOhG59teC6
 $2a$10$GYCkBzp2NlpGS/qjp5f6NOWHeF56ENAlHNuSssSJpE1MMYJevHBWO
 $2a$10$5uKS72xK2ArGDgb2CwjYnOzQcOmB7CPxK6fz2MGcDBM9vJ4rUql36
