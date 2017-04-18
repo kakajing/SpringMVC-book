@@ -18,8 +18,6 @@ This chapter contains the following recipes:
 
 * 使用OAuth从第三方API检索数据
 
-
-
 # Introduction
 
 What is HATEOAS? If you have never seen this word before, it can appear to be difficult to pronounce. Some pronounce it hate-ee-os; others say hate O-A-S. The important point is to remember that this abbreviation stands for **Hypermedia as the Engine of Application State\(HATEOAS\)**. At the very least, you should remember Hypermedia. Hypermedia as a resource's capability to embed nodes that target external resources. Being connected to other resources,a hypermedia resource is also constrained to its domain, as it can't technically develop \(as part of itself\) other resources' domains.
@@ -28,7 +26,7 @@ Think of it as Wikipedia. If we create a page whose sections are not self contai
 
 HATEOAS is a constraint applicable to a REST architecture. It imposes on its resources a domain consistency, and at the same time, it imposes an explicit self documentation that the owner has to maintained for the sake of the whole cohesion.
 
-什么是HATEOAS？ 如果你从来没有见过这个词，它似乎很难发音。 有些人说它hate-ee-os; 其他人说憎恨O-A-S。 重要的一点是要记住，这个缩写代表**超媒体作为应用程序状态引擎（HATEOAS）**。 至少，你应该记住超媒体。 超媒体作为资源嵌入指向外部资源的节点的能力。 由于连接到其他资源，超媒体资源也被限制在其域中，因为它不能在技术上（作为自身的一部分）开发其他资源的域。
+什么是HATEOAS？ 如果你从来没有见过这个词，它似乎很难发音。 有些人说它hate-ee-os; 其他人说hate O-A-S。 重要的一点是要记住，这个缩写代表**超媒体作为应用程序状态引擎（HATEOAS）**。 至少，你应该记住超媒体。 超媒体作为资源嵌入指向外部资源的节点的能力。 由于连接到其他资源，超媒体资源也被限制在其域中，因为它不能在技术上（作为自身的一部分）开发其他资源的域。
 
 想想它作为维基百科。 如果我们创建一个页面的页面标题（域）中不是自包含的页面，并且如果这些部分之一已经被外部页面覆盖，管理员很少有机会提出这种情况。
 
@@ -66,8 +64,5 @@ API越符合REST标准，其等级越高。
 
 您可以在Martin Fowler的博客上阅读更多Richardson Maturity Model：
 
-http://martinfowler.com/articles/richardsonMaturityModel.html
-
-  
-
+[http://martinfowler.com/articles/richardsonMaturityModel.html](http://martinfowler.com/articles/richardsonMaturityModel.html)
 
