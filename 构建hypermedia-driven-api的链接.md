@@ -12,7 +12,7 @@ We will detail the resource assemblers, which are reusable transition components
 
 1.使用注册为`@Component`的资源汇编器，从它们关联的实体（Index，ChartIndex，ChartStock，Exchange，Industry，Market等）创建创建的资源（IndexResource，ChartResource，ExchangeResource，IndustryResource，MarketResource等）：
 
-```
+```java
 import static org.sfw.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.sfw.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.sfw.hateoas.mvc.ResourceAssemblerSupport;
@@ -53,28 +53,28 @@ public class IndexResourceAssembler extends ResourceAssemblerSupport<Index, Inde
 >
 > 我们使用这些汇编器来生成与资源一起提供的链接。 它们使用ControllerLinkBuilder（linkTo和methodOn）中的静态方法和在资源本身（EXCHANGE，CHART和COMPONENTS）中定义为常量的显式标签。
 
-1. We have altered our previous SwaggerConfig class so that this class can be used for annotation-based configuration in other domains that Swagger. This class has been renamed to AnnotationConfig.
+2.We have altered our previous SwaggerConfig class so that this class can be used for annotation-based configuration in other domains that Swagger. This class has been renamed to AnnotationConfig.
 
-2. We have also added to this AnnotationConfig class the following two annotations:
+3.We have also added to this AnnotationConfig class the following two annotations:
 
-2.我们改变了我们以前的SwaggerConfig类，以便这个类可以用于Swagger的其他域中基于注释的配置。 此类已重命名为AnnotationConfig。
+2.我们改变了我们以前的SwaggerConfig类，以便这个类可以用于Swagger的其他域中基于注解的配置。 此类已重命名为AnnotationConfig。
 
-3.我们还向这个AnnotationConfig类添加了以下两个注释：
+3.我们还向这个AnnotationConfig类添加了以下两个注解：
 
-```
+```java
 @EnableHypermediaSupport(type = { HypermediaType.HAL })
 @EnableEntityLinks(Because these two annotations don't have an XML equivalent yet).
 ```
 
-1. All the targeted controllers in these converters have been annotated with the `@ExposesResourceFor` annotation \(on the class level\).
+4.All the targeted controllers in these converters have been annotated with the `@ExposesResourceFor` annotation \(on the class level\).
 
-2. These controllers now also return the created resources or pages of resources:
+5.These controllers now also return the created resources or pages of resources:
 
-4.这些转换器中的所有目标控制器都已注释了`@ExposesResourceFor`注释（在类级别上）。
+4.这些转换器中的所有目标控制器都已注释了`@ExposesResourceFor`注解（在类级别上）。
 
 5.这些控制器现在还返回创建的资源或资源页面：
 
-```
+```java
 @RestController
 @ExposesResourceFor(Index.class)
 @RequestMapping(value=INDICES_PATH,produces={"application/xml", "application/json"})
@@ -103,11 +103,11 @@ public class IndexController extends CloudstreetApiWCI<Index> {
 }
 ```
 
-1. Here, we have made CloudstreetApiWCI generic. In this way, CloudstreetApiWCI can have a generic PagedResourcesAssembler @Autowired:
+6.Here, we have made CloudstreetApiWCI generic. In this way, CloudstreetApiWCI can have a generic PagedResourcesAssembler `@Autowired`:
 
-在这里，我们已经使CloudstreetApiWCI通用。 这样，CloudstreetApiWCI可以有一个通用的PagedResourcesAssembler `@Autowired`：
+6.在这里，我们已经使CloudstreetApiWCI通用。 这样，CloudstreetApiWCI可以有一个通用的PagedResourcesAssembler `@Autowired`：
 
-```
+```java
 @Component
 @PropertySource("classpath:application.properties")
 public class CloudstreetApiWCI<T extends Identifiable<?>> extends WebContentInterceptor {
@@ -122,18 +122,18 @@ public class CloudstreetApiWCI<T extends Identifiable<?>> extends WebContentInte
 >
 > 由于不是WebCommonInterceptor类的传统目的用作超级控制器共享属性和实用程序方法，我们将在控制器和WebCommonInterceptor之间创建一个中间组件。
 
-1. In order to @Autowire the PagedResourcesAssemblers, as we did, we have registered a PagedResourcesAssembler bean in dispatcher-servlet.xml:
+1. In order to `@Autowire` the PagedResourcesAssemblers, as we did, we have registered a PagedResourcesAssembler bean in dispatcher-servlet.xml:
 
-7.为了@Autowire PagedResourcesAssemblers，像我们一样，我们在dispatcher-servlet.xml中注册了一个PagedResourcesAssembler bean：
+7.为了`@Autowire` PagedResourcesAssemblers，像我们一样，我们在dispatcher-servlet.xml中注册了一个PagedResourcesAssembler bean：
 
-```
+```java
 <bean class="org.sfw.data.web.PagedResourcesAssembler">
     <constructor-arg><null/></constructor-arg>
     <constructor-arg><null/></constructor-arg>
 </bean>
 ```
 
-1. As a result, now calling the API for a ^GDAXI index code \([http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml\](http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml\)\) produces the following output:
+8.As a result, now calling the API for a ^GDAXI index code \([http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml\](http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml\)\) produces the following output:
 
 8.因此，现在调用^ GDAXI索引代码的API（[http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml）会生成以下输出：](http://cloudstreetmarket.com/api/indices/%5EGDAXI.xml）会生成以下输出：)
 
@@ -173,7 +173,7 @@ The ResourceAssemblerSupport class is an abstract generic class. It enriches an 
 
 ResourceAssemblerSupport类是一个抽象类。 它通过提供一些额外的方法丰富了汇编器。  T是控制器的类或super.Type，它的签名如下：
 
-```
+```java
 public abstract class ResourceAssemblerSupport<T, D extends ResourceSupport> implements ResourceAssembler<T, D>
 ```
 
@@ -183,9 +183,11 @@ The table here provides a glimpse of the ResourceAssemblerSupport JavaDoc:
 
 ![](/assets/109.png)
 
-The ResourceAssemblerSupport class also implements ResourceAssembler,which is the one-method interface presented here that forces the assembler to provide a toResource\(T entity\) method:
+The ResourceAssemblerSupport class also implements ResourceAssembler,which is the one-method interface presented here that forces the assembler to provide a `toResource(T entity)` method:
 
-```
+ResourceAssemblerSupport类还实现了ResourceAssembler，它是这里介绍的单方法接口，强制汇编器提供一个`toResource(T entity)`方法：
+
+```java
 public interface ResourceAssembler<T, D extends ResourceSupport> {
     D toResource(T entity);
 }
@@ -220,13 +222,13 @@ Doing this, you should obtain the following output:
 
 Can you see the **next rel** link and how it has been built by reflection from our method-handler annotations and their default and used values? Try to follow the **next** link to see how the navigation gets updated and incremented smoothly.
 
-你能看到**next rel**链接，以及它是如何通过我们的方法处理程序注释的反射和它们的默认和使用值构建的？ 尝试按照**next**链接查看导航是如何更新和平滑增量。
+你能看到**next rel**链接，以及它是如何通过我们的方法处理程序注解的反射和它们的默认和使用值构建的？ 尝试按照**next**链接查看导航是如何更新和平滑增量。
 
-In the IndexController.getSeveral\(\) method-handler \(shown in the following snippet\),we make sure that every single resource is built properly \(content and links\) by making the PagedResourcesAssembler using our custom IndexResourceAssembler:
+In the `IndexController.getSeveral()` method-handler \(shown in the following snippet\),we make sure that every single resource is built properly \(content and links\) by making the PagedResourcesAssembler using our custom IndexResourceAssembler:
 
-在IndexController.getSeveral\(\)方法处理程序（如下面的代码片段所示）中，我们通过使用我们自定义的IndexResourceAssembler来使PagedResourcesAssembler正确地建立每个资源（内容和链接）：
+在`IndexController.getSeveral()`方法处理程序（如下面的代码片段所示）中，我们通过使用我们自定义的IndexResourceAssembler来使PagedResourcesAssembler正确地建立每个资源（内容和链接）：
 
-```
+```java
 @RequestMapping(method=GET)
 public PagedResources<IndexResource> getSeveral(@RequestParam(value="exchange", required=false) String exchangeId,
                 @RequestParam(value="market", required=false) MarketId marketId,
@@ -238,41 +240,41 @@ public PagedResources<IndexResource> getSeveral(@RequestParam(value="exchange", 
 
 ### Building links
 
-Let's have a look at the way we build resource links in assemblers. The presented toResource\(\) method in IndexResourceAssembler uses two different techniques.
+Let's have a look at the way we build resource links in assemblers. The presented `toResource()` method in IndexResourceAssembler uses two different techniques.
 
 The first technique through EntityLinks uses JPA Entities; the second one, through the ControllerLinkBuilder static methods, uses Controllers directly.
 
-让我们看看我们在汇编器中构建资源链接的方式。  IndexResourceAssembler中提供的toResource（）方法使用两种不同的技术。
+让我们看看我们在汇编器中构建资源链接的方式。  IndexResourceAssembler中提供的`toResource()`方法使用两种不同的技术。
 
 通过EntityLinks的第一种技术使用JPA实体; 第二个，通过ControllerLinkBuilder的静态方法，直接使用Controllers。
 
 ### EntityLinks
 
-By declaring the @EnableEntityLinks annotation in a configuration class, an EntityLinks implementation gets registered: ControllerEntityLinks. All the Spring MVC controllers of ApplicationContext are looked up to search for the ones carrying a @ExposesResourceFor\(xxx.class\) annotation.
+By declaring the `@EnableEntityLinks` annotation in a configuration class, an EntityLinks implementation gets registered: ControllerEntityLinks. All the Spring MVC controllers of ApplicationContext are looked up to search for the ones carrying a `@ExposesResourceFor(xxx.class)` annotation.
 
-The @ExposesResourceFor annotation on a Spring MVC controller exposes the model Type that the controller manages. This registration enables the required mapping between the controller and a JPA entity.
+The `@ExposesResourceFor` annotation on a Spring MVC controller exposes the model Type that the controller manages. This registration enables the required mapping between the controller and a JPA entity.
 
-It must also be noted that the registered ControllerEntityLinks implementation assumes a certain @RequestMapping configuration on controllers. The @RequestMapping configuration is made as follows:
+It must also be noted that the registered ControllerEntityLinks implementation assumes a certain `@RequestMapping` configuration on controllers. The `@RequestMapping` configuration is made as follows:
 
-* for a collection of resources, a class-level @RequestMapping annotation is expected. The controller then has to expose a method-handler mapped to an empty path, for example, @RequestMapping\(method = RequestMethod.GET\).
+* for a collection of resources, a class-level `@RequestMapping` annotation is expected. The controller then has to expose a method-handler mapped to an empty path, for example, `@RequestMapping(method = RequestMethod.GET)`.
 
-* For individual resources, those are exposed with the id of the managed JPA Entity,for example, @RequestMapping\("/{id}"\).
+* For individual resources, those are exposed with the id of the managed JPA Entity,for example, `@RequestMapping("/{id}")`.
 
-通过在配置类中声明`@EnableEntityLinks`注释，EntityLinks实现将注册：ControllerEntityLinks。 查找ApplicationContext的所有Spring MVC控制器以搜索携带`@ExposesResourceFor`（xxx.class）注释的控件。
+通过在配置类中声明`@EnableEntityLinks`注解，EntityLinks实现将注册：ControllerEntityLinks。 查找ApplicationContext的所有Spring MVC控制器以搜索携带`@ExposesResourceFor(xxx.class)`注解的控件。
 
-Spring MVC控制器上的`@ExposesResourceFor`注释公开了控制器管理的模型类型。 此注册启用控制器和JPA实体之间所需的映射。
+Spring MVC控制器上的`@ExposesResourceFor`注解公开了控制器管理的模型类型。 此注册启用控制器和JPA实体之间所需的映射。
 
 还必须注意，注册的ControllerEntityLinks实现假定控制器上有一个`@RequestMapping`配置。  `@RequestMapping`配置如下：
 
-* 对于资源集合，需要类级别的`@RequestMapping`注释。 然后控制器必须公开映射到空路径的方法处理程序，例如，`@RequestMapping（method = RequestMethod.GET）`。
+* 对于资源集合，需要类级别的`@RequestMapping`注解。 然后控制器必须公开映射到空路径的方法处理程序，例如，`@RequestMapping（method = RequestMethod.GET）`。
 
 * 对于单个资源，它们使用受管JPA实体的ID进行公开，例如`@RequestMapping("/{id}")`。
 
-Acknowledging these points, the EntityLinks implementation\(ControllerEntityLinks\) is used from @Autowiring to generate Links using the collection of methods it provides:
+Acknowledging these points, the EntityLinks implementation\(ControllerEntityLinks\) is used from `@Autowiring` to generate Links using the collection of methods it provides:
 
 确认这些点，使用EntityLinks实现（ControllerEntityLinks）从`@Autowiring`使用它提供的方法集合来生成链接：
 
-```
+```java
 public interface EntityLinks extends Plugin<Class<?>>{
     LinkBuilder linkFor(Class<?> type);
     LinkBuilder linkFor(Class<?> type, Object... parameters);
@@ -284,18 +286,18 @@ public interface EntityLinks extends Plugin<Class<?>>{
 }
 ```
 
-ControllerLinkBuilder
+### ControllerLinkBuilder
 
 As introduced, Spring HATEOAS provides the ControllerLinkBuilder utility, which allows the creation of links by pointing to controller classes:
 
 正如所介绍的，Spring HATEOAS提供了ControllerLinkBuilder实用程序，它允许通过指向控制器类来创建链接：
 
-```
+```java
 resource.add(
     linkTo(
-    methodOn(StockProductController.class)
-    .getSeveral(null, null, index.getId(), null, null, null, null))
-    .withRel(COMPONENTS)
+        methodOn(StockProductController.class)
+        .getSeveral(null, null, index.getId(), null, null, null, null))
+        .withRel(COMPONENTS)
 );
 ```
 
@@ -309,19 +311,19 @@ If our application runs at [http://cloudstreetmarket/api](http://cloudstreetmark
 
 ## There's more…
 
-### The use of regular expressions in @RequestMapping
+### The use of regular expressions in `@RequestMapping`
 
-In IndexController, StockProductController, ChartStockController, and ChartIndexController, the GET method-handlers to retrieve single resources have a special @RequestMapping definition.
+In IndexController, StockProductController, ChartStockController, and ChartIndexController, the GET method-handlers to retrieve single resources have a special `@RequestMapping` definition.
 
-Here is the IndexController's get\(\) method:
+Here is the IndexController's `get()` method:
 
-在@RequestMapping中使用正则表达式
+在`@RequestMapping`中使用正则表达式
 
-在IndexController，StockProductController，ChartStockController和ChartIndexController中，检索单个资源的GET方法处理程序有一个特殊的@RequestMapping定义。
+在IndexController，StockProductController，ChartStockController和ChartIndexController中，检索单个资源的GET方法处理程序有一个特殊的`@RequestMapping`定义。
 
-这里是IndexController的get\(\)方法：
+这里是IndexController的`get()`方法：
 
-```
+```java
 @RequestMapping(value="/{index:[a-zA-Z0-9^.-]+}{extension:\\.[a-z]+}", method=GET)
 public IndexResource get(@PathVariable(value="index") String indexId,
                 @PathVariable(value="extension") String extension){
@@ -332,15 +334,15 @@ public IndexResource get(@PathVariable(value="index") String indexId,
 
 We ended up with this option because the Yahoo! Index codes appeared a bit more complex than simple strings. Especially considering the fact that these codes can carry one or more dots.
 
-This situation caused Spring MVC not to be able to distinguish correctly the @PathVariable index from extension \(stripping them out half the way\).
+This situation caused Spring MVC not to be able to distinguish correctly the `@PathVariable` index from extension \(stripping them out half the way\).
 
-Luckily, Spring MVC allows us to define URI template patterns with regular expressions. The syntax is {varName:regex}, where the first part defines the variable name and the second defines the regular expression.
+Luckily, Spring MVC allows us to define URI template patterns with regular expressions. The syntax is `{varName:regex}`, where the first part defines the variable name and the second defines the regular expression.
 
 我们最终得到这个选项，因为Yahoo！Index代码比简单的字符串显得有点复杂。 特别是考虑到这些代码可以携带一个或多个点的事实。
 
-这种情况导致Spring MVC无法正确区分@PathVariable索引和扩展（剥离它们的一半）。
+这种情况导致Spring MVC无法正确区分`@PathVariable`索引和扩展（剥离它们的一半）。
 
-幸运的是，Spring MVC允许我们使用正则表达式定义URI模板模式。 语法是varName：regex，其中第一部分定义变量名称，第二部分定义正则表达式。
+幸运的是，Spring MVC允许我们使用正则表达式定义URI模板模式。 语法是`{varName:regex}`，其中第一部分定义变量名称，第二部分定义正则表达式。
 
 You will note the regular expression we defined for our indices:
 
