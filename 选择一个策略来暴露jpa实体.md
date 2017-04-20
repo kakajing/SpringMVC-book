@@ -12,15 +12,15 @@ So, how do we represent an Entity in REST HATEOAS? How do we safely and uniforml
 
 1.我们提出了一个用作资源的实体（Index.java）。 这里是另一个使用的实体：Exchange.java。 这个实体提出了一个类似的策略来公开其JPA关联：
 
-```
+```java
 import edu.zc.csm.core.converters.IdentifiableSerializer;
-import edu.zc.csm.core.converters.
-IdentifiableToIdConverter;
+import edu.zc.csm.core.converters.IdentifiableToIdConverter;
+
 @Entity
 public class Exchange extends ProvidedId<String> {
 
     private String name;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "market_id", nullable=true)
     @JsonSerialize(using=IdentifiableSerializer.class)
@@ -28,25 +28,25 @@ public class Exchange extends ProvidedId<String> {
     @XStreamConverter(value=IdentifiableToIdConverter.class,strings={"id"})
     @XStreamAlias("marketId")
     private Market market;
-    
+
     @OneToMany(mappedBy = "exchange", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JsonIgnore
     @XStreamOmitField
     private Set<Index> indices = new LinkedHashSet<>();
-    
+
     @OneToMany(mappedBy = "exchange", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JsonIgnore
     @XStreamOmitField
     private Set<StockProduct> stocks = new LinkedHashSet<>();
-    
+
     public Exchange(){}
-    
+
     public Exchange(String exchange) {
         setId(exchange);
     }
-    
+
     //getters & setters
-    
+
     @Override
     public String toString() {
         return "Exchange [name=" + name + ", market=" + market + ", id=" + id+ "]";
@@ -54,15 +54,15 @@ public class Exchange extends ProvidedId<String> {
 }
 ```
 
-2. The Exchange.java Entity references two custom utility classes that are used to transform the way external Entities are fetched as part of the main entity rendering\(JSON or XML\). Those utility classes are the following IdentifiableSerializer and the IdentifiableToIdConverter:
+2.The Exchange.java Entity references two custom utility classes that are used to transform the way external Entities are fetched as part of the main entity rendering\(JSON or XML\). Those utility classes are the following IdentifiableSerializer and the IdentifiableToIdConverter:
 
-* [ ]  The IdentifiableSerializer class is used for JSON marshalling:
+1. [ ]  The IdentifiableSerializer class is used for JSON marshalling:
 
 2.Exchange.java实体引用两个自定义实用程序类，用于转换外部实体作为主实体呈现（JSON或XML）的一部分提取的方式。 这些实用程序类是以下IdentifiableSerializer和IdentifiableToIdConverter：
 
 * [ ] IdentifiableSerializer类用于JSON编组：
 
-```
+```java
 import org.springframework.hateoas.Identifiable;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -72,7 +72,7 @@ public class IdentifiableSerializer extends JsonSerializer<Identifiable<?>> {
     @Override
     public void serialize(Identifiable<?> value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
             JsonProcessingException {
-            
+
         provider.defaultSerializeValue(value.getId(), jgen);
     }
 }
@@ -80,27 +80,27 @@ public class IdentifiableSerializer extends JsonSerializer<Identifiable<?>> {
 
 * [ ] The IdentifiableToIdConverter class is used for XML marshlling and is built with XStream dependencies:
 
-IdentifiableToIdConverter类用于XML编组，并使用XStream依赖项构建：
+* [ ] IdentifiableToIdConverter类用于XML编组，并使用XStream依赖项构建：
 
-```
+```java
 import com.thoughtworks.xstream.converters.Converter;
 public class IdentifiableToIdConverter implements Converter{
 
     private final Class <Identifiable<?>> type;
-    
+
     public IdentifiableToIdConverter(final Class<Identifiable<?>> type, final Mapper mapper, 
             final ReflectionProvider reflectionProvider, final ConverterLookup lookup, final String valueFieldName) {
-            
+
         this(type, mapper, reflectionProvider, lookup,valueFieldName, null);
     }
-    
+
     public IdentifiableToIdConverter(final Class<Identifiable<?>> type, final Mapper mapper, 
             final ReflectionProvider reflectionProvider, final ConverterLookup lookup, 
             final String valueFieldName,Class valueDefinedIn) {
-            
+
         this.type = type;
         Field field = null;
-        
+
         try {
             field = (valueDefinedIn != null? valueDefinedIn : type.getSuperclass()).getDeclaredField("id");
             if (!field.isAccessible()) {
@@ -110,17 +110,17 @@ public class IdentifiableToIdConverter implements Converter{
             throw new IllegalArgumentException(e.getMessage()+": "+valueFieldName);
         }
     }
-    
+
     public boolean canConvert(final Class type) {
         return type.isAssignableFrom(this.type);
     }
-    
+
     public void marshal(final Object source, final HierarchicalStreamWriter writer,final MarshallingContext context) {
         if(source instanceof Identifiable){
             writer.setValue(((Identifiable<?>)source).getId().toString());
         }
     }
-    
+
     public Object unmarshal(final HierarchicalStreamReader reader, final UnmarshallingContext context) {
         return null;
     }
@@ -165,9 +165,9 @@ This consistency of payload structures among different HTTP methods is a SOLID a
 
 Exposing the minimum amount of information has been the core idea during the refactoring for this chapter. It's usually a great way to ensure that one endpoint won't be used to expose information data that would be external to the initial controller.
 
-A JPA Entity can have associations to other Entities \(@OneToOne, @OneToMany, @ManyToOne,or @ManyToMany\).
+A JPA Entity can have associations to other Entities \(`@OneToOne`, `@OneToMany`, `@ManyToOne`,or `@ManyToMany`\).
 
-Some of these associations have been annotated with @JsonIgnore \(and @XStreamOmitField\), and some other associations have been annotated with @JsonSerialize and @JsonProperty \(and @XStreamConverter and @XStreamAlias\).
+Some of these associations have been annotated with `@JsonIgnore` \(and `@XStreamOmitField`\), and some other associations have been annotated with `@JsonSerialize` and `@JsonProperty` \(and `@XStreamConverter` and `@XStreamAlias`\).
 
 公开最小值
 
@@ -175,7 +175,7 @@ Some of these associations have been annotated with @JsonIgnore \(and @XStreamOm
 
 JPA实体可以具有与其他实体\(`@OneToOne`, `@OneToMany`, `@ManyToOne`,or `@ManyToMany`\)的关联。
 
-这些关联中的一些已经用`@JsonIgnore`（和`@XStreamOmitField`）注释，并且一些其他关联已经用`@JsonSerialize`和`@JsonProperty`（和`@XStreamConverter`和@`XStreamAlias`）注释。
+这些关联中的一些已经用`@JsonIgnore`（和`@XStreamOmitField`）注解，并且一些其他关联已经用`@JsonSerialize`和`@JsonProperty`（和`@XStreamConverter`和@`XStreamAlias`）注解。
 
 ### If the Entity doesn't own the relationship
 
@@ -185,9 +185,9 @@ The strategy here is to completely ignore the relationship in REST to reflect th
 
 The ignore instructions depend on the supported representations and the chosen implementations.
 
-For json, we are using Jackson, the solution has been: @JsonIgnore.
+For json, we are using Jackson, the solution has been: `@JsonIgnore`.
 
-For xml, we are using XStream, the solution has been: @XstreamOmitField.
+For xml, we are using XStream, the solution has been: `@XstreamOmitField`.
 
 如果实体不拥有该关系
 
@@ -201,7 +201,7 @@ For xml, we are using XStream, the solution has been: @XstreamOmitField.
 
 对于xml，我们使用XStream，解决方案是：`@XstreamOmitField`。
 
-If the Entity owns the relationship
+### If the Entity owns the relationship
 
 Here, the database table of the Entity has a foreign key the table of the targeted second Entity.
 
@@ -221,7 +221,7 @@ For json and Jackson, we have done it with the following code snippet:
 
 对于json和Jackson，我们使用下面的代码片段：
 
-```
+```java
 @JsonSerialize(using=IdentifiableSerializer.class)
 @JsonProperty("marketId")
 ```
@@ -234,7 +234,7 @@ For xml and XStream, it has been:
 
 对于xml和XStream，它一直：
 
-```
+```java
 @XStreamConverter(value=IdentifiableToIdConverter.class, strings={"id"})
 @XStreamAlias("marketId")
 ```
@@ -255,7 +255,7 @@ This strategy promotes a clear separation between resources. The displayed field
 
 When HATEOAS is adopted, we should then fully encourage the use of links to access related entities instead of nested views.
 
-The previous recipe Building links for a Hypermedia-Driven API features examples to access\(using links\) the Entities that are associated with `@...ToOne `and `@...ToMany`. Below is an example of these links in an exposed Entity as it is achieved in the previous recipe:
+The previous recipe Building links for a Hypermedia-Driven API features examples to access\(using links\) the Entities that are associated with `@...ToOne`and `@...ToMany`. Below is an example of these links in an exposed Entity as it is achieved in the previous recipe:
 
 资源分离
 
@@ -279,7 +279,7 @@ You can find the official wiki page guide for these serializers at:
 
 您可以在以下位置找到这些序列化程序的官方wiki页面指南：
 
-http://wiki.fasterxml.com/JacksonHowToCustomSerializers
+[http://wiki.fasterxml.com/JacksonHowToCustomSerializers](http://wiki.fasterxml.com/JacksonHowToCustomSerializers)
 
 ### XStream converters
 
@@ -287,7 +287,5 @@ XStream has been migrated from codehaus.org to Github. To follow an official tut
 
 XStream已从codehaus.org迁移到Github。 要遵循有关XStream转换器的官方教程，请访问：
 
-http://x-stream.github.io/converter-tutorial.html
-
-
+[http://x-stream.github.io/converter-tutorial.html](http://x-stream.github.io/converter-tutorial.html)
 
