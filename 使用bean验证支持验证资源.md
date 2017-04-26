@@ -18,7 +18,7 @@ After the Maven and Spring configuration, we will see how to bind a validator to
 
 1.我们向hibernate验证器添加了一个Maven依赖项：
 
-```
+```java
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-validator</artifactId>
@@ -26,19 +26,19 @@ After the Maven and Spring configuration, we will see how to bind a validator to
 </dependency>
 ```
 
-2. A LocalValidatorFactoryBean has been registered in our dispatcher-servlet.xml \(cloudstreetmarket-api\):
+2.A LocalValidatorFactoryBean has been registered in our dispatcher-servlet.xml \(cloudstreetmarket-api\):
 
 2.在我们的dispatcher-servlet.xml（cloudstreetmarket-api）中注册了一个LocalValidatorFactoryBean：
 
-```
+```java
 <bean id="validator" class="org.sfw.validation.beanvalidation.LocalValidatorFactoryBean"/>
 ```
 
-3. The UsersController and TransactionController have seen their POST and PUT method signature altered with the addition of a `@Valid` annotation on the `@RequestBody` arguments:
+3.The UsersController and TransactionController have seen their POST and PUT method signature altered with the addition of a `@Valid` annotation on the `@RequestBody` arguments:
 
-3. UsersController和TransactionController已经看到他们的POST和PUT方法签名改变，在`@RequestBody`参数上添加了`@Valid`注释：
+3.UsersController和TransactionController已经看到他们的POST和PUT方法签名改变，在`@RequestBody`参数上添加了`@Valid`注解：
 
-```
+```java
 @RequestMapping(method=PUT)
 @ResponseStatus(HttpStatus.OK)
 public void update(@Valid @RequestBody User user, BindingResult result){
@@ -51,22 +51,22 @@ public void update(@Valid @RequestBody User user, BindingResult result){
 >
 > 注意这里注入的BindingResult对象作为方法参数。我们将在大约一分钟内呈现ValidatorUtil类。
 
-4. Our two CRUD controllers now have a new @InitBinder annotated method:
+4.Our two CRUD controllers now have a new `@InitBinder` annotated method:
 
-4.我们的两个CRUD控制器现在有一个新的@InitBinder注释方法：
+4.我们的两个CRUD控制器现在有一个新的`@InitBinder`注解方法：
 
-```
+```java
 @InitBinder
 protected void initBinder(WebDataBinder binder) {
     binder.setValidator(new UserValidator());
 }
 ```
 
-5. This method binds an instance of a created Validator implementation to the requests.Check out the created UserValidator which is Validator implementation:
+5.This method binds an instance of a created Validator implementation to the requests.Check out the created UserValidator which is Validator implementation:
 
 5.此方法将创建的Validator实现的实例绑定到请求。检查创建的UserValidator，它是Validator实现：
 
-```
+```java
 package edu.zipcloud.cloudstreetmarket.core.validators;
 import java.util.Map;
 import javax.validation.groups.Default;
@@ -80,7 +80,7 @@ public class UserValidator implements Validator {
     public boolean supports(Class<?> clazz) {
         return User.class.isAssignableFrom(clazz);
     }
-    
+
     @Override
     public void validate(Object target, Errors err) {
         Map<String, String> fieldValidation =ValidatorUtil.validate((User)target, Default.class);
@@ -89,53 +89,52 @@ public class UserValidator implements Validator {
 }
 ```
 
-6. In the User entity, a couple of special annotations have been added:
+6.In the User entity, a couple of special annotations have been added:
 
-6.在用户实体中，添加了几个特殊注释：
+6.在用户实体中，添加了几个特殊注解：
 
-```
+```java
 @Entity
 @Table(name="users")
 public class User extends ProvidedId<String> implements UserDetails{
     ...
     private String fullName;
-    
+
     @NotNull
     @Size(min=4, max=30)
     private String email;
-    
+
     @NotNull
     private String password;
-    
+
     private boolean enabled = true;
-    
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private SupportedLanguage language;
-    
+
     private String profileImg;
-    
+
     @Column(name="not_expired")
     private boolean accountNonExpired;
-    
+
     @Column(name="not_locked")
     private boolean accountNonLocked;
-    
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private SupportedCurrency currency;
-    
+
     private BigDecimal balance;
     ...
 }
-
 ```
 
-7. We have created the ValidatorUtil class to make those validations easier and to reduce the amount of boilerplate code:
+7.We have created the ValidatorUtil class to make those validations easier and to reduce the amount of boilerplate code:
 
 7.我们创建了ValidatorUtil类，以使这些验证更容易，并减少样板代码的数量：
 
-```
+```java
 package edu.zipcloud.cloudstreetmarket.core.util;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -154,21 +153,21 @@ public class ValidatorUtil {
     static {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-    }
+}
 ```
 
 The following validate method allows us to call for a JSR validation from whichever location that may require it:
 
 以下验证方法允许我们从任何可能需要它的位置调用JSR验证：
 
-```
-    public static <T> Map<String, String> validate(T object,Class<?>... groups) {
-    
+```java
+public static <T> Map<String, String> validate(T object,Class<?>... groups) {
+
         Class<?>[] args = Arrays.copyOf(groups, groups.length + 1);
         args[groups.length] = Default.class;
         return extractViolations(validator.validate(object, args));
     }
-    
+
     private static <T> Map<String, String> extractViolations(Set<ConstraintViolation<T>> violations) {
         Map<String, String> errors = new HashMap<>();
         for (ConstraintViolation<T> v: violations) {
@@ -183,8 +182,8 @@ The following raiseFirstError method is not of a specific standard, it is our wa
 
 下面的raiseFirstError方法不是一个特定的标准，它是我们向客户端呈现服务器端错误的方式：
 
-```
-    public static void raiseFirstError(BindingResult result){
+```java
+public static void raiseFirstError(BindingResult result){
         if (result.hasErrors()) {
             throw new IllegalArgumentException(result.getAllErrors().get(0).getCode());
         }else if (result.hasGlobalErrors()) {
@@ -194,21 +193,21 @@ The following raiseFirstError method is not of a specific standard, it is our wa
 }
 ```
 
-8. As per Chapter 4, Building a REST API for a Stateless Architecture, the cloudstreetmarket-api's RestExceptionHandler is still configured to handle IllegalArgumentExceptions, rendering them with ErrorInfo formatted responses:
+8.As per Chapter 4, Building a REST API for a Stateless Architecture, the cloudstreetmarket-api's RestExceptionHandler is still configured to handle IllegalArgumentExceptions, rendering them with ErrorInfo formatted responses:
 
 8.根据第4章为无状态体系结构构建REST API，cloudstreetmarket-api的RestExceptionHandler仍被配置为处理IllegalArgumentExceptions，并使用ErrorInfo格式化响应来呈现它们：
 
-```
+```java
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
     private ResourceBundleService bundle;
-    
+
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, 
                 HttpStatus status, WebRequest request) {
-                
+
         ErrorInfo errorInfo = null;
         if(body!=null && bundle.containsKey(body.toString())){
             String key = body.toString();
@@ -219,17 +218,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return new ResponseEntity<Object>(errorInfo, headers, status);
     }
-    
+
     @ExceptionHandler({InvalidDataAccessApiUsageException.class,DataAccessException.class,IllegalArgumentException.class })
     protected ResponseEntity<Object> handleConflict(final RuntimeException ex, final WebRequest request) {
-    
+
         return handleExceptionInternal(ex,I18N_API_GENERIC_REQUEST_PARAMS_NOT_VALID, 
                     new HttpHeaders(), BAD_REQUEST, request);
     }
 }
 ```
 
-9. Navigating through the UI improvements, you will notice a new form for updating the user's **Preferences**. This form is accessible via the **Login **menu, as shown in the following screenshots:
+9.Navigating through the UI improvements, you will notice a new form for updating the user's **Preferences**. This form is accessible via the **Login **menu, as shown in the following screenshots:
 
 9.浏览UI改进，您会注意到一个新的表单，用于更新用户的**Preferences**。 可以通过**Login **菜单访问此表单，如以下屏幕截图所示：
 
@@ -237,11 +236,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
 ![](/assets/120.png)
 
-10. In this user **Preferences **form, when the frontend validations are deactivated\(frontend validations will be developed in the last recipe of this chapter\), not filling the e-mail field results in the following \(customizable\) ErrorInfo object in the HTTP response:
+10.In this user **Preferences **form, when the frontend validations are deactivated\(frontend validations will be developed in the last recipe of this chapter\), not filling the e-mail field results in the following \(customizable\) ErrorInfo object in the HTTP response:
 
 10.在此用户**Preferences **表单中，当前端验证被禁用（前端验证将在本章的最后一个配方中开发）时，不填写电子邮件字段会在HTTP响应中产生以下（可定制的）ErrorInfo对象：
 
-```
+```java
 {
     "error":"[email] Size must be between 4 and 30",
     "message":"The request parameters were not valid!",
@@ -251,11 +250,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 }
 ```
 
-11. On the frontend side, in order to handle this error, the accountController\(in account\_management.js\) is instantiated with a dependency to a custom errorHandler factory. The code is as follows:
+11.On the frontend side, in order to handle this error, the accountController\(in account\_management.js\) is instantiated with a dependency to a custom errorHandler factory. The code is as follows:
 
 11.在前端，为了处理此错误，accountController（在account\_management.js中）使用对自定义errorHandler工厂的依赖关系实例化。 代码如下：
 
-```
+```java
 cloudStreetMarketApp.controller('accountController',function ($scope, $translate, $location, errorHandler,accountManagementFactory, httpAuth, genericAPIFactory){
     $scope.form = {
         id: "",
@@ -270,11 +269,11 @@ cloudStreetMarketApp.controller('accountController',function ($scope, $translate
 }
 ```
 
-12. The accountController has an update method that invokes the errorHandler.renderOnForm method:
+12.The accountController has an update method that invokes the errorHandler.renderOnForm method:
 
-12. accountController有一个update方法，它调用errorHandler.renderOnForm方法：
+12.accountController有一个update方法，它调用errorHandler.renderOnForm方法：
 
-```
+```js
 $scope.update = function () {
     $scope.formSubmitted = true;
     if(!$scope.updateAccount.$valid) {
@@ -292,11 +291,11 @@ $scope.update = function () {
 };
 ```
 
-13. The errorHandler is defined as follows in main\_menu.js. It has the capability to pull translations messages from i18n codes:
+13.The errorHandler is defined as follows in main\_menu.js. It has the capability to pull translations messages from i18n codes:
 
-errorHandler在main\_menu.js中定义如下。 它有能力从i18n代码拉取翻译消息：
+13.errorHandler在main\_menu.js中定义如下。 它有能力从i18n代码拉取翻译消息：
 
-```
+```java
 cloudStreetMarketApp.factory("errorHandler", ['$translate',function ($translate) {
     return {
         render: function (data) {
@@ -307,7 +306,7 @@ cloudStreetMarketApp.factory("errorHandler", ['$translate',function ($translate)
         }
         return $translate("error.api.generic.internal");
         },
-        
+
         renderOnForms: function (data) {
             if(data.error && data.error.length > 0){
                 return data.error;
@@ -328,15 +327,15 @@ The **Preferences **form is as shown here:
 
 ![](/assets/121.png)
 
-> As we said, to simulate this error, frontend validations need to be deactivated. This can be done adding a `novalidate `attribute to the `<form name="updateAccount" … novalidate> `markup in user-account.html.
+> As we said, to simulate this error, frontend validations need to be deactivated. This can be done adding a `novalidate`attribute to the `<form name="updateAccount" … novalidate>`markup in user-account.html.
 >
 > 正如我们所说，为了模拟这个错误，前端验证需要停用。 这可以通过在user-account.html中的`<form name =“updateAccount”... novalidate>` markup添加`novalidate`属性来完成。
 
-14. Back in the server side, we have also created a custom validator for the financial Transaction Entity. This validator makes use of the Spring ValidationUtils:
+14.Back in the server side, we have also created a custom validator for the financial Transaction Entity. This validator makes use of the Spring ValidationUtils:
 
 14.回到服务器端，我们还为财务事务实体创建了一个自定义验证器。 这个验证器利用Spring ValidationUtils：
 
-```
+```java
 @Component
 public class TransactionValidator implements Validator {
 
@@ -345,7 +344,7 @@ public class TransactionValidator implements Validator {
     public boolean supports(Class<?> clazz) {
         return Transaction.class.isAssignableFrom(clazz);
     }
-    
+
     @Override
     public void validate(Object target, Errors errors) {
         ValidationUtils.rejectIfEmpty(errors, "quote", "transaction.quote.empty");
@@ -363,22 +362,22 @@ Spring offers a Validator interface \(org.sfw.validation.Validator\) for creatin
 
 Spring提供了一个Validator接口\(org.sfw.validation.Validator\) ，用于创建要在我们想要的层中注入或实例化的组件。 因此，Spring validation components可以在Spring MVC控制器中使用。 验证器接口如下：
 
-```
+```java
 public interface Validator {
     boolean supports(Class<?> clazz);
     void validate(Object target, Errors errors);
 }
 ```
 
-The `supports(Class<?> clazz)` method is used to assess the domain of a Validator implementation, and also to restrict its use to a specific Type or super-Type.
+The `supports(Class<?> clazz)` method is used to assess the domain of a Validator implementation, and also to restrict its use to a specific Type or `super-Type`.
 
 The validate\(Object target, Errors errors\) method imposes its standard so that the validation logic of the validator lives in this place. The passed target object is assessed,and the result of the validation is stored in an instance of the `org.springframework.validation.Errors` interface. A partial preview of the Errors interface is shown here:
 
-`supports(Class<?> clazz)`方法用于评估Validator实现的域，并将其使用限制为特定的Type或super-Type。
+`supports(Class<?> clazz)`方法用于评估Validator实现的域，并将其使用限制为特定的Type或`super-Type`。
 
 `validate(Object target, Errors errors)`方法强加了它的标准，使得验证器的验证逻辑在这个地方。 将评估传递的目标对象，并将验证结果存储在`org.springframework.validation.Errors`接口的实例中。 错误界面的部分预览如下所示：
 
-```
+```java
 public interface Errors {
     ...
     void reject(String errorCode);
@@ -391,7 +390,7 @@ public interface Errors {
     boolean hasErrors();
     int getErrorCount();
     List<ObjectError> getAllErrors();
-...
+     ...
 }
 ```
 
@@ -399,7 +398,7 @@ Using Spring MVC, we have the possibility to bind and trigger a Validator to a s
 
 使用Spring MVC，我们有可能绑定和触发一个Validator到一个特定的方法处理程序。 框架寻找绑定到传入请求的验证器实例。我们在第四步中在我们的配方中配置了这样的绑定：
 
-```
+```java
 @InitBinder
 protected void initBinder(WebDataBinder binder) {
     binder.setValidator(new UserValidator());
@@ -412,9 +411,9 @@ protected void initBinder(WebDataBinder binder) {
 
 The Binders \(org.springframework.validation.DataBinder\) allow setting property values onto a target object. Binders also provide support for validation and binding-results analysis.
 
-The `DataBinder.validate() `method is called after each binding step and this method calls the validate of the primary validator attached to the DataBinder.
+The `DataBinder.validate()`method is called after each binding step and this method calls the validate of the primary validator attached to the DataBinder.
 
-The binding-process populates a result object, which is an instance of the `org.springframework.validation.BindingResult `interface. This result object can be retrieved using the `DataBinder.getBindingResult()` method.
+The binding-process populates a result object, which is an instance of the `org.springframework.validation.BindingResult`interface. This result object can be retrieved using the `DataBinder.getBindingResult()` method.
 
 Actually, a BindingResult implementation is also an Errors implementation \(as shown here\). We have presented the Errors interface earlier. Check out the following code:
 
@@ -426,7 +425,7 @@ binding-process填充结果对象，它是`org.springframework.validation.Bindin
 
 实际上，BindingResult实现也是一个Errors实现（如下所示）。 我们已经提出了错误接口。 查看以下代码：
 
-```
+```java
 public interface BindingResult extends Errors {
     Object getTarget();
     Map<String, Object> getModel();
@@ -443,7 +442,7 @@ public interface BindingResult extends Errors {
 
 The whole design can be summarized as follows:
 
-We create a validator implementation. When an incoming request comes in for a specific Controller method handler, the request payload is converted into the class that is targeted by the` @RequestBody` annotation \(an Entity in our case\). An instance of our validator implementation is bound to the injected `@RequestBody` object. If the injected `@RequestBody` object is defined with a `@Valid` annotation, the framework asks DataBinder to validate the object on each binding step and to store errors in the
+We create a validator implementation. When an incoming request comes in for a specific Controller method handler, the request payload is converted into the class that is targeted by the`@RequestBody` annotation \(an Entity in our case\). An instance of our validator implementation is bound to the injected `@RequestBody` object. If the injected `@RequestBody` object is defined with a `@Valid` annotation, the framework asks DataBinder to validate the object on each binding step and to store errors in the
 
 `BindingResultobject` of DataBinder.
 
@@ -451,11 +450,11 @@ Finally, this BindingResult object is injected as argument of the method handler
 
 整体设计可概括如下：
 
-我们创建一个验证器实现。 当特定Controller方法处理程序的传入请求进入时，请求有效内容将转换为由`@RequestBody`注释（在我们的示例中为实体）定向的类。 我们的验证器实现的实例绑定到注入的`@RequestBody`对象。 如果注入的`@RequestBody`对象用`@Valid`注释定义，则框架要求DataBinder在每个绑定步骤上验证对象，并在DataBinder的`BindingResultobject`中存储错误。
+我们创建一个验证器实现。 当特定Controller方法处理程序的传入请求进入时，请求有效内容将转换为由`@RequestBody`注解（在我们的示例中为实体）定向的类。 我们的验证器实现的实例绑定到注入的`@RequestBody`对象。 如果注入的`@RequestBody`对象用`@Valid`注解定义，则框架要求DataBinder在每个绑定步骤上验证对象，并在DataBinder的`BindingResultobject`中存储错误。
 
 最后，这个BindingResult对象被注入作为方法处理程序的参数，所以我们可以决定如何处理它的错误（如果有的话）。 在绑定过程中，缺少字段和属性访问异常将转换为FieldErrors。 这些FieldErrors也存储在Errors实例中。 以下错误代码用于FieldErrors：
 
-```
+```java
 Missing field error: "required"
 Type mismatch error: "typeMismatch"
 Method invocation error: "methodInvocation"
@@ -465,7 +464,7 @@ When it is necessary to return nicer error messages for the user, a MessageSourc
 
 当有必要为用户返回更好的错误消息时，MessageSource帮助我们处理查找并从MessageSourceResolvable实现中检索正确的本地化消息，使用以下方法：
 
-```
+```java
 MessageSource.getMessage(org.sfw.context.MessageSourceResolvable, java.util.Locale).
 ```
 
@@ -485,13 +484,13 @@ The next recipe will focus on internationalization of errors and content. Howeve
 
 下一个谱方将关注错误和内容的国际化。 然而，让我们看看我们如何从控制器捕获我们的错误，以及如何显示它们。  UserController的update方法在其第一行具有此自定义方法调用：
 
-```
+```java
 ValidatorUtil.raiseFirstError(result);
 ```
 
 We created the ValidatorUtil support class for our needs; the idea was to throw an IllegalArgumentException for any type of error that can be detected by our validator.The `ValidatorUtil.raiseFirstError(result)` method call can also be found in the `TransactionController.update(…)` method-handler. This method-handler relies on the TransactionValidator presented in the 14th step.
 
-If you remember this TransactionValidator, it creates an error with a `transaction.quote.empty` message code when a quote object is not present in the financial Transaction object. An IllegalArgumentException is then thrown with the `transaction.quote.empty `message detail.
+If you remember this TransactionValidator, it creates an error with a `transaction.quote.empty` message code when a quote object is not present in the financial Transaction object. An IllegalArgumentException is then thrown with the `transaction.quote.empty`message detail.
 
 In the next recipe, we will revisit how a proper internationalized JSON response is built and sent back to the client from an IllegalArgumentException.
 
@@ -545,7 +544,7 @@ Bean validation implementations can also go beyond the specification and offer t
 
 Bean验证实现也可以超出规范，并提供他们的一组额外的验证注释。  Hibernate validator有一些有趣的例子，如`@NotBlank`，`@SafeHtml`，`@ScriptAssert`，`@CreditCardNumber`，`@Email`，等等。这些都从hibernate文档列出，可以在以下URL访问：
 
-http://docs.jboss.org/hibernate/validator/4.3/reference/en-US/html\_single/\#table-custom-constraints
+[http://docs.jboss.org/hibernate/validator/4.3/reference/en-US/html\\_single/\\#table-custom-constraints](http://docs.jboss.org/hibernate/validator/4.3/reference/en-US/html\_single/\#table-custom-constraints)
 
 LocalValidator \(reusable\)
 
@@ -592,7 +591,8 @@ The ValidationUtils Spring utility class provides convenient static methods for 
 
 ValidationUtils Spring实用程序类提供了方便的静态方法，用于调用Validator并拒绝填充错误对象的空字段在一行中：
 
-http://docs.spring.io/spring/docs/3.1.x/javadoc-api/org/springframework/validation/ValidationUtils.html
+[http://docs.spring.io/spring/docs/3.1.x/javadoc-api/org/](http://docs.spring.io/spring/docs/3.1.x/javadoc-api/org/)  
+springframework/validation/ValidationUtils.html
 
 ### Grouping constraints
 
@@ -600,9 +600,9 @@ We can couple constraints across more than one field to define a set of more adv
 
 我们可以跨多个字段耦合约束以定义一组更高级的约束：
 
-http://beanvalidation.org/1.1/spec/\#constraintdeclarationvalidationprocess-groupsequence
+[http://beanvalidation.org/1.1/spec/\\#constraintdeclarationvalidationprocess-groupsequence](http://beanvalidation.org/1.1/spec/\#constraintdeclarationvalidationprocess-groupsequence)
 
-http://docs.jboss.org/hibernate/stable/validator/reference/en-US/html\_single/\#chapter-groups
+[http://docs.jboss.org/hibernate/stable/validator/reference/en-US/html\\_single/\\#chapter-groups](http://docs.jboss.org/hibernate/stable/validator/reference/en-US/html\_single/\#chapter-groups)
 
 ### Creating a custom validator
 
@@ -610,7 +610,7 @@ It can sometimes be useful to create a specific validator that has its own annot
 
 有时可能有用的是创建具有其自己的注释的特定验证器。 检查链接，它应该让我们：
 
-http://howtodoinjava.com/2015/02/12/spring-mvc-custom-validator-example/
+[http://howtodoinjava.com/2015/02/12/spring-mvc-custom-validator-example/](http://howtodoinjava.com/2015/02/12/spring-mvc-custom-validator-example/)
 
 ### The Spring reference on validation
 
@@ -618,10 +618,5 @@ The best source of information remains the Spring reference on Validation. Check
 
 最好的信息来源仍然是Spring参考验证。 检查链接，它应该让我们：
 
-http://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html
-
-  
-  
-  
-
+[http://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html)
 

@@ -12,7 +12,7 @@ Finally, we open a window on Spring transactions, as it is a broad and important
 
 我们将看到返回的状态代码和驱动使用PUT，POST和DELETE方法的HTTP标准。 这将使我们配置HTTP兼容的Spring MVC控制器。
 
-我们还将审查request-payload mapping注释（如`@RequestBody`）如何工作，以及如何有效地使用它们。
+我们还将审查request-payload mapping注解（如`@RequestBody`）如何工作，以及如何有效地使用它们。
 
 最后，我们在Spring事务上打开一个窗口，因为它是一个广泛和重要的话题。
 
@@ -38,11 +38,11 @@ Following the next steps will present the changes applied to two controllers, a 
 >
 > TransactionController允许用户处理金融交易（从而购买或销售产品）。
 
-1. A simplified version of UserController is given here:
+4.A simplified version of UserController is given here:
 
 4.这里给出了UserController的简化版本：
 
-```
+```java
 @RestController
 @RequestMapping(value=USERS_PATH,
 produces={"application/xml", "application/json"})
@@ -84,11 +84,11 @@ public class UsersController extends CloudstreetApiWCI{
 }
 ```
 
-1. The TransactionController is represented here in a simplified version:
+5.The TransactionController is represented here in a simplified version:
 
-2. TransactionController在这里以简化版本表示：
+5.TransactionController在这里以简化版本表示：
 
-```
+```java
 @RestController
 @ExposesResourceFor(Transaction.class)
 @RequestMapping(value=ACTIONS_PATH + TRANSACTIONS_PATH, produces={"application/xml", "application/json"})
@@ -135,7 +135,7 @@ public class TransactionController extends CloudstreetApiWCI<Transaction> {
 }
 ```
 
-1. The call to the hydrate method in the post method prepares the Entity for underlying service uses. It populates its relationships from IDs received in the request payload.
+6.The call to the hydrate method in the post method prepares the Entity for underlying service uses. It populates its relationships from IDs received in the request payload.
 
 6.在post方法中对hydrate方法的调用准备实体用于基础服务使用。 它根据请求有效内容中收到的ID填充其关系。
 
@@ -143,11 +143,11 @@ public class TransactionController extends CloudstreetApiWCI<Transaction> {
 >
 > 此技术将实用于CRUD的所有REST资源。
 
-1. Here are the details of the hydrate method in transactionServiceImpl:
+7.Here are the details of the hydrate method in transactionServiceImpl:
 
 7.以下是transactionServiceImpl中的hydrate 的详细信息：
 
-```
+```java
 @Override
 public Transaction hydrate(final Transaction transaction) {
 
@@ -170,21 +170,21 @@ public Transaction hydrate(final Transaction transaction) {
 >
 > 这里没有什么惊人的; 它主要是建立我们的实体，以适应我们的需要。 可以创建一个界面来标准化实践。
 
-1. All the service layers have been reviewed to drive uniform database transactions.
+8.All the service layers have been reviewed to drive uniform database transactions.
 
-2. The service implementations are now annotated by default with
+9.The service implementations are now annotated by default with
 
 8.所有服务层已经过审查，以驱动统一数据库事务。
 
-9.现在，服务实现现在已注释为
+9.现在，服务实现现在已注解为
 
-```
+```java
 @Transactional(readOnly = true). Check the following
 ```
 
 TransactionServiceImpl example:
 
-```
+```java
 @Service
 @Transactional(readOnly = true)
 public class TransactionServiceImpl implements TransactionService{
@@ -192,11 +192,11 @@ public class TransactionServiceImpl implements TransactionService{
 }
 ```
 
-1. The non-readonly methods of these service implementations override the class definition with the `@Transactional` annotation:
+10.The non-readonly methods of these service implementations override the class definition with the `@Transactional` annotation:
 
-10.这些服务实现的非唯一方法使用`@Transactional`注释覆盖类定义：
+10.这些服务实现的非唯一方法使用`@Transactional`注解覆盖类定义：
 
-```
+```java
 @Override
 @Transactional
 public Transaction create(Transaction transaction) {
@@ -208,11 +208,11 @@ public Transaction create(Transaction transaction) {
 }
 ```
 
-1. This principle has also been applied to custom repository implementations \(such as IndexRepositoryImpl\):
+11.This principle has also been applied to custom repository implementations \(such as IndexRepositoryImpl\):
 
 11.这个原则也被应用于自定义仓库实现（如IndexRepositoryImpl）：
 
-```
+```java
 @Repository
 @Transactional(readOnly = true)
 public class IndexRepositoryImpl implements IndexRepository{
@@ -327,7 +327,7 @@ Another set of constraints applies on the DELETE requests that are successfully 
 
 另一组约束适用于成功接收的DELETE请求。如果已处理删除，则应返回204（无内容）状态码或200（确定）。 如果不是，状态代码应为202（接受）。
 
-### Mapping request payloads with @RequestBody
+### Mapping request payloads with `@RequestBody`
 
 In Chapter 4, Building a REST API for a Stateless Architecture, we have presented the RequestMappingHandlerAdapter. We have seen that Spring MVC delegates to this bean to provide an extended support to `@RequestMapping` annotations.
 
@@ -335,13 +335,13 @@ In this perspective, RequestMappingHandlerAdapter is the central piece to access
 
 The role of`@RequestBody` annotations is tightly coupled to HttpMessageConverters. We will introduce the HttpMessageConverters now.
 
-使用@RequestBody映射请求有效内容
+使用`@RequestBody`映射请求有效内容
 
 在第4章为无状态体系结构构建REST API中，我们提供了RequestMappingHandlerAdapter。 我们已经看到Spring MVC委托给这个bean来为`@RequestMapping`注解提供扩展支持。
 
 在这个角度看，RequestMappingHandlerAdapter是通过`getMessageConverters()`和`setMessag eConverters(List<HttpMessageConverter<?>> messageConverters)`访问和覆盖HttpMessageConverters的核心部分。
 
-`@RequestBody`注释的作用与HttpMessageConverters紧密耦合。 我们将介绍HttpMessageConverters。
+`@RequestBody`注解的作用与HttpMessageConverters紧密耦合。 我们将介绍HttpMessageConverters。
 
 ### HttpMessageConverters
 
@@ -355,13 +355,13 @@ More generally, HttpMessageConverters match the following HttpMessageConverter i
 
 HttpMessageConverters，自定义或本机，绑定到特定的MIME类型。 它们用于以下实例中：
 
-* 将Java对象转换为HTTP响应有效内容。 从接受请求头mime类型中选择，它们提供`@ResponseBody`注释的用途（以及间接的`@RestController`注释，用于抽象@`ResponseBody`注释）。
+* 将Java对象转换为HTTP响应有效内容。 从接受请求头mime类型中选择，它们提供`@ResponseBody`注解的用途（以及间接的`@RestController`注释，用于抽象@`ResponseBody`注释）。
 
-* 将HTTP请求有效内容转换为Java对象。 从ContentType请求头中选择mime类型，当`@RequestBody`注释出现在方法处理程序参数上时，将调用这些转换器。
+* 将HTTP请求有效内容转换为Java对象。 从ContentType请求头中选择mime类型，当`@RequestBody`注解出现在方法处理程序参数上时，将调用这些转换器。
 
 更一般地，HttpMessageConverters匹配以下HttpMessageConverter接口：
 
-```
+```java
 public interface HttpMessageConverter<T> {
     boolean canRead(Class<?> clazz, MediaType mediaType);
     boolean canWrite(Class<?> clazz, MediaType mediaType);
@@ -411,7 +411,7 @@ This method has been preferred to posting an `application/x-www-form-urlencoded`
 
 这种方法优先于发布一个`application/x-www-form-urlencoded`表单内容，因为我们实际上可以将对象映射到一个实体。 在我们的示例中，表单完全匹配后端资源。 这是REST设计的有益结果（和约束）。
 
-### Using @RequestPart to upload an image
+### Using `@RequestPart` to upload an image
 
 The `@RequestPart` annotation can be used to associate part of a `multipart/form-data` request with a method argument. It can be used with argument Types such as`org.springframework.web.multipart.MultipartFile` and `javax.servlet.http.Part`.
 
@@ -419,15 +419,15 @@ For any other argument Types, the content of the part is passed through an HttpM
 
 The `@RequestBody` annotation has been implemented to handle the user-profile picture.Here's our sample implementation from the **UserImageController**:
 
-使用@RequestPart上传图片
+使用`@RequestPart`上传图片
 
-`@RequestPart`注释可用于将`multipart/form-data`请求的一部分与方法参数相关联。 它可以与参数类型一起使用，例如`org.springframework.web.multipart.MultipartFile`和`javax.servlet.http.Part`。
+`@RequestPart`注解可用于将`multipart/form-data`请求的一部分与方法参数相关联。 它可以与参数类型一起使用，例如`org.springframework.web.multipart.MultipartFile`和`javax.servlet.http.Part`。
 
 对于任何其他参数类型，部分的内容通过HttpMessageConverter传递，就像`@RequestBody`。
 
-`@RequestBody`注释已经实现来处理用户配置文件图片。这是我们从**UserImageController**的示例实现：
+`@RequestBody`注解已经实现来处理用户配置文件图片。这是我们从**UserImageController**的示例实现：
 
-```
+```java
 @RequestMapping(method=POST, produces={"application/json"})
 @ResponseStatus(HttpStatus.CREATED)
 public String save( @RequestPart("file") MultipartFile file, HttpServletResponse response){
@@ -519,7 +519,7 @@ Historically, JTA transaction managers were exclusively provided by J2EE/JEE con
 
 Tomcat \(7+\) can also work along with application-level JTA transaction manager implementations to reflect the transaction management in the container using the TransactionSynchronizationRegistry and JNDI datasources.
 
-历史上，JTA事务管理器仅由J2EE / JEE容器提供。 使用application-level JTA事务管理器实现，我们现在有其他替代品，如Atomikos\([http://www.atomikos.com\\)，Bitronix（https://github.com/bitronix/btm）或JOTM\\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\\)，以确保J2SE环境中的全局事务。](http://www.atomikos.com\)，Bitronix（https://github.com/bitronix/btm）或JOTM\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\)，以确保J2SE环境中的全局事务。)
+历史上，JTA事务管理器仅由J2EE / JEE容器提供。 使用application-level JTA事务管理器实现，我们现在有其他替代品，如Atomikos\([http://www.atomikos.com\\)，Bitronix（https://github.com/bitronix/btm）或JOTM\\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\\)，以确保J2SE环境中的全局事务。](http://www.atomikos.com\)，Bitronix（[https://github.com/bitronix/btm）或JOTM\\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\\)，以确保J2SE环境中的全局事务。](https://github.com/bitronix/btm）或JOTM\(http://jotm.ow2.org/xwiki/bin/view/Main/WebHome\)，以确保J2SE环境中的全局事务。)\)
 
 Tomcat（7+）还可以与应用程序级JTA事务管理器实现一起使用，以使用TransactionSynchronizationRegistry和JNDI数据源反映容器中的事务管理。
 
