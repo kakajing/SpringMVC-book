@@ -16,7 +16,7 @@ In this recipe, we will focus on form validation and more specifically on Angula
 
 1.让我们再次考虑**User Preferences**表单。 这里是HTML定义（user-account.html）：
 
-```
+```js
 <form name="updateAccount" action="#" ngclass="formSubmitted ? 'submitted':''">
     <fieldset>
         <div class="clearfix span">
@@ -27,7 +27,7 @@ In this recipe, we will focus on form validation and more specifically on Angula
                     error.webapp.user.account.username.required
                 </span>
             </div>
-            
+
             <label for="email" translate>screen.preference.field.email</label>
             <div class="input">
                 <input type="email" name="email" placeholder="Email" ngmodel="form.email"/>
@@ -35,7 +35,7 @@ In this recipe, we will focus on form validation and more specifically on Angula
                     error.webapp.user.account.email
                 </span>
             </div>
-            
+
             <label for="password" translate>screen.preference.field.password</label>
             <div class="input">
                 <input type="password" name="password" ng-minlength="5" placeholder="Please type again" ng-model="form.password" required/>
@@ -46,12 +46,12 @@ In this recipe, we will focus on form validation and more specifically on Angula
                     error.webapp.user.account.password.too.short
                 </span>
             </div>
-            
+
             <label for="fullname" translate>screen.preference.field.full.name</label>
             <div class="input" >
                 <input type="text" name="fullname" placeholder="Full name" ng-model="form.fullname"/>
             </div>
-            
+
             <label for="currencySelector" translate>screen.preference.field.preferred.currency</label>
             <div class="input">
                 <select class="input-small" id="currencySelector" ngmodel="form.currency" ng-init="form.currency='USD'" ngselected="USD" ng-change="updateCredit()">
@@ -88,11 +88,11 @@ In this recipe, we will focus on form validation and more specifically on Angula
 </form>
 ```
 
-2. The JavaScript side of things in the controller of account\_management.js includes two referenced functions and four variables to control form validation and its style:
+2.The JavaScript side of things in the controller of account\_management.js includes two referenced functions and four variables to control form validation and its style:
 
-2. account\_management.js控制器中的JavaScript端包括两个引用的函数和四个变量来控制表单验证及其风格：
+2.account\_management.js控制器中的JavaScript端包括两个引用的函数和四个变量来控制表单验证及其风格：
 
-```
+```js
 $scope.update = function () {
     $scope.formSubmitted = true;
     if(!$scope.updateAccount.$valid) {
@@ -122,7 +122,7 @@ Two CSS classes have been created to render properly errors on fields:
 
 已创建两个CSS类以正确地在字段上呈现错误：
 
-```
+```css
 .submitted input.ng-invalid{
     border: 2px solid #b94a48;
     background-color: #EBD3D5;
@@ -134,7 +134,7 @@ Two CSS classes have been created to render properly errors on fields:
 }
 ```
 
-3. If you try to enter a wrong e-mail or if you try to submit the form without entering your password, you should observe the following validation control:
+3.If you try to enter a wrong e-mail or if you try to submit the form without entering your password, you should observe the following validation control:
 
 3.如果您尝试输入错误的电子邮件，或者尝试在不输入密码的情况下提交表单，则应遵循以下验证控制：
 
@@ -166,35 +166,35 @@ An input field can be tagged as required \(HTML5 tag\):
 
 输入字段可以根据需要进行标记（HTML5标记）：
 
-```
+```js
 <input type="text" required />
 ```
 
 ### Minimum/maximum length
 
-The ng-minlength directive can be used to assert that the number of entered characters matches a given threshold:
+The `ng-minlength` directive can be used to assert that the number of entered characters matches a given threshold:
 
-ng-minlength指令可用于断言输入字符数与给定阈值相匹配：
+`ng-minlength`指令可用于断言输入字符数与给定阈值相匹配：
 
-```
+```js
 <input type="text" ng-minlength="3" />
 ```
 
-Similarly, ng-maxlength drastically limits the number of entered characters to a maximum:
+Similarly, `ng-maxlength` drastically limits the number of entered characters to a maximum:
 
-类似地，ng-maxlength将输入字符的数量大幅限制为最大值：
+类似地，`ng-maxlength`将输入字符的数量大幅限制为最大值：
 
-```
+```js
 <input type="text" ng-maxlength="15" />
 ```
 
 ### Regex pattern
 
-The ng-pattern directive is often used to make sure that the entered data matches a predefined shape:
+The `ng-pattern` directive is often used to make sure that the entered data matches a predefined shape:
 
-ng-pattern伪指令通常用于确保输入的数据与预定义的形状匹配：
+`ng-pattern`伪指令通常用于确保输入的数据与预定义的形状匹配：
 
-```
+```js
 <input type="text" ng-pattern="[a-zA-Z]" />
 ```
 
@@ -204,7 +204,7 @@ Those HTML5 input types are handled by AngularJS to be constrained within the fo
 
 这些HTML5输入类型由AngularJS处理，以它们所代表的格式进行约束：
 
-```
+```js
 <input type="number" name="quantity" ng-model="form.quantity" />
 <input type="email" name="email" ng-model=" form.email" />
 <input type="url" name="destination" ng-model=" form.url" />
@@ -222,7 +222,7 @@ AngularJS在包含`$scope`上发布属性以匹配DOM中的表单状态。这使
 
 这些属性可从以下结构访问：
 
-```
+```js
 formName.inputFieldName.property
 ```
 
@@ -232,7 +232,7 @@ This state can be assessed using the following properties:
 
 这种状态可以使用以下属性来评估：
 
-```
+```js
 formName.inputFieldName.$pristine;
 formName.inputFieldName.$dirty;
 ```
@@ -245,7 +245,7 @@ This valid state of a form can be assessed in regards to the defined validation 
 
 表格的有效状态可以针对字段或全局的定义验证进行评估：
 
-```
+```js
 formName.inputFieldName.$valid;
 formName.inputFieldName.$invalid;
 formName.$valid;
@@ -254,11 +254,11 @@ formName.$invalid;
 
 ### Errors
 
-After the validity assessment that we have defined previously, more information about what went wrong can be extracted from the` $error` property:
+After the validity assessment that we have defined previously, more information about what went wrong can be extracted from the`$error` property:
 
 在我们之前定义的有效性评估之后，有关错误的更多信息可以从`$error`属性中提取：
 
-```
+```js
 myForm.username.$error.pattern
 myForm.username.$error.required
 myForm.username.$error.minlength
@@ -276,7 +276,7 @@ As often with AngularJS, transclusions are proceeded to bind the DOM state with 
 
 与AngularJS经常一样，进行转换以将DOM状态与范围绑定。 因此，表单状态和控制状态实时地反映在CSS类中。这些CSS类显然可以被定义/重写，从而可以定义全局验证风格：
 
-```
+```css
 input.ng-invalid {
     border: 1px solid red;
 }
@@ -287,11 +287,9 @@ input.ng-valid {
 
 ## See also
 
-* AngularJS documentation on forms: Read more about AngularJS validation capabilities on Forms \(we have only introduced them here\): https://docs.angularjs.org/guide/forms
+* AngularJS documentation on forms: Read more about AngularJS validation capabilities on Forms \(we have only introduced them here\): [https://docs.angularjs.org/guide/forms](https://docs.angularjs.org/guide/forms)
 
-
-
-* 关于表单的AngularJS文档：阅读有关Forms的AngularJS验证功能的更多信息（我们只在这里介绍）：https://docs.angularjs.org/guide/forms
+* 关于表单的AngularJS文档：阅读有关Forms的AngularJS验证功能的更多信息（我们只在这里介绍）：[https://docs.angularjs.org/guide/forms](https://docs.angularjs.org/guide/forms)
 
 
 

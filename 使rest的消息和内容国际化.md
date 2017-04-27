@@ -24,7 +24,7 @@ There is both backend and a frontend work in this recipe.
 
 1.以下bean已在核心上下文（csm-core-config.xml）中注册：
 
-```
+```java
 <bean id="messageBundle" class="edu.zc.csm.core.i18n.SerializableResourceBundleMessageSource">
     <property name="basenames" value="classpath:/METAINF/i18n/messages,classpath:/META-INF/i18n/errors"/>
     <property name="fileEncodings" value="UTF-8" />
@@ -32,11 +32,11 @@ There is both backend and a frontend work in this recipe.
 </bean>
 ```
 
-2. This bean references a created SerializableResourceBundleMessageSource that gathers the resource files and extracts properties:
+2.This bean references a created SerializableResourceBundleMessageSource that gathers the resource files and extracts properties:
 
 2.这个bean引用一个创建的SerializableResourceBundleMessageSource，它收集资源文件并提取属性：
 
-```
+```java
 /**
 * @author rvillars
 * {@link https://github.com/rvillars/bookapp-rest}
@@ -44,7 +44,7 @@ There is both backend and a frontend work in this recipe.
 public class SerializableResourceBundleMessageSource extends ReloadableResourceBundleMessageSource {
 
     public Properties getAllProperties(Locale locale) {
-    
+
         clearCacheIncludingAncestors();
         PropertiesHolder propertiesHolder = getMergedProperties(locale);
         Properties properties = propertiesHolder.getProperties();
@@ -53,7 +53,7 @@ public class SerializableResourceBundleMessageSource extends ReloadableResourceB
 }
 ```
 
-3. This bean bundle is accessed from two places:
+3.This bean bundle is accessed from two places:
 
 A newly created PropertiesController exposes publicly \(serializing\) all the messages and errors for a specific location \(here, just a language\):
 
@@ -61,14 +61,14 @@ A newly created PropertiesController exposes publicly \(serializing\) all the me
 
 新创建的PropertiesController公开（序列化）特定位置（这里，只是一种语言）的所有消息和错误：
 
-```
+```java
 @RestController
 @ExposesResourceFor(Transaction.class)
 @RequestMapping(value="/properties")
 public class PropertiesController{
     @Autowired
     protected SerializableResourceBundleMessageSource messageBundle;
-    
+
     @RequestMapping(method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
     @ResponseBody
     public Properties list(@RequestParam String lang) {
@@ -81,76 +81,76 @@ A specific service layer has been built to easily serve messages and errors acro
 
 已经构建了特定的服务层，以便轻松地在控制器和服务之间提供消息和错误：
 
-```
+```java
 @Service
 @Transactional(readOnly = true)
 public class ResourceBundleServiceImpl implements ResourceBundleService {
 
     @Autowired
     protected SerializableResourceBundleMessageSource messageBundle;
-    
+
     private static final Map<Locale, Properties> localizedMap = new HashMap<>();
-    
+
     @Override
     public Properties getAll() {
         return getBundleForUser();
     }
-    
+
     @Override
     public String get(String key) {
         return getBundleForUser().getProperty(key);
     }
-    
+
     @Override
     public String getFormatted(String key, String...arguments) {
         return MessageFormat.format(getBundleForUser().getProperty(key), arguments);
     }
-    
+
     @Override
     public boolean containsKey(String key) {
         return getAll().containsKey(key);
     }
-    
+
     private Properties getBundleForUser(){
         Locale locale = AuthenticationUtil.getUserPrincipal().getLocale();
         if(!localizedMap.containsKey(locale)){
             localizedMap.put(locale,messageBundle.getAllProperties(locale));
         }
-        
+
         return localizedMap.get(locale);
     } 
 }
-
 ```
 
-> The ResourceBundleServiceImpl uses the same SerializableResourceBundleMessageSource for now. It also extracts the locale from the logged-in user \(Spring Security\) with a fallback to English.
+> The ResourceBundleServiceImpl uses the same SerializableResourceBundleMessageSource for  
+>  now. It also extracts the locale from the logged-in user \(Spring Security\) with a fallback to English.
 >
 > ResourceBundleServiceImpl现在使用相同的SerializableResourceBundleMessageSource。 它还从登录用户\(Spring Security\)中提取语言环境，并返回English。
 
-4. This ResourceBundleServiceImpl service is injected in our WebContentInterceptor CloudstreetApiWCI:
+4.This ResourceBundleServiceImpl service is injected in our WebContentInterceptor CloudstreetApiWCI:
 
-这个ResourceBundleServiceImpl服务注入我们的WebContentInterceptor CloudstreetApiWCI：
+4.这个ResourceBundleServiceImpl服务注入我们的WebContentInterceptor CloudstreetApiWCI：
 
-```
+```java
 @Autowired
 protected ResourceBundleService bundle;
 ```
 
-5. In the TransactionController, for example, the bundle is targeted to extract error messages:
+5.In the TransactionController, for example, the bundle is targeted to extract error messages:
 
 5.在TransactionController中，例如，bundle 包的目标是提取错误消息：
 
-```
+```java
 if(!transaction.getUser().getUsername().equals(getPrincipal().getUsername())){
     throw new AccessDeniedException(bundle.get(I18nKeys.I18N_TRANSACTIONS_USER_FORBIDDEN));
 }
 ```
 
-6. I18nKeys is just a class that hosts resource keys as constants:
+6.I18nKeys is just a class that hosts resource keys as constants:
 
-6. I18nKeys只是一个将资源键作为常量托管的类：
+6.I18nKeys只是一个将资源键作为常量托管的类：
 
-```
+```java
 public class I18nKeys {
     //Messages
     public static final String I18N_ACTION_REGISTERS = "webapp.action.feeds.action.registers";
@@ -160,7 +160,7 @@ public class I18nKeys {
 }
 ```
 
-7. The resource files are located in the core module:
+7.The resource files are located in the core module:
 
 7.资源文件位于核心模块中：
 
@@ -168,22 +168,22 @@ public class I18nKeys {
 
 ### Frontend
 
-1. Two dependencies for angular-translate have been added in the index.jsp:
+1. Two dependencies for `angular-translate` have been added in the index.jsp:
 
 前端
 
-1.在index.jsp中添加了两个用于angular-translate的依赖关系：
+1.在index.jsp中添加了两个用于`angular-translate`的依赖关系：
 
-```
+```js
 <script src="js/angular/angular-translate.min.js"></script>
 <script src="js/angular/angular-translate-loader-url.min.js"></script>
 ```
 
-2. The translate module is configured as follows in the index.jsp:
+2.The translate module is configured as follows in the index.jsp:
 
 2.在index.jsp中translate 翻译模块如下：
 
-```
+```js
 cloudStreetMarketApp.config(function ($translateProvider) {
     $translateProvider.useUrlLoader('/api/properties.json');
     $translateProvider.useStorage('UrlLanguageStorage');
@@ -192,11 +192,11 @@ cloudStreetMarketApp.config(function ($translateProvider) {
 });
 ```
 
-3. The user language is set from the main menu \(main\_menu.js\). The user is loaded and the language is extracted from user object \(defaulted to EN\):
+3.The user language is set from the main menu \(main\_menu.js\). The user is loaded and the language is extracted from user object \(defaulted to EN\):
 
 3.从主菜单\(main\_menu.js\)设置用户语言。 用户被加载并且语言从用户对象（默认为EN）中提取：
 
-```
+```js
 cloudStreetMarketApp.controller('menuController', function($scope, $translate, $location, modalService, httpAuth, genericAPIFactory) {
     $scope.init = function () {
         ...
@@ -210,11 +210,11 @@ cloudStreetMarketApp.controller('menuController', function($scope, $translate, $
 }
 ```
 
-4. In the DOM, the i18n content is directly referenced to be translated through a translate directive. Check out in the stock-detail.html file for example:
+4.In the DOM, the i18n content is directly referenced to be translated through a translate directive. Check out in the stock-detail.html file for example:
 
 4.在DOM中，i18n内容直接引用通过translate指令翻译。 例如签出stock-detail.html文件：
 
-```
+```js
 <span translate="screen.stock.detail.will.remain">Will remain</span>
 ```
 
@@ -222,7 +222,7 @@ Another example from the index-detail.html file is the following:
 
 index-detail.html文件的另一个示例如下：
 
-```
+```js
 <td translate>screen.index.detail.table.prev.close</td>
 ```
 
@@ -230,31 +230,31 @@ In home.html, you can find scope variables whose values are translated as follow
 
 在home.html中，您可以找到其值按如下转换的作用域变量：
 
-```
+```js
 {{value.userAction.presentTense | translate}}
 ```
 
-5. In the application, update your personal preferences and set your language to **French **for example. Try to access, for example, a **stock-detail** page that can be reached from the **stock-search** results:
+5.In the application, update your personal preferences and set your language to **French **for example. Try to access, for example, a **stock-detail** page that can be reached from the **stock-search** results:
 
 5.在应用程序中，更新您的个人首选项，并将您的语言设置为**法语**。 尝试访问例如**stock-search**结果可以访问的**stock-detail**页面：
 
 ![](/assets/125.png)
 
-6. From a** stock-detail** page, you can process a transaction \(in French!\):
+6.From a** stock-detail** page, you can process a transaction \(in French!\):
 
 6.从**stock-detail**页面，您可以处理交易（法语！）：
 
 ![](/assets/126.png)
 
-How it works...
+## How it works...
 
 Let's have a look at the backend changes. What you first need to understand is the autowired SerializableResourceBundleMessageSource bean from which internationalized messages are extracted using a message key.
 
-This bean extends a specific `MessageSource `implementation. Several types of `MessageSource` exist and it is important to understand the differences between them. We will revisit the way we extract a Locale from our users and we will see how it is possible to use a `LocaleResolver `to read or guess the user language based on different readability paths \(`Sessions`, `Cookies`, `Accept header`, and so on\).
+This bean extends a specific `MessageSource`implementation. Several types of `MessageSource` exist and it is important to understand the differences between them. We will revisit the way we extract a Locale from our users and we will see how it is possible to use a `LocaleResolver`to read or guess the user language based on different readability paths \(`Sessions`, `Cookies`, `Accept header`, and so on\).
 
 让我们来看看后端的变化。 您首先需要了解的是自动连接的SerializableResourceBundleMessageSource bean，使用消息键从中提取国际化消息。
 
-这个bean扩展了一个特定的`MessageSource`实现。 存在几种类型的`MessageSource`，了解它们之间的差异很重要。 我们将重新审视我们从用户中提取Locale的方式，我们将看到如何使用`LocaleResolver`根据不同的可读性路径\(`Sessions`, `Cookies`,` Accept header`等\)读取或猜测用户语言。
+这个bean扩展了一个特定的`MessageSource`实现。 存在几种类型的`MessageSource`，了解它们之间的差异很重要。 我们将重新审视我们从用户中提取Locale的方式，我们将看到如何使用`LocaleResolver`根据不同的可读性路径\(`Sessions`, `Cookies`,`Accept header`等\)读取或猜测用户语言。
 
 ### MessageSource beans
 
@@ -264,13 +264,13 @@ First of all, a MessageSource is a Spring interface \(`org.sfw.context.MessageSo
 
 The most interesting arguments being the key of the message we want and the Locale\(language/country combination\) that will drive the right language selection. If no Locale is provided or if the MessageSource fails to resolve a matching language/country file or message entry, it falls back to a more generic file and tries again until it reaches a successful resolution.
 
-As shown here, `MessageSource `implementations expose only `getMessage(…)` methods
+As shown here, `MessageSource`implementations expose only `getMessage(…)` methods
 
 最有趣的参数是我们想要的message 的关键，以及将驱动正确的语言选择的语言\(language/country combination\)。 如果未提供区域设置或`MessageSource`无法解析匹配的语言/国家/地区文件或消息条目，则会返回到更通用的文件，并再次尝试，直到达到成功的解决方案。
 
 如图所示，MessageSource实现仅暴露`getMessage(…)` 方法
 
-```
+```java
 public interface MessageSource {
     String getMessage(String code, Object[] args, String defaultMessage, Locale locale);
     String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException;
@@ -284,9 +284,9 @@ This lightweight interface is implemented by several objects in Spring \(especia
 
 ### ResourceBundleMessageSource
 
-This `MessageSource `implementation accesses the resource bundles using specified basenames. It relies on the underlying JDK's `ResourceBundle `implementation, in combination with the JDK's standard message-parsing provided by `MessageFormat` \(`java.text.MessageFormat`\).
+This `MessageSource`implementation accesses the resource bundles using specified basenames. It relies on the underlying JDK's `ResourceBundle`implementation, in combination with the JDK's standard message-parsing provided by `MessageFormat` \(`java.text.MessageFormat`\).
 
-Both the accessed `ResourceBundle` instances and the generated `MessageFormat` are cached for each message. The caching provided by ResourceBundleMessageSource is significantly faster than the built-in caching of the` java.util.ResourceBundle` class.
+Both the accessed `ResourceBundle` instances and the generated `MessageFormat` are cached for each message. The caching provided by ResourceBundleMessageSource is significantly faster than the built-in caching of the`java.util.ResourceBundle` class.
 
 With `java.util.ResourceBundle`, it's not possible to reload a bundle when the JVM is running. Because ResourceBundleMessageSource relies on `ResourceBundle`, it faces the same limitation.
 
@@ -324,7 +324,7 @@ StaticMessageSource是一个简单的实现，允许以编程方式注册消息�
 
 We have implemented a specific controller that serializes and exposes the whole aggregation of our resource bundle properties-files \(errors and message\) for a given language passed in as a query parameter.
 
-To achieve this, we have created a custom SerializableResourceBundleMessageSource object, borrowed from Roger Villars,and its bookapp-rest application \(https://github.com/rvillars/bookapp-rest\).
+To achieve this, we have created a custom SerializableResourceBundleMessageSource object, borrowed from Roger Villars,and its bookapp-rest application \([https://github.com/rvillars/bookapp-rest\](https://github.com/rvillars/bookapp-rest\)\).
 
 This custom MessageSource object extends ReloadableResourceBundleMessageSource. We have made a Spring bean of it with the following definition:
 
@@ -336,7 +336,7 @@ This custom MessageSource object extends ReloadableResourceBundleMessageSource. 
 
 此自定义MessageSource对象扩展ReloadableResourceBundleMessageSource。 我们已经使用了以下定义的Spring bean：
 
-```
+```js
 <bean id="messageBundle" class="edu.zc.csm.core.i18n.SerializableResourceBundleMessageSource">
     <property name="basenames" value="classpath:/METAINF/i18n/messages,classpath:/META-INF/i18n/errors"/>
     <property name="fileEncodings" value="UTF-8" />
@@ -348,7 +348,7 @@ We have specifically specified the paths to our resource files in the classpath.
 
 我们已经在类路径中明确指定了我们的资源文件的路径。 这可以在我们的上下文中使用全局资源bean来避免：
 
-```
+```js
 <resources location="/, classpath:/META-INF/i18n" mapping="/resources/**"/>
 ```
 
@@ -370,7 +370,7 @@ LocaleResolver is a Spring Interface \(`org.springframework.web.servlet.LocaleRe
 
 LocaleResolver是一个Spring接口\(`org.springframework.web.servlet.LocaleResolver`\)：
 
-```
+```java
 public interface LocaleResolver {
     Locale resolveLocale(HttpServletRequest request);
     void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale);
@@ -399,7 +399,7 @@ This resolver is the most appropriate when the application actually uses user se
 
 当应用程序实际使用用户会话时，此解析器是最合适的。 它读取并设置其名称仅供内部使用的会话属性：
 
-```
+```java
 public static final String LOCALE_SESSION_ATTRIBUTE_NAME = SessionLocaleResolver.class.getName() + ".LOCALE";
 ```
 
@@ -413,7 +413,7 @@ The practice in these cases is to create an extra and specific web filter.
 
 ### CookieLocaleResolver
 
-CookieLocaleResolver is a resolver that is well suited to stateless applications like ours.The cookie name can be customized with the `cookieName `property. If the Locale is not found in an internally defined request parameter, it tries to read the cookie value and falls back to the `Accept-Language header`.
+CookieLocaleResolver is a resolver that is well suited to stateless applications like ours.The cookie name can be customized with the `cookieName`property. If the Locale is not found in an internally defined request parameter, it tries to read the cookie value and falls back to the `Accept-Language header`.
 
 The cookie may optionally contain an associated time zone value as well. We can still specify a default time zone as well.
 
@@ -423,7 +423,7 @@ Cookie还可以可选地包含相关联的时区值。 我们仍然可以指定�
 
 ## There's more…
 
-### Translating client-side with angular-translate.js 
+### Translating client-side with angular-translate.js
 
 We used angular-translate.js to handle translations and to switch the user Locale from the client side. angular-translate.js library is very complete and well documented. As a dependency, it turns out to be extremely useful.
 
@@ -467,7 +467,7 @@ As shown in the following examples, the translate directive can be used to actua
 
 如以下示例所示，translate指令可用于实际呈现已翻译的消息：
 
-```
+```js
 <span translate>i18n.key.message</span> or
 <span translate=" i18n.key.message" >fallBack translation in English (better for Google indexes) </span>
 ```
@@ -476,7 +476,7 @@ Alternatively, we can use a predefined translate filter to translate our transla
 
 或者，我们可以使用预定义的translate filter来翻译DOM中的translation keys，而不让任何控制器或服务知道它们：
 
-```
+```java
 {{data.type.type == 'BUY' ?
     'screen.stock.detail.transaction.bought' : 'screen.stock.detail.transaction.sold' | translate}}
 ```
@@ -485,5 +485,5 @@ You can read more about angular-translate on their very well done documentation:
 
 你可以阅读更多关于angular-translate的文档：
 
-https://angular-translate.github.io
+[https://angular-translate.github.io](https://angular-translate.github.io)
 
