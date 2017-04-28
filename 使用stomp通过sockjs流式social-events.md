@@ -14,18 +14,16 @@ Our WebSocket will subscribe to a topic \(for broadcasting\) published via Sprin
 
 ## How to do it…
 
-1. From the
-   **Git Perspective**
-   in Eclipse, checkout the latest version of the branch v8.1.x.
+1. From the **Git Perspective **in Eclipse, checkout the latest version of the branch v8.1.x.
 2. Run the**Maven clean**and**Maven install**commands on the zipcloud-parent project \(right-click on the**project**, select**Run as… \| Maven Clean**, then select**Run as… \| Maven Install**\). After this, operate a**Maven \| Update Project**to synchronize Eclipse with the Maven configuration \(right-click on the project and then click**Maven \| Update Project…**\)..
 
 3. Similarly, run the Maven clean and Maven install commands on cloudstreetmarket-parent followed by a Maven \| Update Project… \(in order to update all cloudstreetmarket-parent modules\).
 
-4. 从Eclipse中的**Git Perspective**中，检出最新版本的分支v8.1.x.
+1.从Eclipse中的**Git Perspective**中，检出最新版本的分支v8.1.x.
 
-5. .在zipcloud-parent项目上运行**Maven clean**和**Maven Install**命令（右键单击项目，选择**Run as ... \| Maven Clean**，然后选择**Run as ... \| Maven Install**）。 之后，操作一个**Maven \| Update Project**以使Eclipse与Maven配置同步（右键单击project，然后单击**Maven \| Update Project..**.）
+2.在zipcloud-parent项目上运行**Maven clean**和**Maven Install**命令（右键单击项目，选择**Run as ... \| Maven Clean**，然后选择**Run as ... \| Maven Install**）。 之后，操作一个**Maven \| Update Project**以使Eclipse与Maven配置同步（右键单击project，然后单击**Maven \| Update Project..**.）
 
-6. 同样，在cloudstreetmarket-parent上运行**Maven clean**和**MavenInstall**命令，然后运行**Maven \| Update Project**...（为了更新所有cloudstreetmarket父模块）。
+3.同样，在cloudstreetmarket-parent上运行**Maven clean**和**MavenInstall**命令，然后运行**Maven \| Update Project**...（为了更新所有cloudstreetmarket父模块）。
 
 ### Apache HTTP Proxy configuration
 
@@ -33,7 +31,7 @@ Our WebSocket will subscribe to a topic \(for broadcasting\) published via Sprin
 
 1.在Apache httpd.conf文件中，将VirtualHost定义更改为：
 
-```script
+```js
 <VirtualHost cloudstreetmarket.com:80>
     ProxyPass /portal http://localhost:8080/portal
     ProxyPassReverse /portal http://localhost:8080/portal
@@ -47,22 +45,22 @@ Our WebSocket will subscribe to a topic \(for broadcasting\) published via Sprin
 </VirtualHost>
 ```
 
-1. Still in httpd.conf, uncomment the line:
+2.Still in httpd.conf, uncomment the line:
 
 2.仍然在httpd.conf中，取消注释行：
 
-```
+```java
 LoadModule proxy_wstunnel_module
 modules/mod_proxy_wstunnel.so
 ```
 
 ### Frontend
 
-1. In the index.jsp file \(in the cloudstreetmarket-webapp module\), two extra JavaScript files are imported:
+1.In the index.jsp file \(in the cloudstreetmarket-webapp module\), two extra JavaScript files are imported:
 
 1.在index.jsp文件（在cloudstreetmarket-webapp模块中）中，导入两个额外的JavaScript文件：
 
-```script
+```js
 <script src="js/util/sockjs-1.0.2.min.js"></script>
 <script src="js/util/stomp-2.3.3.js"></script>
 ```
@@ -75,15 +73,15 @@ modules/mod_proxy_wstunnel.so
 >
 > [https://cdnjs.cloudflare.com/ajax/libs/stomp](https://cdnjs.cloudflare.com/ajax/libs/stomp).js/2.3.3/stomp.js
 
-1. For this recipe, all the changes on the client side, are related to the file src/main/webapp/js/home/home\_community\_activity.js \(which drives the feed of**User Activities**on the landing page\). This file is associated with the template /src/main/webapp/html/home.html..
+2.For this recipe, all the changes on the client side, are related to the file src/main/webapp/js/home/home\_community\_activity.js \(which drives the feed of**User Activities**on the landing page\). This file is associated with the template /src/main/webapp/html/home.html..
 
-2. As part of the`init()`function of homeCommunityActivityController, the following section was added:
+3.As part of the`init()`function of homeCommunityActivityController, the following section was added:
 
 2.对于此配方，客户端上的所有更改都与文件src/main/webapp/js/home/home\_community\_activity.js （它驱动着陆页上的\*\_User Activities \*\_Feed）相关。 此文件与模板/src/main/webapp/html/home.html相关联..
 
 3.作为homeCommunityActivityController的`init()`函数的一部分，添加了以下部分：
 
-```script
+```js
 cloudStreetMarketApp.controller('homeCommunityActivityController', 
         function ($scope, $rootScope, httpAuth, modalService, communityFactory, genericAPIFactory, $filter){
 
@@ -111,13 +109,11 @@ cloudStreetMarketApp.controller('homeCommunityActivityController',
 ...
 ```
 
-1. The
-   `loadMore()`
-   function is still invoked to pull new activities when the bottom of the scroll is reached. However now, because new activities can be inserted asynchronously, the communityActivities variable is no longer an array but an object used as a map with activity IDs as keys. Doing so allows us to merge the synchronous results with the asynchronous ones:
+4.The` loadMore()` function is still invoked to pull new activities when the bottom of the scroll is reached. However now, because new activities can be inserted asynchronously, the communityActivities variable is no longer an array but an object used as a map with activity IDs as keys. Doing so allows us to merge the synchronous results with the asynchronous ones:
 
 4.当到达滚动底部时，仍然调用`loadMore()`函数来拉取新活动。 但是现在，因为可以异步插入新活动，所以community Activities变量不再是数组，而是用作具有活动ID作为键的映射的对象。 这样做允许我们将同步结果与异步结果合并：
 
-```script
+```js
 $scope.loadMore = function () {communityFactory.getUsersActivity(pageNumber,$scope.pageSize).then(function(response) {
     var usersData = response.data,
     status = response.status,
@@ -134,17 +130,17 @@ $scope.loadMore = function () {communityFactory.getUsersActivity(pageNumber,$sco
 };
 ```
 
-1. As before \(since the Chapter4, Building a REST API for a Stateless Architecture\), we loop over the community activities to build the activity feed. Now each activity carries a number of likes and comments. Currently, if a user is authenticated, he has the capability to see the number of likes:
+5.As before \(since the Chapter4, Building a REST API for a Stateless Architecture\), we loop over the community activities to build the activity feed. Now each activity carries a number of likes and comments. Currently, if a user is authenticated, he has the capability to see the number of likes:
 
 5.像以前一样（_从第4章，为无状态体系结构构建REST API_），我们循环遍历community activities以构建活动馈送。 现在每个activity 都有许多喜欢和评论。 目前，如果用户被认证，他能够看到喜欢的数量：
 
 [![](https://github.com/kakajing/SpringMVC-book/raw/master/assets/129.png)](https://github.com/kakajing/SpringMVC-book/blob/master/assets/129.png)
 
-1. TheAngularized HTML bound to the thumb-up image is the following:
+6.TheAngularized HTML bound to the thumb-up image is the following:
 
 6.绑定到thumb-up图像的Angularized HTML如下：
 
-```script
+```js
 <span ng-if="userAuthenticated() && value.amountOfLikes == 0">
     <img ng-src="{{image}}" class="like-img"
         ng-init="image='img/iconfinder/1441189591_1_like.png'"
@@ -154,13 +150,11 @@ $scope.loadMore = function () {communityFactory.getUsersActivity(pageNumber,$sco
 </span>
 ```
 
-1. In the controller, the
-   `like()`
-   scope function supports this DOM element to create a new like activity that targets the original activity:
+7.In the controller, the `like() `scope function supports this DOM element to create a new like activity that targets the original activity:
 
 7.在控制器中，`like()`scope函数支持此DOM元素来创建一个新的类似activity ，目标为原activity ：
 
-```
+```js
 $scope.like = function (targetActionId){
     var likeAction = {
         id: null,
@@ -173,17 +167,17 @@ $scope.like = function (targetActionId){
 }
 ```
 
-1. The opposite logic can also be found to unlike an activity.
+8.The opposite logic can also be found to unlike an activity.
 
 8.也可以发现相反的逻辑不同于activity。
 
-Backend
+## Backend
 
 1. The following Maven dependencies have been added to cloudstreetmarket-api:
 
 1.以下Maven依赖已添加到cloudstreetmarket-api：
 
-```java
+```js
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-websocket</artifactId>
@@ -196,15 +190,15 @@ Backend
 </dependency>
 ```
 
-1. In the web.xml file \(the one from cloudstreetmarket-api\), the following attribute must be added to our servlet and to each of its filters:
+2.In the web.xml file \(the one from cloudstreetmarket-api\), the following attribute must be added to our servlet and to each of its filters:
 
 2.在web.xml文件（cloudstreetmarket-api中的一个）中，必须将以下属性添加到我们的servlet及其每个过滤器：
 
-```
+```js
 <async-supported>true</async-supported>
 ```
 
-1. The following dedicated configuration bean has been created:
+3.The following dedicated configuration bean has been created:
 
 3.已创建以下专用配置Bean：
 
@@ -248,11 +242,11 @@ public class ActivityFeedWSController extends CloudstreetApiWCI{
 }
 ```
 
-1. As Spring configuration, we have added the following bean to the dispatcherservlet.xml:
+4.As Spring configuration, we have added the following bean to the dispatcherservlet.xml:
 
 4.作为Spring配置，我们将以下bean添加到dispatcherservlet.xml中：
 
-```script
+```js
 <bean class="org.sfw.web.socket.server.support.OriginHandshakeInterceptor">
     <property name="allowedOrigins">
         <list>
@@ -266,7 +260,7 @@ In security-config.xml, the following configuration has been added to the http S
 
 在security-config.xml中，以下配置已添加到http Spring Security namespace：
 
-```script
+```js
 <security:http create-session="stateless" entry-point-ref="authenticationEntryPoint"
     authentication-manager-ref="authenticationManager">
     ...
@@ -320,13 +314,13 @@ public LikeActionResource post(@RequestBody LikeAction ikeAction, HttpServletRes
 }
 ```
 
-1. Now start the Tomcat server. Log in to the application using Yahoo! Oauth2 and your personal Yahoo! account \(if you don't have one yet, please create one\). Register a new user for the Cloudstreet Market application.
+2.Now start the Tomcat server. Log in to the application using Yahoo! Oauth2 and your personal Yahoo! account \(if you don't have one yet, please create one\). Register a new user for the Cloudstreet Market application.
 
-2. In your web browser, open two different tabs in the application with your logged-in user. Keep one of these tabs on the landing page.
+3.In your web browser, open two different tabs in the application with your logged-in user. Keep one of these tabs on the landing page.
 
-3. With the other tab, navigate to the Prices and market \| All prices search menu.Search for a ticker, let's say Facebook, and buy three stocks of it.
+4.With the other tab, navigate to the Prices and market \| All prices search menu.Search for a ticker, let's say Facebook, and buy three stocks of it.
 
-4. Wait to receive the information message:
+5.Wait to receive the information message:
 
 2.现在启动Tomcat服务器。 使用Yahoo! Oauth2和您的个人Yahoo!帐户登录应用程序（如果您还没有帐户，请创建一个）。 为Cloudstreet Market应用程序注册新用户。
 
@@ -346,7 +340,7 @@ Then check the first tab of the browser \(the tab you were not using\).
 
 You will notice that the activity feed has received a new element at the top!
 
-1. Also, in the console you should have the following log trace:
+6.Also, in the console you should have the following log trace:
 
 您会注意到activity feed顶部收到了一个新元素！
 
@@ -354,7 +348,7 @@ You will notice that the activity feed has received a new element at the top!
 
 [![](https://github.com/kakajing/SpringMVC-book/raw/master/assets/132.png)](https://github.com/kakajing/SpringMVC-book/blob/master/assets/132.png)
 
-1. Similarly, like events are refreshed in real time:
+7.Similarly, like events are refreshed in real time:
 
 7.类似地，类似的事件被实时刷新：
 
@@ -416,7 +410,7 @@ Here is an example of a STOMP frame:
 
 以下是STOMP框架的示例：
 
-```
+```java
 CONNECTED
 session:session-4F_y4UhJTEjabe0LfFH2kg
 heart-beat:10000,10000
@@ -447,7 +441,7 @@ STOMP协议规范定义了一组客户端命令（SEND，SUBSCRIBE，UNSUBSCRIBE
 
 该库还可以从自定义WebSocket实现创建STOMP客户端。 从SockJS WebSockets，我们创建STOMP客户端：
 
-```script
+```js
 var socket = new SockJS('/app/users/feed/add');
 var stompClient = Stomp.over(socket);
 stompClient.connect({}, function(frame) {
@@ -521,7 +515,7 @@ The WebSocket endPoint is defined for the context path /users/feed/add. It match
 
 WebSocket endPoint是为上下文路径/users/feed/add定义的。 它在客户端匹配，定义的SockJS客户端构造函数参数：
 
-```
+```js
 var socket = new SockJS('/api/users/feed/add');
 ```
 
@@ -537,7 +531,7 @@ Let's see now how message handlers can be defined and how they can be used.
 
 现在让我们看看如何定义消息处理程序以及如何使用它们。
 
-### Defining message handlers via @MessageMapping
+### Defining message handlers via `@MessageMapping`
 
 `@MessageMapping`annotations are used in Spring MVC controller methods to mark them available as message handler methods.
 
@@ -545,13 +539,13 @@ From a message in the clientInboundChannel to be routed to a message handler, th
 
 As usual in Spring MVC, this value can be defined in an Ant-style \(such as/targets/\*\* for example\). However, in the same way as the`@RequestParam`and`@PathVariable`annotations, template variables can also be passed through using`@DestinationVariable`annotations on method arguments \(destination templates are defined like so: /targets/{target}\).
 
-通过@MessageMapping定义消息处理程序
+通过`@MessageMapping`定义消息处理程序
 
 `@MessageMapping`注解在Spring MVC控制器方法中使用，将以它们标记为消息处理程序方法。
 
 从要被路由到消息处理程序的clientInboundChannel中的消息，WebSocket引擎根据其配置的值缩小正确的`@MessageMapping`方法。
 
-像Spring MVC一样，这个值可以在Ant风格中定义（例如/targets/\*\*）。 但是，与`@RequestParam`和`@PathVariable`注释相同，模板变量也可以通过对方法参数使用`@DestinationVariable`注释来传递（目标模板定义如下：/targets/{target}）。
+像Spring MVC一样，这个值可以在Ant风格中定义（例如/targets/\*\*）。 但是，与`@RequestParam`和`@PathVariable`注解相同，模板变量也可以通过对方法参数使用`@DestinationVariable`注解来传递（目标模板定义如下：/targets/{target}）。
 
 ### Sending a message to dispatch
 
@@ -579,7 +573,7 @@ SimpMessagingTemplate提供与Spring JmsTemplate（如果你熟悉它）相同�
 
 一个方便和继承的著名方法是convertAndSend方法，它尝试识别和使用MessageConverter来序列化一个对象，并将其发送到一个新的消息，然后将该消息发送到指定的目标：
 
-```
+```java
 simpMessagingTemplate.convertAndSend(String destination, Object message);
 ```
 
@@ -591,7 +585,7 @@ The idea is to target an identified destination \(with a /topic prefix in our ca
 
 This annotation saves us from having to explicitly use the SimpMessagingTemplate. The destination is specified as the annotation value. This method will also handle the conversion from payload to message:
 
-这个注释使我们不必显式地使用SimpMessagingTemplate。 目标指定为注释值。 此方法还将处理从有效载荷到消息的转换：
+这个注解使我们不必显式地使用SimpMessagingTemplate。 目标指定为注解值。 此方法还将处理从有效载荷到消息的转换：
 
 ```java
 @RestController
